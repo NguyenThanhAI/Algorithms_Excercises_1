@@ -1,0 +1,278 @@
+\documentclass[14pt, a4paper]{article}
+\usepackage{minitoc}
+\usepackage[left=3.00cm, right=2.5cm, top=2.00cm, bottom=2.00cm]{geometry}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsthm}
+\usepackage{mathtools}
+\usepackage{graphicx}
+%\usepackage{algpseudocode}
+%\usepackage{algorithm}
+\usepackage[ruled,vlined,linesnumbered]{algorithm2e}
+\usepackage{blindtext}
+\usepackage{setspace}
+\usepackage[utf8]{inputenc}
+\usepackage[utf8]{vietnam}
+\usepackage[center]{caption}
+\usepackage[shortlabels]{enumitem}
+\usepackage{fancyhdr} % header, footer
+\usepackage{hyperref} % loại bỏ border với mục lục và công thức
+\usepackage[nonumberlist, nopostdot, nogroupskip]{glossaries}
+\usepackage{glossary-superragged}
+\usepackage{tikz,tkz-tab}
+\setglossarystyle{superraggedheaderborder}
+\pagestyle{fancy}
+%\usepackage[style=numeric,sortcites]{biblatex}
+%\addbibresource{ref.bib}
+%\usepackage[numbers]{natbib}
+\usepackage{indentfirst}
+\usepackage[natbib,backend=biber,style=ieee, sorting=ynt]{biblatex}
+\bibliography{ref.bib}
+
+\graphicspath{{./figures/}}
+
+\fancyhf{}
+\rhead{\textbf{Môn học: Toán rời rạc và thuật toán}}
+\lhead{\textbf{GVHD: PGS. TS. Nguyễn Thị Hồng Minh}}
+\rfoot{\thepage}
+\lfoot{\textbf{Nhóm học viên thực hiện: Nhóm 01 - Cao học Khoa học dữ liệu - K4}}
+\renewcommand{\headrulewidth}{0.4pt}
+\renewcommand{\footrulewidth}{0.4pt}
+%
+%\numberwithin{equation}{section}
+%\numberwithin{algorithm}{section}
+%\numberwithin{figure}{section}
+%
+%\setlength{\parindent}{0.5cm}
+%
+%\setcounter{secnumdepth}{3} % Cho phép subsubsection trong report
+%\setcounter{tocdepth}{3} % Chèn subsubsection vào bảng mục lục
+
+%\newtheorem{dl}{Định lý}
+%\newtheorem{md}{Mệnh đề}
+%\newtheorem{bd}{Bổ đề}
+%\newtheorem{dn}{Định nghĩa}
+%\newtheorem{hq}{Hệ quả}
+
+%\newtheorem{baitap}{Bài tập}
+%\newtheorem*{loigiai}{Lời giải}
+
+%\numberwithin{dl}{section}
+%\numberwithin{md}{section}
+%\numberwithin{bd}{section}
+%\numberwithin{dn}{section}
+%\numberwithin{hq}{section}
+
+\setlength{\parindent}{0cm}
+
+\newtheorem{dl}{Định lý}
+\newtheoremstyle{sltheorem}
+{}                % Space above
+{}                % Space below
+{\normalfont}        % Theorem body font % (default is "\upshape")
+{}                % Indent amount
+{\bfseries}       % Theorem head font % (default is \mdseries)
+{.}               % Punctuation after theorem head % default: no punctuation
+{ }               % Space after theorem head
+{}                % Theorem head spec
+\theoremstyle{sltheorem}
+\newtheorem{baitap}{Bài tập}
+\newtheoremstyle{soltheorem}
+{}                % Space above
+{}                % Space below
+{\normalfont}        % Theorem body font % (default is "\upshape")
+{}                % Indent amount
+{\bfseries}       % Theorem head font % (default is \mdseries)
+{.}               % Punctuation after theorem head % default: no punctuation
+{\newline}               % Space after theorem head
+{}                % Theorem head spec
+\theoremstyle{soltheorem}
+\newtheorem*{loigiai}{Lời giải}
+
+\onehalfspacing
+
+\begin{document}
+
+    \begin{titlepage}
+
+        \newcommand{\HRule}{\rule{\linewidth}{0.5mm}} % Defines a new command for the horizontal lines, change thickness here
+
+        \center % Center everything on the page
+
+        %----------------------------------------------------------------------------------------
+        %	HEADING SECTIONS
+        %----------------------------------------------------------------------------------------
+        \textsc{\LARGE Đại học Quốc Gia Hà Nội}\\[0.5cm]
+        \textsc{\LARGE Trường đại học Khoa học tự nhiên}\\[0.5cm] % Name of your university/college
+        \textsc{\LARGE Khoa Toán - Cơ - Tin học}\\[0.5cm]
+
+        \includegraphics[scale=0.2]{HUS-logo.jpg}\\[0.5cm]
+
+        \textsc{\Large Chuyên ngành: Khoa học dữ liệu}\\[0.5cm] % Major heading such as course name
+
+
+        %----------------------------------------------------------------------------------------
+        %	TITLE SECTION
+        %----------------------------------------------------------------------------------------
+
+        \HRule \\[0.4cm]
+        { \huge \bfseries Bài tập môn học}\\[0.4cm] % Title of your document
+        \HRule \\[1.5cm]
+
+        \textsc{\Large Môn học: Toán rời rạc và thuật toán}\\[1cm] % Minor heading such as course title
+
+
+        \textsc{\Large Bài tập 1: Các khái niệm cơ bản về thuật toán \\ và các phương pháp thiết kế thuật toán}\\[1cm]
+
+
+        %----------------------------------------------------------------------------------------
+        %	AUTHOR SECTION
+        %----------------------------------------------------------------------------------------
+        \begin{minipage}{0.4\textwidth}
+            \begin{flushleft} \large
+            \emph{Giảng viên hướng dẫn:} \\
+            PGS. TS. Nguyễn Thị Hồng Minh % Supervisor's Name
+            \end{flushleft}
+        \end{minipage}\\[0.5cm]
+
+        \begin{minipage}{0.4\textwidth}
+        \begin{flushleft} \large
+        \emph{Nhóm học viên thực hiện:}\\
+        Nguyễn Chí Thanh \\
+        MSHV: 21007925 \\ % Your name
+        Vũ Ngọc Đại \\
+        MSHV: 21007977 \\
+        Vũ Minh Hưng \\
+        MSHV: 21007973 \\
+        Lê Diệu Thúy \\
+        MSHV: 21007922 \\
+        Lớp: Khoa học dữ liệu - K4
+        \end{flushleft}
+        \end{minipage}
+
+
+        % If you don't want a supervisor, uncomment the two lines below and remove the section above
+        %\Large \emph{Author:}\\
+        %John \textsc{Smith}\\[3cm] % Your name
+
+        %----------------------------------------------------------------------------------------
+        %	DATE SECTION
+        %----------------------------------------------------------------------------------------
+
+        % I don't want day because it is English
+        % {\large \today}\\[2cm] % Date, change the \today to a set date if you want to be precise
+
+        %----------------------------------------------------------------------------------------
+        %	LOGO SECTION
+        %----------------------------------------------------------------------------------------
+
+        %\includegraphics{logo/rsz_3logo-khtn.png}\\[1cm] % Include a department/university logo - this will require the graphicx package
+
+        %----------------------------------------------------------------------------------------
+
+        \vfill % Fill the rest of the page with whitespace
+
+    \end{titlepage}
+
+    \nocite{*}
+
+    \newpage
+
+    \begin{algorithm}
+        \DontPrintSemicolon % Some LaTeX compilers require you to use \dontprintsemicolon instead
+        \KwIn{A finite set $A=\{a_1, a_2, \ldots, a_n\}$ of integers}
+        \KwOut{The largest element in the set}
+        $max \gets a_1$\;
+        \For{$i \gets 2$ \textbf{to} $n$} {
+          \If{$a_i > max$} {
+            $max \gets a_i$\;
+          }
+        }
+        \Return{$max$}\;
+        \caption{{\sc Max} finds the maximum number}
+        \label{algo:max}
+    \end{algorithm}
+
+    \begin{algorithm}
+        \DontPrintSemicolon % Some LaTeX compilers require you to use \dontprintsemicolon instead 
+        \KwIn{A set $C = \{c_1, c_2, \ldots, c_r\}$ of denominations of coins, where $c_i > c_2 > \ldots > c_r$ and a positive number $n$}
+        \KwOut{A list of coins $d_1,d_2,\ldots,d_k$, such that $\sum_{i=1}^k d_i = n$ and $k$ is minimized}
+        $C \gets \emptyset$\;
+        \For{$i \gets 1$ \textbf{to} $r$}{
+          \While{$n \geq c_i$} {
+            $C \gets C \cup \{c_i\}$\;
+            $n \gets n - c_i$\;
+          }
+        }
+        \Return{$C$}\;
+        \caption{{\sc Change} Makes change using the smallest number of coins}
+        \label{algo:change}
+    \end{algorithm}
+
+    \begin{algorithm}
+        \DontPrintSemicolon % Some LaTeX compilers require you to use \dontprintsemicolon instead
+        \KwIn{A sequence of integers $\langle a_1, a_2, \ldots, a_n \rangle$}
+        \KwOut{The index of first location witht he same value as in a previous location in the sequence}
+        $location \gets 0$\;
+        $i \gets 2$\;
+        \While{$i \leq n$ \textbf{and} $location = 0$}{
+          $j \gets 1$\;
+          \While{$j < i$ \textbf{and} $location = 0$}{
+            % The "u" before the "If" makes it so there is no "end" after the statement, so the else will then follow
+            \uIf{$a_i = a_j$}{
+              $location \gets i$\;
+            }
+            \Else{
+              $j \gets j + 1$\;
+            }
+          }
+          $i \gets i + 1$\;
+        }
+        \Return{location}\;
+        \caption{{\sc FindDuplicate}}
+        \label{algo:duplicate}
+    \end{algorithm}
+
+    \begin{algorithm}
+        \DontPrintSemicolon
+        \KwIn{A sequence of integers $\langle a_1, a_2, \ldots, a_n \rangle$}
+        \KwOut{The index of first location witht he same value as in a previous location in the sequence}
+        $location \gets 0$\;
+        $i \gets 2$\;
+        \While{$i \leq n \land location = 0$}{
+          $j \gets 1$\;
+          \While{$j < i \land location = 0$}{
+            % The "l" before the If makes it so it does not expand to a second line
+            \lIf{$a_i = a_j$}{
+              $location \gets i$\;
+            }
+            \lElse{
+              $j \gets j + 1$\;
+            }
+          }
+          $i \gets i + 1$\;
+        }
+        \Return{location}\;
+        \caption{{\sc FindDuplicate2}}
+        \label{algo:duplicate2}
+    \end{algorithm}
+
+    \begin{algorithm}
+        \DontPrintSemicolon
+        \KwIn{Dãy các số nguyên $A=\lbrace a_1, a_2, \dots, a_n \rbrace$}
+        \KwOut{Dãy con có trọng lượng lớn nhất}
+
+        $s_1 \gets a_1$\;
+        $e_1 \gets a_1$\;
+        \For{$i \gets 2$ \textbf{to} $n$} {
+            $e_i \gets \max(e_{i-1}, e_{i-1} + a_i)$\;
+            $s_i \gets \max(s_{i-1}, e_i)$\;
+        }
+        \Return{$s_n$}\;
+        \caption{Thuật toán tìm dãy con có trọng lượng lớn nhất}
+    \end{algorithm}
+
+    \newpage
+    \printbibliography[title={TÀI LIỆU THAM KHẢO}]
+
+\end{document}
