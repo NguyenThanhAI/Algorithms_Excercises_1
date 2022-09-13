@@ -179,7 +179,134 @@
     \newpage
 
     \begin{baitap}
+        Trình bày các vấn đề liên quan tới một trong các phương pháp cơ bản thiết kế
+        thuật toán sau: \textbf{chia để trị, quay lui, quy hoạch động}. Các nội dung trình bày bao gồm:
+        \begin{itemize} [label={$-$}]
+            \item Ý tưởng của phương pháp thiết kế thuật toán.
+            \item Các nội dung để thiết kế và đánh giá thuật toán: mô hình, lược đồ, phân tích…
+            \item Bài toán ví dụ: phát biểu bài toán, thiết kế thuật toán, đánh giá thuật toán
+            bằng lí thuyết, bằng thực nghiệm.
+        \end{itemize}
     \end{baitap}
+
+    \begin{loigiai}
+        Các nội dung cơ bản của phương pháp quy hoạch động:
+
+        \textbf{Ý tưởng của phương pháp quy hoạch động:}
+
+        Như ta đã biết, các thuật toán đệ quy có ưu điểm là dễ thực thi nhưng do bản chất của quá trình thực hiện đệ quy,
+        các chương trình thường kéo theo chi phí lớn về cả bộ nhớ và tính toán.
+
+        Quy hoạch động (dynamic programming) là một phương pháp nhằm làm đơn giản việc tính toán các công thức truy hồi bằng cách lưu toàn bộ hay một phần kết quả tại mỗi bước với mục đích sử dụng lại.
+        Từ "programming" trong "dynamic programming" không có ý nghĩa là việc lập trình cho máy tính,
+        mà là một thuật ngữ mà các nhà toán học hay các nhà khoa học máy tính dùng để đưa ra các bước chung trong việc giải quyết một lớp các bài toán.
+        Tuy nhiên không có một thuật toán tổng quát nào để giải tất cả các bài toán quy hoạch động.
+
+        Quy hoạch động giúp giải quyết rất hiệu quả các lớp bài toán mà có các bài toán con gối nhau và có cấu trúc con tối ưu.
+        Những bài toán có dạng này liên quan đến việc tính toán nhiều lần giá trị của các bài toán con giống hệt nhau để tìm ra giải pháp tối ưu.
+
+        \begin{itemize}
+            \item Các bài toán con gối nhau: Bài toán con là các bài toán nhỏ hơn của bài toán ban đầu.
+            Bất kỳ một bài toán nào được giải cũng có các bài toán con trùng nhau nếu việc tìm lời giải của bài toán liên quan đến việc giải cùng một bài toán con nhiều lần.
+
+            \item Cấu trúc con tối ưu: Bất kỳ bài toán nào cũng có cấu trúc con tối ưu nếu lời giải tối ưu tổng thể của bài toán này được xây dựng từ các lời giải tối ưu của các bài toán con của nó.
+        \end{itemize}
+
+        Phương pháp quy hoạch động dùng để giải bài toán tối ưu có bản chất đệ quy, tức là việc tìm
+        phương án tối ưu cho bài toán đó có thể đưa về tìm phương án tối ưu của một số hữu hạn các bài toán con.
+        Hoặc phương pháp quy hoạch động cũng có thể được sử dụng để giải các bài toán có bản chất đệ quy mà các bài toán con được gọi nhiều lần.
+
+        Đối với nhiều thuật toán đệ quy đã biết, phương pháp chia để trị đóng vai trò chủ đạo trong việc thiết kế thuật toán.
+        Để giải quyết một bài toán lớn, ta chia bài toán này làm nhiều bài toán con cùng dạng với nó để có thể giải quyết độc lập.
+        Những bài toán con này lại được chia thành những bài toán con nhỏ hơn nữa, ... đến lúc đạt được bài toán đủ đơn giản để có thể giải trực tiếp được.
+        Sau đó nghiệm của những bài toán con được tổng hợp lại theo một phương pháp thích hợp để thu được lời giải của bài toán ban đầu.
+        Khác với phương pháp chia để trị, phương pháp quy hoạch động không yêu cầu các bài toán con phải không giao nhau.
+
+        \textbf{Các bài toán ví dụ:}
+
+        \begin{itemize} [label={$-$}]
+            \item \textbf{Ví dụ 1:}
+            Cho hai xâu $\bold{X}$ và $\bold{Y}$. Xâu gốc có $n$ ký tự $\bold{X} \lbrack 1 \rbrack, \bold{X} \lbrack 2 \rbrack, \dots, \bold{X} \lbrack n \rbrack$, xâu đích có $m$ ký tự $\bold{Y} \lbrack 1 \rbrack, \bold{Y} \lbrack 2 \rbrack, \dots, \bold{Y} \lbrack m \rbrack$.
+            Có 3 phép biến đổi:
+            \begin{itemize} [label={$+$}]
+                \item Chèn một ký tự vào sau ký tự thứ $i$
+                \item Thay thế ký tự ở vị trí thứ $i$ bằng ký tự $C$
+                \item Xóa ký tự ở vị trí thứ $i$
+            \end{itemize}
+            Hãy tìm số ít nhất các phép biến đổi để biến xâu $\bold{X}$ thành xâu $\bold{Y}$
+        \end{itemize}
+
+        Ta nhận thấy số phép biến đổi phụ thuộc vào vị trí $i$ đang xét của xâu gốc $\bold{X}$ và vị trí đang xét $j$ của xâu đích.
+        Ta gọi $\bold{L}\lbrack i, j \rbrack$ là số phép biến đổi ít nhất để biến xâu $\bold{X}_i$ gồm $i$ ký tự đầu của xâu gốc $\bold{X}$ ($\bold{X}_i = \bold{X}\lbrack 1 \dots i \rbrack$)
+        thành xâu $\bold{F}_j$ gồm $j$ ký tự đầu của xâu đích $\bold{F}$ ($\bold{F}_j=\bold{F} \lbrack 1 \dots j \rbrack$).
+        
+        Ta nhận thấy $\bold{L}\lbrack 0, j \rbrack=j$ và $\bold{L}\lbrack i, 0 \rbrack=i$
+
+        Tại điểm $(i, j)$ của bảng phương án $\bold{L}$ có hai trường hợp xảy ra:
+
+        \begin{itemize}
+            \item Nếu $\bold{X} \lbrack i \rbrack = \bold{Y} \lbrack j \rbrack$: Ta chỉ cần biến đổi xâu $\bold{X}_{i-1}$ thành xâu $\bold{Y}_{j-1}$.
+            Vì vậy $\bold{L}\lbrack i, j \rbrack = \bold{L}\lbrack i-1, j-1 \rbrack$
+            \item Nếu $\bold{X} \lbrack i \rbrack \neq \bold{Y} \lbrack j \rbrack$, ta có ba cách biến đổi:
+            \begin{itemize}
+                \item Xóa ký tự $\bold{X} \lbrack i \rbrack$. Xâu $\bold{X}_{i-1}$ thành xâu $\bold{Y}_j$. Khi này $\bold{L}\lbrack i, j \rbrack=\bold{L} \lbrack i-1, j \rbrack + 1$.
+                \item Thay thế ký tự $\bold{X} \lbrack i \rbrack$ thành ký tự $\bold{Y} \lbrack j \rbrack$.
+                Trước đấy ta cần biến đổi xâu $\bold{X}_{i-1}$ thành xâu $\bold{Y}_{j-1}$. Khi này $\bold{L} \lbrack i, j \rbrack = \bold{L} \lbrack i-1, j-1 \rbrack + 1$.
+                \item Thêm ký tự $\bold{F} \lbrack j \rbrack$ vào sau xâu $\bold{X}_i$. Trước đấy ta cần biến đổi xâu $\bold{X}_{i}$ thành xâu $\bold{Y}_{j-1}$.
+                Khi này $\bold{L} \lbrack i, j \rbrack = \bold{L} \lbrack i, j-1 \rbrack + 1$
+            \end{itemize}
+        \end{itemize}
+
+        Tổng hợp các công thức trên lại, ta có công thức tính các phần tử của bảng phương án $\bold{L}$:
+
+        \begin{equation*}
+            \bold{L} \lbrack i, j \rbrack = \begin{cases} j ,\text{ nếu } i = 0 \\
+            i , \text{ nếu } j = 0 \\
+            \bold{L} \lbrack i-1, j-1 \rbrack, \text{ nếu } \bold{X} \lbrack i \rbrack = \bold{Y} \lbrack j \rbrack \\
+            \min \Big ( \bold{L} \lbrack i-1, j \rbrack, \bold{L} \lbrack i, j-1 \rbrack, \bold{L} \lbrack i-1, j-1 \rbrack + 1 \Big) \end{cases}
+        \end{equation*}
+
+        Sơ đồ mã giả thuật toán bài toán này là:
+
+        \begin{algorithm}[h!]
+            \DontPrintSemicolon
+            \KwIn{Xâu gốc $\bold{X}$ gồm $n$ ký tự, xâu đích $\bold{Y}$ gồm $m$ ký tự}
+            \KwOut{Số phép biến đổi ít nhất để biến xâu gốc $\bold{X}$ thành xâu đích $\bold{Y}$}
+            Khởi tạo $\bold{L} \lbrack i, j \rbrack =0, \thickspace \forall \thickspace i=\overline{0, n}, j=\overline{0,m}$\;
+            \For{$i \gets 0$ \textbf{to} $n$} {
+                \For{$j \gets 0$ \textbf{to} $m$} {
+                    \If{$i = 0$}
+                    {
+
+                        $\bold{L} \lbrack i, j \rbrack \gets j$\;
+                        continue\;
+                    }
+                    \If{$j = 0$}
+                    {
+
+                        $\bold{L} \lbrack i, j \rbrack \gets i$\;
+                        continue\;
+                    }
+                    \If{$\bold{X} \lbrack i \rbrack = \bold{Y} \lbrack j \rbrack$}
+                    {
+                        $\bold{L} \lbrack i, j \rbrack \gets \bold{L} \lbrack i-1, j-1 \rbrack$\;
+                    }
+                    \Else 
+                    {
+                        $\bold{L} \lbrack i, j \rbrack \gets \min \Big ( \bold{L} \lbrack i-1, j \rbrack, \bold{L} \lbrack i, j-1 \rbrack, \bold{L} \lbrack i-1, j-1 \rbrack + 1 \Big)$\;
+                    }
+                }
+            }
+            \Return {$\bold{L} \lbrack n, m \rbrack$}\;
+            \caption{Thuật toán tìm số cách nhỏ nhất để biến đổi xâu gốc $\bold{X}$ thành xâu đích $\bold{Y}$}
+        \end{algorithm}
+
+        Để truy vết ta sử dụng mã giả:
+
+        \begin{algorithm}
+        \end{algorithm}
+
+    \end{loigiai}
     
     \newpage
     \printbibliography[title={TÀI LIỆU THAM KHẢO}]
