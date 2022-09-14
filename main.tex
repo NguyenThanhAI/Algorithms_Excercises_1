@@ -302,7 +302,8 @@
             \caption{Thuật toán tìm số cách nhỏ nhất để biến đổi xâu gốc $\bold{X}$ thành xâu đích $\bold{Y}$}
         \end{algorithm}
 
-        Thuật toán trên gồm 2 vòng lặp lồng nhau. Độ phức tạp của thuật toán là $O(nm)$. Code của thuật toán trên:
+        Thuật toán trên gồm 2 vòng lặp lồng nhau. Độ phức tạp tính toán của thuật toán là $O(nm)$ và độ phức tạp về bộ nhớ của thuật toán là $O(nm)$ (lưu bảng phương án hai chiều $\bold{L}$). 
+        Code của thuật toán trên:
         \begin{python}
 import numpy as np
 
@@ -331,8 +332,135 @@ for i in range(len(orig_string) + 1):
 print(L[len(orig_string), len(target_string)])
         \end{python}
 
-        \item \textbf{Ví dụ 2:}
-    
+        \item \textbf{Ví dụ 2:} Một đoàn xe gồm $N$ xe tải, đang xếp hàng để qua một chiếc cầu.
+        Với mỗi xe $i$ ta biết $w\lbrack i \rbrack$ là trọng tải của xe, $t\lbrack i \rbrack $ là thời gian xe qua cầu.
+        Xe phải qua cầu theo từng tốp, tức là tốp trước sang hẳn thì tốp sau mới được sang,
+        thời gian qua cầu của một tốp sẽ là thời gian của xe qua cầu mất nhiều thời gian nhất trong tốp đó.
+        Cầu có trọng tải là $L$ nên tốp xe qua cầu phải có tổng trọng tải nhở hơn hoặc bằng $L$.
+        Hãy tìm cách đưa các xe qua cầu sao cho tổng thời gian là nhỏ nhất.
+
+        Biết rằng xe qua cầu phải theo thứ tự, tức là xe chỉ số nhỏ hơn qua cầu trước xe có chỉ số lớn hơn.
+
+        \textbf{Đầu vào:} 
+        
+        Dòng đầu ghi 2 số nguyên dương $N, L$ ($N \leq 1000$). 
+        
+        N dòng tiếp theo, dòng thứ $i$ ghi $w \lbrack i \rbrack, t \lbrack i \rbrack$
+        
+        \textbf{Đầu ra:}
+
+        Dòng đầu tiên ghi thời điểm sớm nhất tìm được
+        
+        Các dòng tiếp theo, dòng thứ $i$ ghi $w \lbrack i \rbrack, t \lbrack i \rbrack $
+
+        Ta sử dụng phương pháp quy hoạch động. Gọi $\bold{C} \lbrack i \rbrack$ là thời gian nhỏ nhất để cho $i$ xe đầu tiên trong đoàn xe qua cầu.
+        Để tính $\bold{C} \lbrack i \rbrack$, ta xét các cách chọn các xe vào tốp mà xe  thứ $i$ ở cuối cùng.
+
+        Ta nhận thấy đoàn xe có 0 xe thì thời gian ngắn nhất để đoàn xe qua cầu là 0.
+        Ta có:
+
+        \begin{equation*}
+            \bold{C} \lbrack i \rbrack = \begin{cases} 0, \text{ nếu } i = 0 \\
+            \min \Big( \bold{C} \lbrack k - 1 \rbrack + \max (t \lbrack k \dots i \rbrack) \thickspace \text{ với } \thickspace 1 \leq k \leq i \text{ và } \sum_{j=k}^i w \lbrack j \rbrack \leq L \Big)  \end{cases}
+        \end{equation*}
+
+        Để truy vết các điểm chia (thứ tự của xe đầu tiên của mỗi tốp), tại mỗi xe thứ tự $i$, ta khởi tạo một biến split để theo dõi có tồn tại $k$ để $\sum_{j=k}^i w \lbrack j \rbrack \leq L$ và điều kiện $\bold{C} \lbrack i \rbrack > \bold{C} \lbrack k - 1\rbrack + \max ( t\lbrack k \rbrack , t\lbrack k + 1\rbrack , \dots , t\lbrack i \rbrack)$.
+        Tại mỗi thời điểm 2 điều kiện trên đồng thời xảy ra tại $k$, ta sẽ gán lại một biến $bp \gets k$ (breakpoint - điểm chia) để lưu lại vị trí $k$ tối ưu để $i$ xe đầu tiên của đoàn qua cầu trong thời gian ngắn nhất
+
+
+        Từ phân tích trên ta có mã giả thuật toán:
+
+        \begin{algorithm}
+            \DontPrintSemicolon
+            \KwIn{Số xe trong đoàn $N$, trọng tải tối đa của cầu $L$, $w \lbrack 1 \dots N \rbrack$ là trọng tải của các xe trong đoàn, $t \lbrack 1 \dots N \rbrack$ là thời gian qua cầu của từng xe trong đoàn}
+            \KwOut{Thời gian sớm nhất để đoàn xe qua cầu, các xe đầu tiên của từng tốp}
+
+            $\bold{C} \lbrack 0 \rbrack \gets 0$\;
+            $trace \gets \lbrack \rbrack$\;
+            \For {$i \gets 1$ \textbf{to} $N$}{
+                $\bold{C} \lbrack i \rbrack \gets \infty$\;
+                $split \gets false$\;
+                \For {$k \gets 1$ \textbf{to} $i$}{
+                    \If {$w\lbrack k \rbrack + w\lbrack k + 1\rbrack + \dots + w\lbrack i \rbrack \leq L$} {
+                        \If {$\bold{C} \lbrack i \rbrack > \bold{C} \lbrack k - 1\rbrack + \max ( t\lbrack k \rbrack , t\lbrack k + 1\rbrack , \dots , t\lbrack i \rbrack)$} {
+                            $\bold{C} \lbrack i \rbrack \gets \bold{C} \lbrack k - 1\rbrack + \max ( t\lbrack k \rbrack , t\lbrack k + 1\rbrack , \dots , t\lbrack i \rbrack)$\;
+                            $split \gets true$\;
+                            $bp \gets k$\;
+                        }
+                    }
+                }
+                \If {$split = true$} {
+                    $trace.add(bp)$\;
+                }
+            }
+            \Return{$\bold{C} \lbrack N \rbrack, set(trace)$}\;
+            \caption{Thuật toán tìm thời gian ngắn nhất để đoàn xe qua cầu}
+        \end{algorithm}
+
+        Đối với chi phí tính toán, thuật toán trên có 2 vòng lặp lồng nhau, thân vòng lặp trong cùng phải thực hiện số phép tính là $O(i-k+1)$.
+        Như vậy tổng số phép tính cần để tính hai vòng lặp là:
+
+        \begin{equation*}
+            1 \times 1 + 2 \times 2 + \dots + N \times N = \dfrac{N (N+1)(2N + 1)}{6} \in O(N^3)
+        \end{equation*}
+
+        Độ phức tạp tính toán là $O(N^3)$.
+
+        Đối với chi phí bộ nhớ, ta cần mảng $\bold{C}$ để lưu $N+1$ giá trị thời gian. Mảng trace để lưu $N$ giá trị.
+        Vậy độ phức tạp bộ nhớ là $O(N)$.
+
+        Code của thuật toán trên:
+
+        \begin{python}
+import numpy as np
+
+N, L = str(input()).split(" ")
+N = int(N)
+L = int(L)
+            
+w = []
+t = []
+            
+for _ in range(N):
+    x, y = str(input()).split(" ")
+    x = int(x)
+    y = int(y)
+    w.append(x)
+    t.append(y)
+            
+#print(N, L)
+#print(w)
+#print(t)
+            
+w = np.array(w)
+t = np.array(t)
+            
+C = [0]
+            
+trace = []
+#bp = 0
+for i in range(1, N+1):
+    temp_c = np.inf
+    split = False
+    for k in range(1, i+1):
+        if np.sum(w[k-1:i]) <= L:
+            if temp_c > C[k-1] + np.max(t[k-1:i]):
+                temp_c = C[k-1] + np.max(t[k-1:i])
+                split = True
+                bp = k
+    if split:
+        trace.append(bp)
+    C.append(temp_c)
+            
+bps = list(set(trace))
+            
+print(C[N])
+            
+for pt in bps:
+    print(w[pt - 1], t[pt - 1])
+        \end{python}
+        
+
     \end{itemize}
 
     \end{loigiai}
