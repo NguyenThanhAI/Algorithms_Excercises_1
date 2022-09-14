@@ -20,6 +20,7 @@
 \usepackage[nonumberlist, nopostdot, nogroupskip]{glossaries}
 \usepackage{glossary-superragged}
 \usepackage{tikz,tkz-tab}
+\usepackage{pythonhighlight}
 \setglossarystyle{superraggedheaderborder}
 \pagestyle{fancy}
 %\usepackage[style=numeric,sortcites]{biblatex}
@@ -234,11 +235,11 @@
                 \item Xóa ký tự ở vị trí thứ $i$
             \end{itemize}
             Hãy tìm số ít nhất các phép biến đổi để biến xâu $\bold{X}$ thành xâu $\bold{Y}$
-        \end{itemize}
+        %\end{itemize}
 
         Ta nhận thấy số phép biến đổi phụ thuộc vào vị trí $i$ đang xét của xâu gốc $\bold{X}$ và vị trí đang xét $j$ của xâu đích.
         Ta gọi $\bold{L}\lbrack i, j \rbrack$ là số phép biến đổi ít nhất để biến xâu $\bold{X}_i$ gồm $i$ ký tự đầu của xâu gốc $\bold{X}$ ($\bold{X}_i = \bold{X}\lbrack 1 \dots i \rbrack$)
-        thành xâu $\bold{F}_j$ gồm $j$ ký tự đầu của xâu đích $\bold{F}$ ($\bold{F}_j=\bold{F} \lbrack 1 \dots j \rbrack$).
+        thành xâu $\bold{Y}_j$ gồm $j$ ký tự đầu của xâu đích $\bold{Y}$ ($\bold{Y}_j=\bold{Y} \lbrack 1 \dots j \rbrack$).
         
         Ta nhận thấy $\bold{L}\lbrack 0, j \rbrack=j$ và $\bold{L}\lbrack i, 0 \rbrack=i$
 
@@ -252,7 +253,7 @@
                 \item Xóa ký tự $\bold{X} \lbrack i \rbrack$. Xâu $\bold{X}_{i-1}$ thành xâu $\bold{Y}_j$. Khi này $\bold{L}\lbrack i, j \rbrack=\bold{L} \lbrack i-1, j \rbrack + 1$.
                 \item Thay thế ký tự $\bold{X} \lbrack i \rbrack$ thành ký tự $\bold{Y} \lbrack j \rbrack$.
                 Trước đấy ta cần biến đổi xâu $\bold{X}_{i-1}$ thành xâu $\bold{Y}_{j-1}$. Khi này $\bold{L} \lbrack i, j \rbrack = \bold{L} \lbrack i-1, j-1 \rbrack + 1$.
-                \item Thêm ký tự $\bold{F} \lbrack j \rbrack$ vào sau xâu $\bold{X}_i$. Trước đấy ta cần biến đổi xâu $\bold{X}_{i}$ thành xâu $\bold{Y}_{j-1}$.
+                \item Thêm ký tự $\bold{Y} \lbrack j \rbrack$ vào sau xâu $\bold{X}_i$. Trước đấy ta cần biến đổi xâu $\bold{X}_{i}$ thành xâu $\bold{Y}_{j-1}$.
                 Khi này $\bold{L} \lbrack i, j \rbrack = \bold{L} \lbrack i, j-1 \rbrack + 1$
             \end{itemize}
         \end{itemize}
@@ -263,7 +264,7 @@
             \bold{L} \lbrack i, j \rbrack = \begin{cases} j ,\text{ nếu } i = 0 \\
             i , \text{ nếu } j = 0 \\
             \bold{L} \lbrack i-1, j-1 \rbrack, \text{ nếu } \bold{X} \lbrack i \rbrack = \bold{Y} \lbrack j \rbrack \\
-            \min \Big ( \bold{L} \lbrack i-1, j \rbrack, \bold{L} \lbrack i, j-1 \rbrack, \bold{L} \lbrack i-1, j-1 \rbrack + 1 \Big) \end{cases}
+            \min \Big ( \bold{L} \lbrack i-1, j \rbrack, \bold{L} \lbrack i, j-1 \rbrack, \bold{L} \lbrack i-1, j-1 \rbrack + 1 \Big), \text{ nếu } \bold{X}\lbrack i \rbrack \neq \bold{Y} \lbrack j \rbrack \end{cases}
         \end{equation*}
 
         Sơ đồ mã giả thuật toán bài toán này là:
@@ -301,12 +302,41 @@
             \caption{Thuật toán tìm số cách nhỏ nhất để biến đổi xâu gốc $\bold{X}$ thành xâu đích $\bold{Y}$}
         \end{algorithm}
 
-        Để truy vết ta sử dụng mã giả:
+        Thuật toán trên gồm 2 vòng lặp lồng nhau. Độ phức tạp của thuật toán là $O(nm)$. Code của thuật toán trên:
+        \begin{python}
+import numpy as np
 
-        \begin{algorithm}
-        \end{algorithm}
+orig_string = input()
+target_string = input()
+
+L = np.zeros(shape=(len(orig_string) + 1, len(target_string) + 1), dtype=np.int)
+
+
+for i in range(len(orig_string) + 1):
+    for j in range(len(target_string) + 1):
+        if i == 0:
+            L[i, j] = j
+            continue
+
+        if j == 0:
+            L[i, j] = i
+            continue
+
+        if orig_string[i-1] == target_string[j-1]:
+            L[i, j] = L[i - 1, j - 1]
+        else:
+            L[i, j] = min([L[i-1, j], L[i, j-1], L[i-1, j-1]]) + 1
+
+
+print(L[len(orig_string), len(target_string)])
+        \end{python}
+
+        \item \textbf{Ví dụ 2:}
+    
+    \end{itemize}
 
     \end{loigiai}
+
     
     \newpage
     \printbibliography[title={TÀI LIỆU THAM KHẢO}]
