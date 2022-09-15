@@ -180,6 +180,74 @@
     \newpage
 
     \begin{baitap}
+        Hãy trình bày nhận thức, hiểu biết về vấn đề "Giải bài toán bằng thuật toán".
+    \end{baitap}
+
+    \begin{loigiai}
+
+        \begin{enumerate}[a)]
+            \item Thuật toán (Algorithms)
+            \begin{itemize}
+                \item Khái niệm cơ bản:
+                
+                Thuật toán là một dãy hữu hạn các thao tác đơn giản được sắp xếp theo một trình tự xác định dùng để giải một bài toán.
+
+                Ta cũng có thể hiểu thuật toán là tập hợp hữu hạn các quy tắc ta sử dụng để có thể có được đầu ra mong đợi từ đầu vào đã cho ban đầu.
+
+                \begin{figure}[h!]
+                    \centering
+                    \includegraphics[scale=0.6]{algorithm.jpg}
+                    \caption{Minh họa một thuật toán}
+                \end{figure}
+
+                \item Một số phương pháp diễn đạt thuật toán:
+                \begin{itemize}
+                    \item Liệt kê từng bước theo ngôn ngữ tự nhiên hàng ngày. 
+                    \item Sơ đồ khối (flowchart). Lưu ý phân biệt Thao tác chọn lựa (decision) và Thao tác xử lý (process). Chẳng hạn : thao tác "nếu $a=b$ thì thực hiện thao tác B2, nếu $a \neq b$ thực hiện B4" là thao tác chọn lựa. Các thao tác còn lại không thuộc loại chọn lựa được xếp vào loại hành động. Chẳng hạn, "Chọn một hộp bất kỳ và để lên dĩa cân còn trống." là một thao tác thuộc loại hành động.
+                    \begin{figure}[h!]
+                        \centering
+                        \includegraphics[scale=0.6]{flowchart.jpg}
+                        \caption{Ví dụ minh họa sơ đồ khối}
+                    \end{figure}
+                    \item Mã giả (pseudo-code). Vẫn sử dụng 1 phần ngôn ngữ tự nhiên. Nhưng vì các thuật toán thường có các thao tác lặp nên mã giả hay vay mượn cú pháp của các ngôn ngữ lập trình để thể hiện cho tường minh.
+                    \begin{algorithm}
+                        \DontPrintSemicolon
+                        \KwIn{$a, b, c$}
+                        \KwOut{Nghiệm nếu có của phương trình bậc 2}
+                        $\Delta \gets \dfrac{b^2 - 4ac}{2a}$\;
+                        \If{$\Delta > 0$} {
+                            $x_1 = \dfrac{-b + \sqrt{\Delta}}{2a}$\;
+                            $x_2 = \dfrac{-b - \sqrt{\Delta}}{2a}$\;
+                            \Return{$x_1, x_2$}\;
+                        } \Else {
+                            \If {$\Delta = 0$} {
+                                $x_1 = x_2 = \dfrac{-b}{2a}$\;
+                                \Return {$x_1, x_2$}\;
+                            } \Else {
+                                Phương trình vô nghiệm \;
+                            }
+                        }
+                        \caption{Mã giả thuật toán giải phương trình bậc 2}
+                    \end{algorithm}  
+                \end{itemize}
+                \item Phân tích để đánh giá thuật toán.
+                
+                Chúng ta thường có xu hướng chọn cách giải "tốt nhất", hoặc thuật toán "tốt nhất" cho 1 bài toán. 
+                Để đánh giá thế nào là "tốt nhất", chúng ta có thể dựa vào 1 số tiêu chí sau: Thuật toán có đơn giản, dễ hiểu, dễ cài đặt hay không? 
+                Thuật toán có hiệu quả hay không dựa vào hai yếu tố là thời gian thực hiện thuật toán (còn gọi là độ phức tạp thuật toán) và tài nguyên sẽ được sử dụng khi thuật toán thi hành (còn gọi là độ phức tạp không gian). 
+                Tuy nhiên, trong bối cảnh hiện tại khi các máy tính có khả năng lưu trữ rất lớn thì yếu tố mà chúng ta cần quan tâm nhiều hơn là độ phức tạp thời gian thuật toán.
+                \begin{itemize}
+                    \item Độ phức tạp của thuật toán
+                    Thời gian thực hiện thuật toán (running time) là số các thao tác cơ bản được thực hiện: phép tính số học, logic cơ bản hoặc một câu lệnh "đơn"...
+                    
+                    Các phương pháp đánh giá thời gian thực hiện thuật toán:
+
+                \end{itemize}
+            \end{itemize}
+        \end{enumerate}
+    \end{loigiai}
+
+    \begin{baitap}
         Trình bày các vấn đề liên quan tới một trong các phương pháp cơ bản thiết kế
         thuật toán sau: \textbf{chia để trị, quay lui, quy hoạch động}. Các nội dung trình bày bao gồm:
         \begin{itemize} [label={$-$}]
