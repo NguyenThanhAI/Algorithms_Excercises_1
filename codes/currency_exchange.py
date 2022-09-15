@@ -29,10 +29,6 @@ T = np.zeros_like(D, dtype=np.int)
 
 for i in range(1, n + 1):
     for j in range(1, n + 1):
-        if i == j:
-            D[i - 1, j - 1] = np.inf
-            T[i - 1, j - 1] = j
-            continue
 
         D[i - 1, j - 1] = - np.log(R[i - 1, j - 1])
         T[i - 1, j - 1] = j
@@ -42,17 +38,16 @@ print(D)
 print(T)
 
 
-min_dist = np.copy(D)
+
 for i in range(1, n + 1):
     for j in range(1, n + 1):
         for k in range(1, n + 1):
             #if k == i or k == j:
             #    continue
-            if min_dist[i - 1, j - 1] > D[i - 1, k - 1] + D[k - 1, j - 1]:
-                min_dist[i - 1, j - 1] = D[i - 1, k - 1] + D[k - 1, j - 1]
+            if D[i - 1, j - 1] > D[i - 1, k - 1] + D[k - 1, j - 1]:
+                D[i - 1, j - 1] = D[i - 1, k - 1] + D[k - 1, j - 1]
                 #print(i, j, k, T[i - 1, j - 1], T[i - 1, k - 1])
                 T[i - 1, j - 1] = T[i - 1, k - 1]
-        D = np.copy(min_dist)
 
 print(D)
 minCycle = np.inf
