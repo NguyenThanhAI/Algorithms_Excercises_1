@@ -42,14 +42,17 @@ print(D)
 print(T)
 
 
-for k in range(1, n + 1):
-    for i in range(1, n + 1):
-        for j in range(1, n + 1):
-            if D[i - 1, j - 1] > D[i - 1, k - 1] + D[k - 1, j - 1]:
-                D[i - 1, j - 1] = D[i - 1, k - 1] + D[k - 1, j - 1]
+min_dist = np.copy(D)
+for i in range(1, n + 1):
+    for j in range(1, n + 1):
+        for k in range(1, n + 1):
+            #if k == i or k == j:
+            #    continue
+            if min_dist[i - 1, j - 1] > D[i - 1, k - 1] + D[k - 1, j - 1]:
+                min_dist[i - 1, j - 1] = D[i - 1, k - 1] + D[k - 1, j - 1]
                 #print(i, j, k, T[i - 1, j - 1], T[i - 1, k - 1])
                 T[i - 1, j - 1] = T[i - 1, k - 1]
-
+        D = np.copy(min_dist)
 
 print(D)
 minCycle = np.inf
@@ -61,14 +64,19 @@ for i in range(1, n + 1):
 print(unit)
 print(T)
 if minCycle < 0:
-    profit = np.exp(-minCycle) - 1
+    #profit = np.exp(-minCycle) - 1
     trace = []
     presentCurrency = unit
+    trace.append(presentCurrency)
     while True:
         presentCurrency = T[presentCurrency - 1, unit - 1]
         trace.append(presentCurrency)
         #print(presentCurrency, unit)
         if presentCurrency == unit:
+            profit = 1
+            for i in range(len(trace) - 1):
+                profit *= R[trace[i] - 1, trace[i + 1] - 1]
+            profit -= 1
             break
 
     print("YES")
