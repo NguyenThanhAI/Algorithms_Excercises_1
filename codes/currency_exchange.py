@@ -27,11 +27,11 @@ print(R)
 D = np.zeros_like(R, dtype=np.float32)
 T = np.zeros_like(D, dtype=np.int)
 
-for i in range(1, n + 1):
-    for j in range(1, n + 1):
+for i in range(n):
+    for j in range(n):
 
-        D[i - 1, j - 1] = - np.log(R[i - 1, j - 1])
-        T[i - 1, j - 1] = j
+        D[i, j] = - np.log(R[i, j])
+        T[i, j] = j
         
 
 print(D)
@@ -39,38 +39,38 @@ print(T)
 
 
 
-for i in range(1, n + 1):
-    for j in range(1, n + 1):
-        for k in range(1, n + 1):
+for i in range(n):
+    for j in range(n):
+        for k in range(n):        
             #if k == i or k == j:
             #    continue
-            if D[i - 1, j - 1] > D[i - 1, k - 1] + D[k - 1, j - 1]:
-                D[i - 1, j - 1] = D[i - 1, k - 1] + D[k - 1, j - 1]
-                #print(i, j, k, T[i - 1, j - 1], T[i - 1, k - 1])
-                T[i - 1, j - 1] = T[i - 1, k - 1]
+            if D[i, j] > D[i, k] + D[k, j]:
+                D[i, j] = D[i, k] + D[k, j]
+                #print(i, j, k, T[i, j], T[i, k])
+                T[i, j] = T[i, k]
 
 print(D)
 minCycle = np.inf
-for i in range(1, n + 1):
-    if D[i - 1, i - 1] < minCycle:
-        minCycle = D[i - 1, i - 1]
+for i in range(n):
+    if D[i, i] < minCycle:
+        minCycle = D[i, i]
         unit = i
 
 print(unit)
 print(T)
 if minCycle < 0:
-    #profit = np.exp(-minCycle) - 1
+    #profit = np.exp(-minCycle)
     trace = []
     presentCurrency = unit
     trace.append(presentCurrency)
     while True:
-        presentCurrency = T[presentCurrency - 1, unit - 1]
+        presentCurrency = T[presentCurrency, unit]
         trace.append(presentCurrency)
         #print(presentCurrency, unit)
         if presentCurrency == unit:
             profit = 1
             for i in range(len(trace) - 1):
-                profit *= R[trace[i] - 1, trace[i + 1] - 1]
+                profit *= R[trace[i], trace[i + 1]]
             profit -= 1
             break
 
