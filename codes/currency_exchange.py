@@ -1,14 +1,5 @@
 import numpy as np
 
-'''rates = [
-    [1, 0.23, 0.25, 16.43, 18.21, 4.94],
-    [4.34, 1, 1.11, 71.40, 79.09, 21.44],
-    [3.93, 0.90, 1, 64.52, 71.48, 19.37],
-    [0.061, 0.014, 0.015, 1, 1.11, 0.30],
-    [0.055, 0.013, 0.014, 0.90, 1, 0.27],
-    [0.20, 0.047, 0.052, 3.33, 3.69, 1],
-]
-'''
 
 n = int(input())
 
@@ -49,33 +40,31 @@ for i in range(n):
                 #print(i, j, k, T[i, j], T[i, k])
                 T[i, j] = T[i, k]
 
-print(D)
 minCycle = np.inf
 for i in range(n):
     if D[i, i] < minCycle:
         minCycle = D[i, i]
         unit = i
 
-print(unit)
-print(T)
 if minCycle < 0:
     #profit = np.exp(-minCycle)
     trace = []
     presentCurrency = unit
-    trace.append(presentCurrency)
+    trace.append(presentCurrency + 1)
     while True:
         presentCurrency = T[presentCurrency, unit]
-        trace.append(presentCurrency)
+        trace.append(presentCurrency + 1)
         #print(presentCurrency, unit)
         if presentCurrency == unit:
             profit = 1
             for i in range(len(trace) - 1):
-                profit *= R[trace[i], trace[i + 1]]
+                profit *= R[trace[i] - 1, trace[i + 1] - 1]
             profit -= 1
             break
 
     print("YES")
-    print(unit, profit)
-    print(trace)
+    print(unit + 1, profit)
+    for el in trace:
+        print("{} ".format(el), end="")
 else:
     print("NO")

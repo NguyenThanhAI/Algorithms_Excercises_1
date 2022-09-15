@@ -303,34 +303,7 @@
         \end{algorithm}
 
         Thuật toán trên gồm 2 vòng lặp lồng nhau. Độ phức tạp tính toán của thuật toán là $O(nm)$ và độ phức tạp về bộ nhớ của thuật toán là $O(nm)$ (lưu bảng phương án hai chiều $\bold{L}$). 
-        Code của thuật toán trên:
-        \begin{python}
-import numpy as np
-
-orig_string = input()
-target_string = input()
-
-L = np.zeros(shape=(len(orig_string) + 1, len(target_string) + 1), dtype=np.int)
-
-
-for i in range(len(orig_string) + 1):
-    for j in range(len(target_string) + 1):
-        if i == 0:
-            L[i, j] = j
-            continue
-
-        if j == 0:
-            L[i, j] = i
-            continue
-
-        if orig_string[i-1] == target_string[j-1]:
-            L[i, j] = L[i - 1, j - 1]
-        else:
-            L[i, j] = min([L[i-1, j], L[i, j-1], L[i-1, j-1]]) + 1
-
-
-print(L[len(orig_string), len(target_string)])
-        \end{python}
+        Code của thuật toán trên được trình bày ở phụ lục \ref{code-1-ex-2}
 
         \item \textbf{Ví dụ 2:} Một đoàn xe gồm $N$ xe tải, đang xếp hàng để qua một chiếc cầu.
         Với mỗi xe $i$ ta biết $w\lbrack i \rbrack$ là trọng tải của xe, $t\lbrack i \rbrack $ là thời gian xe qua cầu.
@@ -409,56 +382,8 @@ print(L[len(orig_string), len(target_string)])
         Đối với chi phí bộ nhớ, ta cần mảng $\bold{C}$ để lưu $N+1$ giá trị thời gian. Mảng trace để lưu $N$ giá trị.
         Vậy độ phức tạp bộ nhớ là $O(N)$.
 
-        Code của thuật toán trên:
+        Code của thuật toán trên được trình bày ở phụ lục \ref{code-2-ex-1}
 
-        \begin{python}
-import numpy as np
-
-N, L = str(input()).split(" ")
-N = int(N)
-L = int(L)
-            
-w = []
-t = []
-            
-for _ in range(N):
-    x, y = str(input()).split(" ")
-    x = int(x)
-    y = int(y)
-    w.append(x)
-    t.append(y)
-            
-#print(N, L)
-#print(w)
-#print(t)
-            
-w = np.array(w)
-t = np.array(t)
-            
-C = [0]
-            
-trace = []
-#bp = 0
-for i in range(1, N+1):
-    temp_c = np.inf
-    split = False
-    for k in range(1, i+1):
-        if np.sum(w[k-1:i]) <= L:
-            if temp_c > C[k-1] + np.max(t[k-1:i]):
-                temp_c = C[k-1] + np.max(t[k-1:i])
-                split = True
-                bp = k
-    if split:
-        trace.append(bp)
-    C.append(temp_c)
-            
-bps = list(set(trace))
-            
-print(C[N])
-            
-for pt in bps:
-    print(w[pt - 1], t[pt - 1])
-        \end{python}
         
         \item \textbf{Ví dụ 3:} Trên một vùng đất hình vuông các nhà địa chất phát hiện ra có trữ lượng vàng khá lớn.
         Để tiện việc khai thác, người ta chia vùng đất thành các lô nhỏ, tổng cộng có $n \times n$ lô ($n$ hàng, $n$ cột).
@@ -560,62 +485,9 @@ d            \max\Big( \bold{L}_{i-1, j}, \bold{L}_{i, j-1}, \bold{L}_{i-1, j-1}
 
         Thuật toán trên có độ phức tạp tính toán là $O(n^2)$ và độ phức tạp bộ nhớ cũng là $O(n^2)$ (lưu mảng $\bold{G}$).
 
-        Code của thuật toán trên:
+        Code của thuật toán trên được trình bày ở phụ lục \ref{code-3-ex-2}
 
-        \begin{python}
-import numpy as np
 
-n, k = str(input()).split(" ")
-            
-n = int(n)
-k = int(k)
-            
-A = []
-            
-for _ in range(n):
-    row = str(input()).split(" ")
-    row = list(map(int, row))
-    assert len(row) == n
-    A.append(row)
-            
-A = np.array(A, dtype=np.int)
-            
-print(A)
-            
-G = np.zeros(shape=(n + 1, n + 1), dtype=np.int)
-            
-G[1, 1] = A[0, 0]
-acc_sum = A[0, 0]
-for j in range(2, n + 1):
-    acc_sum += A[0, j - 1]
-    G[1, j] = acc_sum
-            
-acc_sum = A[0, 0]
-for i in range(2, n + 1):
-    acc_sum += A[i - 1, 0]
-    G[i, 1] = acc_sum
-            
-for i in range(2, n + 1):
-    for j in range(2, n + 1):
-        G[i, j] = G[i, j - 1] + G[i - 1, j] - G[i - 1, j - 1] + A[i - 1, j - 1]
-            
-            
-print(G)
-            
-max_value = 0
-            
-for i in range(k, n + 1):
-    for j in range(k, n + 1):
-        value = G[i, j] - G[i - k, j] - G[i, j - k] + G[i - k, j - k]
-        #print(i, j, value, G[i, j ] , G[i - k, j] , G[i, j - k] , G[i - k, j - k])
-        if value > max_value:
-            max_value = value
-            max_row = i - k + 1
-            max_col = j - k + 1
-            
-print(max_value)
-print(max_row, max_col)
-        \end{python}
     \end{itemize}
 
     \end{loigiai}
@@ -763,80 +635,8 @@ print(max_row, max_col)
 
         Ta phân tích độ phức tạp chi phí bộ nhớ, ta cần phải lưu các mảng $\bold{D}$ và $\bold{T}$ (và $\bold{R}$) nên độ phức tạp bộ nhớ của thuật toán là $O(n^2)$.
 
-        Ta có code chương trình của thuật toán trên:
+        Ta có code chương trình của thuật toán trên được trình bày ở phụ lục \ref{code-1-ex-3}:
 
-        \begin{python}
-import numpy as np
-
-
-n = int(input())
-            
-R = []
-            
-for _ in range(n):
-    row = str(input()).split(" ")
-    row = list(map(float, row))
-    assert len(row) == n
-    R.append(row)
-            
-R = np.array(R, dtype=np.float32)
-            
-print(R)
-            
-D = np.zeros_like(R, dtype=np.float32)
-T = np.zeros_like(D, dtype=np.int)
-            
-for i in range(n):
-    for j in range(n):
-            
-        D[i, j] = - np.log(R[i, j])
-        T[i, j] = j
-                    
-            
-print(D)
-print(T)
-            
-            
-            
-for i in range(n):
-    for j in range(n):
-        for k in range(n):        
-            #if k == i or k == j:
-            #    continue
-            if D[i, j] > D[i, k] + D[k, j]:
-                D[i, j] = D[i, k] + D[k, j]
-                #print(i, j, k, T[i, j], T[i, k])
-                T[i, j] = T[i, k]
-            
-minCycle = np.inf
-for i in range(n):
-    if D[i, i] < minCycle:
-        minCycle = D[i, i]
-        unit = i
-            
-if minCycle < 0:
-    #profit = np.exp(-minCycle)
-    trace = []
-    presentCurrency = unit
-    trace.append(presentCurrency + 1)
-    while True:
-        presentCurrency = T[presentCurrency, unit]
-        trace.append(presentCurrency + 1)
-        #print(presentCurrency, unit)
-        if presentCurrency == unit:
-            profit = 1
-            for i in range(len(trace) - 1):
-                profit *= R[trace[i] - 1, trace[i + 1] - 1]
-            profit -= 1
-            break
-            
-            print("YES")
-            print(unit + 1, profit)
-            for el in trace:
-                print("{} ".format(el), end="")
-        else:
-            print("NO")
-        \end{python}
 
     Với đầu vào:
     \begin{verbatim}
@@ -860,5 +660,226 @@ if minCycle < 0:
     
     \newpage
     \printbibliography[title={TÀI LIỆU THAM KHẢO}]
+
+    \newpage
+
+    \appendix
+
+    \section{Code các ví dụ của bài tập 2:}
+
+    \subsection{Code ví dụ 1} \label{code-1-ex-2}
+
+    \begin{python}
+import numpy as np
+        
+orig_string = input()
+target_string = input()
+        
+L = np.zeros(shape=(len(orig_string) + 1, len(target_string) + 1), dtype=np.int)
+        
+        
+for i in range(len(orig_string) + 1):
+    for j in range(len(target_string) + 1):
+        if i == 0:
+            L[i, j] = j
+            continue
+        
+        if j == 0:
+            L[i, j] = i
+            continue
+        
+        if orig_string[i-1] == target_string[j-1]:
+            L[i, j] = L[i - 1, j - 1]
+        else:
+            L[i, j] = min([L[i-1, j], L[i, j-1], L[i-1, j-1]]) + 1
+        
+        
+print(L[len(orig_string), len(target_string)])
+                \end{python}
+
+    \subsection{Code ví dụ 2} \label{code-2-ex-1}
+
+    \begin{python}
+import numpy as np
+        
+N, L = str(input()).split(" ")
+N = int(N)
+L = int(L)
+                    
+w = []
+t = []
+                    
+for _ in range(N):
+    x, y = str(input()).split(" ")
+    x = int(x)
+    y = int(y)
+    w.append(x)
+    t.append(y)
+                    
+#print(N, L)
+#print(w)
+#print(t)
+                    
+w = np.array(w)
+t = np.array(t)
+                    
+C = [0]
+                    
+trace = []
+#bp = 0
+for i in range(1, N+1):
+    temp_c = np.inf
+    split = False
+    for k in range(1, i+1):
+        if np.sum(w[k-1:i]) <= L:
+            if temp_c > C[k-1] + np.max(t[k-1:i]):
+                temp_c = C[k-1] + np.max(t[k-1:i])
+                split = True
+                bp = k
+    if split:
+        trace.append(bp)
+    C.append(temp_c)
+                    
+bps = list(set(trace))
+                    
+print(C[N])
+                    
+for pt in bps:
+    print(w[pt - 1], t[pt - 1])
+        \end{python}
+
+    \subsection{Code ví dụ 3} \label{code-3-ex-2}
+
+    \begin{python}
+import numpy as np
+        
+n, k = str(input()).split(" ")
+                    
+n = int(n)
+k = int(k)
+                    
+A = []
+                    
+for _ in range(n):
+    row = str(input()).split(" ")
+    row = list(map(int, row))
+    assert len(row) == n
+    A.append(row)
+                    
+A = np.array(A, dtype=np.int)
+                    
+print(A)
+                    
+G = np.zeros(shape=(n + 1, n + 1), dtype=np.int)
+                    
+G[1, 1] = A[0, 0]
+acc_sum = A[0, 0]
+for j in range(2, n + 1):
+    acc_sum += A[0, j - 1]
+    G[1, j] = acc_sum
+                    
+acc_sum = A[0, 0]
+for i in range(2, n + 1):
+    acc_sum += A[i - 1, 0]
+    G[i, 1] = acc_sum
+                    
+for i in range(2, n + 1):
+    for j in range(2, n + 1):
+        G[i, j] = G[i, j - 1] + G[i - 1, j] - G[i - 1, j - 1] + A[i - 1, j - 1]
+                    
+                    
+print(G)
+                    
+max_value = 0
+                    
+for i in range(k, n + 1):
+    for j in range(k, n + 1):
+        value = G[i, j] - G[i - k, j] - G[i, j - k] + G[i - k, j - k]
+        #print(i, j, value, G[i, j ] , G[i - k, j] , G[i, j - k] , G[i - k, j - k])
+        if value > max_value:
+            max_value = value
+            max_row = i - k + 1
+            max_col = j - k + 1
+                    
+print(max_value)
+print(max_row, max_col)
+        \end{python}
+
+\section{Code các bài tập của bài tập 3:}
+
+\subsection{Code bài tập thứ nhất của bài tập 3} \label{code-1-ex-3}
+
+\begin{python}
+import numpy as np
+    
+    
+n = int(input())
+                
+R = []
+                
+for _ in range(n):
+    row = str(input()).split(" ")
+    row = list(map(float, row))
+    assert len(row) == n
+    R.append(row)
+                
+R = np.array(R, dtype=np.float32)
+                
+print(R)
+                
+D = np.zeros_like(R, dtype=np.float32)
+T = np.zeros_like(D, dtype=np.int)
+                
+for i in range(n):
+    for j in range(n):
+            
+        D[i, j] = - np.log(R[i, j])
+        T[i, j] = j
+                        
+                
+print(D)
+print(T)
+                
+                
+                
+for i in range(n):
+    for j in range(n):
+        for k in range(n):        
+            #if k == i or k == j:
+            #    continue
+            if D[i, j] > D[i, k] + D[k, j]:
+                D[i, j] = D[i, k] + D[k, j]
+                #print(i, j, k, T[i, j], T[i, k])
+                T[i, j] = T[i, k]
+            
+minCycle = np.inf
+for i in range(n):
+    if D[i, i] < minCycle:
+        minCycle = D[i, i]
+        unit = i
+                
+if minCycle < 0:
+    #profit = np.exp(-minCycle)
+    trace = []
+    presentCurrency = unit
+    trace.append(presentCurrency + 1)
+    while True:
+        presentCurrency = T[presentCurrency, unit]
+        trace.append(presentCurrency + 1)
+        #print(presentCurrency, unit)
+        if presentCurrency == unit:
+            profit = 1
+            for i in range(len(trace) - 1):
+                profit *= R[trace[i] - 1, trace[i + 1] - 1]
+            profit -= 1
+            break
+            
+            print("YES")
+            print(unit + 1, profit)
+            for el in trace:
+                print("{} ".format(el), end="")
+        else:
+            print("NO")
+\end{python}
 
 \end{document}
