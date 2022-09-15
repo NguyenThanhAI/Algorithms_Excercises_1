@@ -1,7 +1,6 @@
-from typing import Tuple, List
-from math import log
+import numpy as np
 
-rates = [
+'''rates = [
     [1, 0.23, 0.25, 16.43, 18.21, 4.94],
     [4.34, 1, 1.11, 71.40, 79.09, 21.44],
     [3.93, 0.90, 1, 64.52, 71.48, 19.37],
@@ -9,56 +8,71 @@ rates = [
     [0.055, 0.013, 0.014, 0.90, 1, 0.27],
     [0.20, 0.047, 0.052, 3.33, 3.69, 1],
 ]
+'''
 
-currencies = list(map(lambda x: str(x), list(range(1, len(rates) + 1))))
+n = int(input())
 
+R = []
 
-def negate_logarithm_convertor(graph: Tuple[Tuple[float]]) -> List[List[float]]:
-    ''' log of each rate in graph and negate it'''
-    result = [[-log(edge) for edge in row] for row in graph]
-    return result
+for _ in range(n):
+    row = str(input()).split(" ")
+    row = list(map(float, row))
+    assert len(row) == n
+    R.append(row)
 
+R = np.array(R, dtype=np.float32)
 
-def arbitrage(currency_tuple: tuple, rates_matrix: Tuple[Tuple[float, ...]]):
-    ''' Calculates arbitrage situations and prints out the details of this calculations'''
+print(R)
 
-    trans_graph = negate_logarithm_convertor(rates_matrix)
+D = np.zeros_like(R, dtype=np.float32)
+T = np.zeros_like(D, dtype=np.int)
 
-    # Pick any source vertex -- we can run Bellman-Ford from any vertex and get the right result
+for i in range(1, n + 1):
+    for j in range(1, n + 1):
+        if i == j:
+            D[i - 1, j - 1] = np.inf
+            T[i - 1, j - 1] = j
+            continue
 
-    source = 0
-    n = len(trans_graph)
-    min_dist = [float('inf')] * n
+        D[i - 1, j - 1] = - np.log(R[i - 1, j - 1])
+        T[i - 1, j - 1] = j
+        
 
-    pre = [-1] * n
-    
-    min_dist[source] = source
-
-    # 'Relax edges |V-1| times'
-    for _ in range(n-1):
-        for source_curr in range(n):
-            for dest_curr in range(n):
-                if min_dist[dest_curr] > min_dist[source_curr] + trans_graph[source_curr][dest_curr]:
-                    min_dist[dest_curr] = min_dist[source_curr] + trans_graph[source_curr][dest_curr]
-                    pre[dest_curr] = source_curr
-
-    # if we can still relax edges, then we have a negative cycle
-    for source_curr in range(n):
-        for dest_curr in range(n):
-            if min_dist[dest_curr] > min_dist[source_curr] + trans_graph[source_curr][dest_curr]:
-                # negative cycle exists, and use the predecessor chain to print the cycle
-                print_cycle = [dest_curr, source_curr]
-                # Start from the source and go backwards until you see the source vertex again or any vertex that already exists in print_cycle array
-                while pre[source_curr] not in  print_cycle:
-                    print_cycle.append(pre[source_curr])
-                    source_curr = pre[source_curr]
-                print_cycle.append(pre[source_curr])
-                print("Arbitrage Opportunity: \n")
-                print(" --> ".join([currencies[p] for p in print_cycle[::-1]]))
+print(D)
+print(T)
 
 
-if __name__ == "__main__":
-    arbitrage(currencies, rates)
+for k in range(1, n + 1):
+    for i in range(1, n + 1):
+        for j in range(1, n + 1):
+            if D[i - 1, j - 1] > D[i - 1, k - 1] + D[k - 1, j - 1]:
+                D[i - 1, j - 1] = D[i - 1, k - 1] + D[k - 1, j - 1]
+                #print(i, j, k, T[i - 1, j - 1], T[i - 1, k - 1])
+                T[i - 1, j - 1] = T[i - 1, k - 1]
 
-# Time Complexity: O(N^3)
-# Space Complexity: O(N^2)
+
+print(D)
+minCycle = np.inf
+for i in range(1, n + 1):
+    if D[i - 1, i - 1] < minCycle:
+        minCycle = D[i - 1, i - 1]
+        unit = i
+
+print(unit)
+print(T)
+if minCycle < 0:
+    profit = np.exp(-minCycle) - 1
+    trace = []
+    presentCurrency = unit
+    while True:
+        presentCurrency = T[presentCurrency - 1, unit - 1]
+        trace.append(presentCurrency)
+        #print(presentCurrency, unit)
+        if presentCurrency == unit:
+            break
+
+    print("YES")
+    print(unit, profit)
+    print(trace)
+else:
+    print("NO")
