@@ -697,14 +697,14 @@ print(max_row, max_col)
         \end{equation*}
 
         Như vậy để tìm trọng số nhỏ nhất từ đồng thứ $i$ đến đồng thứ $j$ là $\bold{D} \lbrack i, j \rbrack$.
-        Ta khởi tạo $\bold{D} \gets -\log \bold{R}$ ($\bold{D} \lbrack i, j \rbrack \gets -\log \bold{R} \lbrack i, j \rbrack, i = 1 \dots n, j = 1 \dots n$). Ta sẽ thực hiện lặp qua từng đồng thứ $k$, bên trong ta xét từng cặp đồng thứ $(i, j)$.
+        Ta khởi tạo $\bold{D} \gets -\log \bold{R}$ ($\bold{D} \lbrack i, j \rbrack \gets -\log \bold{R} \lbrack i, j \rbrack, i = 1 \dots n, j = 1 \dots n$). , Ta xét từng cặp đồng thứ $(i, j)$, bên trong thực hiện lặp qua từng đồng thứ $k$.
         Nếu $\bold{D} \lbrack i, j \rbrack > \bold{D} \lbrack i, k \rbrack + \bold{D} \lbrack k, j \rbrack $, ta sẽ gán lại $\bold{D} \lbrack i, j \rbrack \gets \bold{D} \lbrack i, k \rbrack + \bold{D} \lbrack k, j \rbrack$.
 
         Để truy vết các đồng trung gian trong quá trình đổi đồng thứ $i$ sang đồng thứ $j$. Ta tạo một mảng $\bold{T}$ cùng kích thước với ma trận $\bold{D}$.
         Trong đó $\bold{T} \lbrack i, j \rbrack$ ý nghĩa là nếu muốn xác định quá trình đổi đồng thứ $i$ sang đồng thứ $j$ (có thể có 0 hoặc nhiều đồng trung gian) thì ngay bước tiếp theo từ đồng $i$ phải đổi sang đồng $q=\bold{T} \lbrack i, j \rbrack$.
         Ban đầu ta đặt $\bold{T} \lbrack i, j \rbrack \gets j$.
         Nếu $\bold{D} \lbrack i, j \rbrack > \bold{D} \lbrack i, k \rbrack + \bold{D} \lbrack k, j \rbrack $ ta sẽ gán $\bold{T} \lbrack i, j \rbrack \gets \bold{T} \lbrack i, k \rbrack$, 
-        ý nghĩa rằng nếu ta tìm được một đồng trung gian $k$ tối ưu trong quá trình đổi tiền từ đồng thứ $i$ sang đồng thứ $j$ thì từ $i$ ta sẽ thực hiện một phép đổi tiền trước mắt sao cho từ đồng thứ $i$ sang đồng thứ $k$ (quá trình đổi này có thể lại có nhiều đồng trung gian) trước (sau đó thực hiện quá trình đổi từ đồng thứ $k$ sang đồng thứ $j$).
+        ý nghĩa rằng nếu ta tìm được một đồng trung gian $k$ tối ưu trong quá trình đổi tiền từ đồng thứ $i$ sang đồng thứ $j$ thì từ $i$ ta sẽ thực hiện một phép đổi tiền trước mắt sao cho từ đồng thứ $i$ sang đồng thứ $k$ (quá trình đổi này có thể lại có nhiều đồng trung gian) trước sau đó thực hiện quá trình đổi từ đồng thứ $k$ sang đồng thứ $j$.
         Từ các phân tích trên, ta đề xuất ra thuật toán tìm cách đổi tiền sinh ra lợi nhuận tốt nhất (nếu có cách đổi tiền sinh ra lợi nhuận):
 
         \begin{algorithm}
@@ -718,9 +718,9 @@ print(max_row, max_col)
                     $\bold{T} \lbrack i, j \rbrack \gets j$\;
                 }
             }
-            \For{$k \gets 1$ \textbf{to} $n$} {
-                \For {$i \gets 1$ \textbf{to} $n$} {
-                    \For {$j \gets 1$ \textbf{to} $n$} {
+            \For{$i \gets 1$ \textbf{to} $n$} {
+                \For {$j \gets 1$ \textbf{to} $n$} {
+                    \For {$k \gets 1$ \textbf{to} $n$} {
                         \If{$\bold{D} \lbrack i, j \rbrack > \bold{D} \lbrack i, k \rbrack + \bold{D} \lbrack k, j \rbrack$} {
                             $\bold{D} \lbrack i, j \rbrack \gets \bold{D} \lbrack i, k \rbrack + \bold{D} \lbrack k, j \rbrack$\;
                             $\bold{T} \lbrack i, j \rbrack \gets \bold{T} \lbrack i, k \rbrack$
@@ -742,7 +742,7 @@ print(max_row, max_col)
                 $trace \gets \lbrack \rbrack$\;
                 $presentCurrency \gets unit$\;
                 \Repeat{
-                    $presentCurrency = i$\;
+                    $presentCurrency = unit$\;
                 }{$presentCurrency \gets \bold{T} \lbrack presentCurrency, i \rbrack$\;
                 $trace.add(presentCurrency)$\;}
                 \Return {YES, $unit$, $profit$, $trace$}\;
@@ -750,7 +750,111 @@ print(max_row, max_col)
                 \Return {NO}\;
             }
             \caption{Thuật toán tìm cách đổi tiền sinh ra lợi nhuận tốt nhất}
+            \label{alg:currency-exchange}
         \end{algorithm}
+
+        Ta phân tích độ phức tạp chi phí tính toán: thuật toán trên có thể có 4 vòng lặp riêng rẽ.
+        Vòng lặp thứ nhất xây dựng 2 mảng $\bold{D}$ và $\bold{T}$ có hai vòng lặp lồng nhau với chi phí tính toán $O(n^2)$.
+        Vòng lặp thứ hai ta cập nhật các giá trị tối ưu của 2 mảng $\bold{D}$ và $\bold{T}$, vòng lặp này có ba vòng lặp lồng nhau với chi phí tính toán là $O(n^3)$.
+        Vòng lặp thứ ba ta duyệt từ 1 đến $n$ để tìm đồng tiền ứng với chu trình cách đổi tiền cho lợi nhuận cao nhất với chi phí $O(n)$.
+        Vòng lặp thứ tư có thể có hoặc không thực hiện phụ thuộc có tồn tại một chu trình đổi tiền sao cho có lợi nhuận hay không.
+        Nếu tồn tại một chu trình đổi tiền sinh lợi nhuận thì độ phức tạp là $O(n)$ ngược lại độ phức tạp là $O(1)$, tổng hợp lại ta được độ phức tạp là $O(n)$.
+        Tổng hợp lại tất cả các vòng lặp ở trên ta có độ phức tạp tính toán của thuật toán là $O(n^3)$.
+
+        Ta phân tích độ phức tạp chi phí bộ nhớ, ta cần phải lưu các mảng $\bold{D}$ và $\bold{T}$ (và $\bold{R}$) nên độ phức tạp bộ nhớ của thuật toán là $O(n^2)$.
+
+        Ta có code chương trình của thuật toán trên:
+
+        \begin{python}
+import numpy as np
+
+
+n = int(input())
+            
+R = []
+            
+for _ in range(n):
+    row = str(input()).split(" ")
+    row = list(map(float, row))
+    assert len(row) == n
+    R.append(row)
+            
+R = np.array(R, dtype=np.float32)
+            
+print(R)
+            
+D = np.zeros_like(R, dtype=np.float32)
+T = np.zeros_like(D, dtype=np.int)
+            
+for i in range(n):
+    for j in range(n):
+            
+        D[i, j] = - np.log(R[i, j])
+        T[i, j] = j
+                    
+            
+print(D)
+print(T)
+            
+            
+            
+for i in range(n):
+    for j in range(n):
+        for k in range(n):        
+            #if k == i or k == j:
+            #    continue
+            if D[i, j] > D[i, k] + D[k, j]:
+                D[i, j] = D[i, k] + D[k, j]
+                #print(i, j, k, T[i, j], T[i, k])
+                T[i, j] = T[i, k]
+            
+minCycle = np.inf
+for i in range(n):
+    if D[i, i] < minCycle:
+        minCycle = D[i, i]
+        unit = i
+            
+if minCycle < 0:
+    #profit = np.exp(-minCycle)
+    trace = []
+    presentCurrency = unit
+    trace.append(presentCurrency + 1)
+    while True:
+        presentCurrency = T[presentCurrency, unit]
+        trace.append(presentCurrency + 1)
+        #print(presentCurrency, unit)
+        if presentCurrency == unit:
+            profit = 1
+            for i in range(len(trace) - 1):
+                profit *= R[trace[i] - 1, trace[i + 1] - 1]
+            profit -= 1
+            break
+            
+            print("YES")
+            print(unit + 1, profit)
+            for el in trace:
+                print("{} ".format(el), end="")
+        else:
+            print("NO")
+        \end{python}
+
+    Với đầu vào:
+    \begin{verbatim}
+        5
+        1.00 1.10 0.83 0.81 0.85
+        0.83 1.00 0.86 1.09 0.81
+        0.89 0.84 1.00 0.83 1.02
+        0.84 0.83 1.01 1.00 0.84
+        1.09 0.84 0.87 0.90 1.00
+    \end{verbatim}
+    Ta có kết quả đầu ra:
+    \begin{verbatim}
+    \end{verbatim}
+        YES \\
+        5 0.3463 \\
+        5 1 2 4 3 5
+    \begin{verbatim}
+    \end{verbatim}
     \end{loigiai}
 
     
