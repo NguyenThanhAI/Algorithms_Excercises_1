@@ -506,7 +506,7 @@ for pt in bps:
         \begin{equation*}
             \bold{L} \lbrack i, j \rbrack = \begin{cases} 0, \text{ nếu } i < k \text{ hoặc } j < k \\ 
             \bold{G} \lbrack i, j \rbrack \text{ nếu } i = k \text{ và } j = k \\
-            \max\Big( \bold{L}_{i-1, j}, \bold{L}_{i, j-1}, \bold{L}_{i-1, j-1}, \bold{G}_{i, j} - \bold{G}_{i - k, j} - \bold{G}_{i, j - k} + \bold{G}_{i - k, j - k} \text{ nếu } i > k \text{ và } j > k \end{cases}
+d            \max\Big( \bold{L}_{i-1, j}, \bold{L}_{i, j-1}, \bold{L}_{i-1, j-1}, \bold{G}_{i, j} - \bold{G}_{i - k, j} - \bold{G}_{i, j - k} + \bold{G}_{i - k, j - k} \Big ) \text{ nếu } i > k \text{ và } j > k \end{cases}
         \end{equation*}
 
         với ký hiệu $\bold{L}_{i, j} = \bold{L} \lbrack i, j \rbrack$
@@ -618,6 +618,139 @@ print(max_row, max_col)
         \end{python}
     \end{itemize}
 
+    \end{loigiai}
+
+    \begin{baitap}
+        Tự đặt một đề bài toán và thực hiện thiết kế, đánh giá thuật toán và triển khai
+        chương trình để giải bài toán đó bằng các phương pháp thiết kế thuật toán cơ bản.
+        Đề cao tính thực tiễn của bài toán.
+
+        Một người làm việc ở một ngân hàng ngoại tệ theo dõi ty giá hối đoái phát hiện ra là: Nếu khôn
+        khéo, thì từ một lượng ngoại tệ ban đầu, nhờ chuyển đổi sang các loại ngoại tệ khác, anh ta có thể
+        thu được lợi nhuận đáng kể.
+        Ví dụ: Nếu anh ta có 1 USD và tỷ giá hối đoái giữa các ngoại tệ như sau:
+        \begin{itemize}
+            \item 1 USD = 0.7 bảng Anh
+            \item 1 bảng Anh = 9.5 Franc Pháp 
+            \item 1 Franc Pháp = 0.16 USD
+        \end{itemize}
+        Khi đó với 1 USD anh ta có thể mua được $0.7 \times 9.5 \times 0.16 = 1.064$ USD nhờ việc chuyển đổi tiền qua bảng Anh,
+        rồi từ bảng Anh chuyển sang Franc Pháp, rồi cuối cùng lại quay về USD. Nhờ đó mỗi USD đã đêm lại cho anh ta lợi nhuận là 0.064 USD.
+
+        Giả sử trong ngân hàng quản lý $n$ loại ngoại tệ đánh số $1, 2, \dots, n $.
+        Biết bảng tỷ giá hối đoái $\bold{R} \lbrack i, j  \rbrack (1 \leq i, j \leq n)$ (tức là 1 đơn vị ngoại hối $i$ mua được $\bold{R} \lbrack i, j \rbrack$ đơn vị ngoại hối $j$).
+        Cần xác định xem có cách đổi tiền tiền đem lại lợi nhuận hay không?
+
+        \textbf{Đầu vào:}
+
+        Dòng đầu tiên chứa số $n (n \leq 100)$
+
+        Dòng thứ $i$ trong số $n$ dòng tiếp theo chứa $n$ số thực dương $\bold{R} \lbrack i, 1 \rbrack, \bold{R} \lbrack i, 2 \rbrack, \dots, \bold{R} \lbrack i, n \rbrack$
+
+        \textbf{Đầu ra:}
+
+        Dòng đầu tiên là "YES" hoặc "NO" tương ứng với việc có hoặc không cách đổi tiền sinh lợi nhuận
+
+        Nếu dòng đầu tiên là "YES" thì dòng thứ hai ghi hai số $u$ và $s$. 
+        Trong đó $u$ là loại tiền xuất phát, còn $s$ là lợi nhuận thu được nhờ cách đổi 1 đơn vị tiền $u$.
+        Nếu có nhiều cách đổi tiền sinh lợi nhuận in $u$ và $s$ tương ứng với cách đổi tiền sinh nhiều lợi nhuận nhất.
+
+        Dòng thứ 3 ghi trình tự cần tiến hành để đổi tiền để thu lại được lợi nhuận bắt đầu từ loại tiền xuất phát
+    \end{baitap}
+
+    \begin{loigiai}
+
+        Với yêu cầu của bài toán ta cần tìm tất cả các vòng lặp kín các tỷ giá hối đoái (bắt đầu từ đồng tiền thứ $i$ và cũng kết thúc ở đồng tiền thứ $i$) sao cho:
+
+
+        \begin{equation}
+            \bold{R} \lbrack i, j \rbrack \times \bold{R} \lbrack j, k \rbrack \times \bold{R} \lbrack k, l \rbrack \dots \bold{R} \lbrack m, n \rbrack \times \bold{R} \lbrack n, i \rbrack > 1
+            \label{eq:prod-currency}
+        \end{equation}
+
+        Bài toán của ta trở thành tìm chu trình sao cho tích trọng số đường đi trên chu trình là lớn nhất có thể.
+        Tuy nhiên bài toán tìm chu trình có trọng số lớn nhất lại không có cấu trúc con tối ưu.
+        Điều này dẫn đến ta không thể áp dụng phương pháp quy hoạch động để thiết kế thuật toán.
+        Để có thể đưa bài toán về có dạng cấu trúc con tối ưu, ta sẽ đưa bài toán về tìm chu trình sao cho đường đi là ngắn nhất.
+
+        Ta biến đổi công thức \ref{eq:prod-currency} thành:
+
+        \begin{equation*}
+            \begin{aligned}
+                &\dfrac{1}{\bold{R} \lbrack i, j \rbrack} \times \dfrac{1}{\bold{R} \lbrack j, k \rbrack} \times \dfrac{1}{\bold{R} \lbrack k, l \rbrack} \dots \dfrac{1}{\bold{R} \lbrack m, n \rbrack} \times \dfrac{1}{\bold{R} \lbrack n, i \rbrack} < 1 \\
+                \Leftrightarrow  \log\Big( & \dfrac{1}{\bold{R} \lbrack i, j \rbrack} \times \dfrac{1}{\bold{R} \lbrack j, k \rbrack} \times \dfrac{1}{\bold{R} \lbrack k, l \rbrack} \dots \dfrac{1}{\bold{R} \lbrack m, n \rbrack} \times \dfrac{1}{\bold{R} \lbrack n, i \rbrack} \Big) < \log(1) \\
+                \Leftrightarrow \log\Big( & \dfrac{1}{\bold{R} \lbrack i, j \rbrack} \Big) + \log\Big( \dfrac{1}{\bold{R} \lbrack j, k \rbrack} \Big) + \log\Big( \dfrac{1}{\bold{R} \lbrack k, l \rbrack} \Big) + \dots + \log\Big( \dfrac{1}{\bold{R} \lbrack m, n \rbrack} \Big) + \log\Big( \dfrac{1}{\bold{R} \lbrack n, i \rbrack} \Big) < 0
+            \end{aligned}
+        \end{equation*}
+
+        Gọi $\bold{D} \lbrack i, i \rbrack$ là trọng số nhỏ nhất của chu trình bắt đầu bằng đồng tiền thứ $i$ và kết thúc cũng bằng đồng tiền thứ $i$.
+        Ta nhận thấy:
+
+        \begin{equation*}
+            \bold{D} \lbrack i, i \rbrack = \min\begin{cases}\bold{D} \lbrack i, i \rbrack \\ \bold{D} \lbrack i, k \rbrack + \bold{D} \lbrack k, i \rbrack \text{ với } k = 1, \dots, n \end{cases}
+        \end{equation*}
+
+        Một cách chuyển tổng quát từ đồng thứ $i$ sang đồng thứ $j$ sao cho có trọng số nhỏ nhất:
+
+        \begin{equation*}
+            \bold{D} \lbrack i, j \rbrack = \min\begin{cases}\bold{D} \lbrack i, j \rbrack \\ \bold{D} \lbrack i, k \rbrack + \bold{D} \lbrack k, j \rbrack \text{ với } k = 1, \dots, n \end{cases}
+        \end{equation*}
+
+        Như vậy để tìm trọng số nhỏ nhất từ đồng thứ $i$ đến đồng thứ $j$ là $\bold{D} \lbrack i, j \rbrack$.
+        Ta khởi tạo $\bold{D} \gets -\log \bold{R}$ ($\bold{D} \lbrack i, j \rbrack \gets -\log \bold{R} \lbrack i, j \rbrack, i = 1 \dots n, j = 1 \dots n$). Ta sẽ thực hiện lặp qua từng đồng thứ $k$, bên trong ta xét từng cặp đồng thứ $(i, j)$.
+        Nếu $\bold{D} \lbrack i, j \rbrack > \bold{D} \lbrack i, k \rbrack + \bold{D} \lbrack k, j \rbrack $, ta sẽ gán lại $\bold{D} \lbrack i, j \rbrack \gets \bold{D} \lbrack i, k \rbrack + \bold{D} \lbrack k, j \rbrack$.
+
+        Để truy vết các đồng trung gian trong quá trình đổi đồng thứ $i$ sang đồng thứ $j$. Ta tạo một mảng $\bold{T}$ cùng kích thước với ma trận $\bold{D}$.
+        Trong đó $\bold{T} \lbrack i, j \rbrack$ ý nghĩa là nếu muốn xác định quá trình đổi đồng thứ $i$ sang đồng thứ $j$ (có thể có 0 hoặc nhiều đồng trung gian) thì ngay bước tiếp theo từ đồng $i$ phải đổi sang đồng $q=\bold{T} \lbrack i, j \rbrack$.
+        Ban đầu ta đặt $\bold{T} \lbrack i, j \rbrack \gets j$.
+        Nếu $\bold{D} \lbrack i, j \rbrack > \bold{D} \lbrack i, k \rbrack + \bold{D} \lbrack k, j \rbrack $ ta sẽ gán $\bold{T} \lbrack i, j \rbrack \gets \bold{T} \lbrack i, k \rbrack$, 
+        ý nghĩa rằng nếu ta tìm được một đồng trung gian $k$ tối ưu trong quá trình đổi tiền từ đồng thứ $i$ sang đồng thứ $j$ thì từ $i$ ta sẽ thực hiện một phép đổi tiền trước mắt sao cho từ đồng thứ $i$ sang đồng thứ $k$ (quá trình đổi này có thể lại có nhiều đồng trung gian) trước (sau đó thực hiện quá trình đổi từ đồng thứ $k$ sang đồng thứ $j$).
+        Từ các phân tích trên, ta đề xuất ra thuật toán tìm cách đổi tiền sinh ra lợi nhuận tốt nhất (nếu có cách đổi tiền sinh ra lợi nhuận):
+
+        \begin{algorithm}
+            \DontPrintSemicolon
+            \KwIn{Số nguyên $n (n \leq 100)$, mảng hai chiều $\bold{R}$ có kích thước $n \times n$}
+            \KwOut{"YES" hoặc "NO". Nếu là "YES" trả về đồng $u$ và lợi nhuận $s$, trình tự đổi tiền tương ứng}
+
+            \For {$i \gets 1$ \textbf{to} $n$} {
+                \For {$j \gets 1$ \textbf{to} $n$} {
+                    $\bold{D} \lbrack i, j \rbrack \gets -\log (\bold{R} \lbrack i, j \rbrack)$\;
+                    $\bold{T} \lbrack i, j \rbrack \gets j$\;
+                }
+            }
+            \For{$k \gets 1$ \textbf{to} $n$} {
+                \For {$i \gets 1$ \textbf{to} $n$} {
+                    \For {$j \gets 1$ \textbf{to} $n$} {
+                        \If{$\bold{D} \lbrack i, j \rbrack > \bold{D} \lbrack i, k \rbrack + \bold{D} \lbrack k, j \rbrack$} {
+                            $\bold{D} \lbrack i, j \rbrack \gets \bold{D} \lbrack i, k \rbrack + \bold{D} \lbrack k, j \rbrack$\;
+                            $\bold{T} \lbrack i, j \rbrack \gets \bold{T} \lbrack i, k \rbrack$
+                        }
+                    }
+                }
+            }
+
+            $minCycle \gets \infty$\;
+            \For {$i \gets 1$ \textbf{to} $n$} {
+                \If{$\bold{D} \lbrack i, i \rbrack < minCycle$} {
+                    $minCycle \gets \bold{D} \lbrack i, i \rbrack$\;
+                    $unit \gets i$\;
+                }
+            }
+
+            \If {$minCycle < 0$} {
+                $profit \gets \exp(-minCycle) - 1$\;
+                $trace \gets \lbrack \rbrack$\;
+                $presentCurrency \gets unit$\;
+                \Repeat{
+                    $presentCurrency = i$\;
+                }{$presentCurrency \gets \bold{T} \lbrack presentCurrency, i \rbrack$\;
+                $trace.add(presentCurrency)$\;}
+                \Return {YES, $unit$, $profit$, $trace$}\;
+            } \Else{
+                \Return {NO}\;
+            }
+            \caption{Thuật toán tìm cách đổi tiền sinh ra lợi nhuận tốt nhất}
+        \end{algorithm}
     \end{loigiai}
 
     
