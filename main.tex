@@ -216,12 +216,12 @@
                         \KwOut{Nghiệm nếu có của phương trình bậc 2}
                         $\Delta \gets \dfrac{b^2 - 4ac}{2a}$\;
                         \If{$\Delta > 0$} {
-                            $x_1 = \dfrac{-b + \sqrt{\Delta}}{2a}$\;
-                            $x_2 = \dfrac{-b - \sqrt{\Delta}}{2a}$\;
+                            $x_1 \gets \dfrac{-b + \sqrt{\Delta}}{2a}$\;
+                            $x_2 \gets \dfrac{-b - \sqrt{\Delta}}{2a}$\;
                             \Return{$x_1, x_2$}\;
                         } \Else {
                             \If {$\Delta = 0$} {
-                                $x_1 = x_2 = \dfrac{-b}{2a}$\;
+                                $x_1 = x_2 \gets \dfrac{-b}{2a}$\;
                                 \Return {$x_1, x_2$}\;
                             } \Else {
                                 Phương trình vô nghiệm \;
@@ -241,9 +241,102 @@
                     Thời gian thực hiện thuật toán (running time) là số các thao tác cơ bản được thực hiện: phép tính số học, logic cơ bản hoặc một câu lệnh "đơn"...
                     
                     Các phương pháp đánh giá thời gian thực hiện thuật toán:
+                    \begin{itemize}
+                        \item Phương pháp thực nghiệm: Chúng ta lập trình, định nghĩa các thuật toán, chạy thử nhiệm, ghi nhận các số đo về độ phức tạp.
+                        
+                        Ưu điểm: Có thể đánh giá được tất cả các thuật toán khả trình theo số liệu thực tế trả về.
 
+                        Nhược điểm: Kết quả đánh giá có thể có sai số và phụ thuộc vào máy tính thực hiện, môi trường thực hiện, thời điểm thực hiện.
+
+                        \item Phương pháp lý thuyết: Xác định quan hệ về thời gian với kích thước dữ liệu bằng hàm toán học. Trong phương pháp này, ta quan tâm tới yêu tố kích thước của dữ liệu đầu vào, thông thường là một con số n. Mối liên hệ giữa yếu tố này và số lượng các phép tính toán để tìm ra được kết quả của bài toán gọi là độ phức tạp thuật toán (kết quả của nó không phải được tính bằng thời gian như 1, 2 hay bao nhiêu giây).
+                        
+                        Ưu điểm: không phụ thuộc ngôn ngữ lập trình, loại máy tính; đánh giá được với dữ liệu có kích thước lớn.
+
+                        Nhược điểm: Khó thực hiện hơn vì phải biểu diễn các ràng buộc về mặt toán học
+
+                        Ví dụ: Tính tổng các số nguyên từ $1$ đến $n$. Dùng công thức $\dfrac{n (n + 1)}{2}$. Giải thuật này có độ phức tạp là $O(1)$ (1 phép toán).
+                        Bài toán kiểm tra số nguyên tố. Nếu kiểm tra từ $1$ đến $n$, độ phức tạp là $O(n)$. Nếu chạy từ $1$ đến $\sqrt{n}$ thì đã giảm rất nhiều phép toán.
+                    \end{itemize}
+                \end{itemize}
+                \item Một số thuật toán
+                
+                \begin{itemize}
+                    \item Các thuật toán sắp xếp (Sort Algorithms)
+                    \begin{itemize}
+                        \item Bubble Sort
+                        \item Selection Sort
+                        \item Insertion Sort
+                        \item Quick Sort
+                        \item Merge Sort
+                        \item Heap Sort
+                    \end{itemize}
+                    \item Các thuật toán tìm kiến (Search Algorithms)
+                    \begin{itemize}
+                        \item BFS (Breadth-first search): Thuật toán tìm kiếm theo chiều rộng là một thuật toán tìm kiếm trong đồ thị trong đó việc tìm kiếm chỉ bao gồm 2 thao tác: (a) cho trước một đỉnh của đồ thị; (b) thêm các đỉnh kề với đỉnh vừa cho vào danh sách có thể hướng tới tiếp theo.
+                        \item Binary search: là một thuật toán tìm kiếm xác định vị trí của một giá trị cần tìm trong một mảng đã được sắp xếp. Chi phí trong trường hợp tốt nhất $O(1)$, chi phí trong trường hợp trung bình $O(\log n)$
+                    \end{itemize}
                 \end{itemize}
             \end{itemize}
+            \item Giải bài toán bằng thuật toán
+            Một thuật toán cũng giống như một bản kế hoạch để giải quyết một bài toán. Việc phát triển thuật toán là một bước then chốt để giải quyết vấn đề. Quy trình phát triển thuật toán nói chung thường bao gồm 5 bước chính sau:
+            \begin{enumerate}[1.]
+                \item Thu thập mô tả về bài toán:
+                \begin{itemize}
+                    \item Bước này thường liên quan đến việc trao đổi thông tin giữa bên đưa ra bài toán (client) và bên có trách nhiệm giải quyết bài toán (developer). Và thường đây là bước yếu nhất trong toàn bộ quy trình. Thông thường bước này sẽ xảy ra các thiếu sót như sau:
+                    \begin{itemize}
+                        \item Các mô tả dựa trên những giả định ngầm
+                        \item Mô tả không rõ ràng
+                        \item Mô tả không đẩy đủ
+                        \item Mô tả có sự mâu thuẫn lẫn nhau
+                    \end{itemize}
+                    \item Nhiệm vụ của người chịu trách nhiệm giải quyết bài toán là phải phát hiện ra những thiếu sót trong mô tả của bài toán và phối hợp với bên đưa ra bài toán để giải quyết những thiếu sót này.
+                \end{itemize}
+                \item Phân tích bài toán:
+                \begin{itemize}
+                    \item Mục tiêu của bước này là xác định các điểm bắt đầu và kết thúc của bài toán.
+                    \item Khi xác định điểm bắt đầu, ta nên trả lời những câu hỏi sau:
+                    \begin{itemize}
+                        \item Những dự kiện nào đang có?
+                        \item Dữ kiện đó nằm ở đâu?
+                        \item Công thức liên quan tới bài toán là gì?
+                        \item Mối quan hệ giữa các dữ kiện?
+                    \end{itemize}
+                    \item Khi xác định điểm kết thúc, ta cần biết khi nào thì kết thúc bài toán. Và trả lời những câu hỏi sau sẽ giúp xác định điểm kết thúc:
+                    \begin{itemize}
+                        \item Ta sẽ có thêm những thông tin gì?
+                        \item Những dữ kiện nào đã thay đổi?
+                        \item Những thay đổi đó là gì?
+                        \item Những dữ kiện nào đã biến mất?
+                    \end{itemize}
+                \end{itemize}
+                \item Phát triển một thuật toán ở mức sơ lược
+                \begin{itemize}
+                    \item Một thuật toán là một kế hoạch để giải quyết bài toán, nhưng kế hoạch sẽ có nhiều mức chi tiết khác nhau. Thường ta nên bắt đầu với một thuật toán ở mức sơ lược mà chỉ bao gồm những phần trọng yếu cho bài toán.
+                    \item Những chi tiết sẽ được bổ sung thêm ở bước tiếp theo của quy trình.
+                \end{itemize}
+                \item Tinh chỉnh thuật toán bằng cách bổ sung thêm các chi tiết
+                \begin{itemize}
+                    \item Thuật toán sơ lược ở bước trước chỉ bao gồm những thành phần chính để giải quyết bài toán. Giờ ta cần bổ sung thêm các chi tiết cho lời giải, và mức độ chi tiết thì cần tùy thuộc vào từng tình huống.
+                    \item Nếu bài toán cần giải quyết mà phức tạp, thì bước tinh chỉnh, bổ sung này sẽ cần phải lặp lại vài lần. Ở mỗi lần bổ sung, ta thêm các chi tiết mới vào thuật toán trước đó, và chỉ dừng lại khi không còn thấy lợi ích của việc tinh chỉnh.
+                \end{itemize}
+                \item Đánh giá lại thuật toán
+                \begin{itemize}
+                    \item Ở bước này, ta cần đi qua toàn bộ thuật toán từng bước một để xác định liệu bước đó sẽ giúp dẫn đến câu trả lời cho bài toán. Một khi xác định được rằng thuật toán đã giải được bài toán, ta cần xem xét thêm các yếu tố khác. Một số yếu tố đó bao gồm:
+                    \begin{itemize}
+                        \item Thuật toán này giải quyết một bài toán cá biệt hay giải quyết một bài toán tổng quát?
+                        \item Thuật toán có thể được đơn giản hơn hay không? Ví dụ: một công thức tính chu vi của hình chữ nhật sẽ như sau:
+                        \begin{equation*}
+                            C=length+width+length+width
+                        \end{equation*}
+                        Một lời giải tối ưu hơn sẽ như sau:
+                        \begin{equation*}
+                            C = 2 \times (length + width)
+                        \end{equation*}
+                        \item Lời giải này có tương tự lời giải cho một bài toán khác không? Chúng giống hoặc khác nhau như thế nào?
+                    \end{itemize}
+                    \item Và đến đây, ta đã hoàn thành xong bước cuối cùng của quy trình giải một bài toán bằng thuật toán.
+                \end{itemize}
+            \end{enumerate}
         \end{enumerate}
     \end{loigiai}
 
