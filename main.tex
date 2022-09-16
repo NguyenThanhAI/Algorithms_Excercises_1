@@ -186,6 +186,47 @@
     \begin{loigiai}
 
         \begin{enumerate}[a)]
+            \item Bài toán và giải bài toán:
+            Bài toán là bất cứ vấn đề nào cần được giải quyết. Trong tin học, thuật ngữ “bài toán” là lớp các bài toán cụ thể cùng loại mà ta cần máy tính thực hiện để có được kết quả.
+
+            Có 2 yếu tố cần được đưa ra khi xác định bài toán:
+            \begin{itemize}
+                \item Thông tin đầu vào (input) là dữ liệu đã có
+                \item Thông tin đầu ra (output): Những yếu tố cần xác định
+            \end{itemize}
+            $\Rightarrow$ Khi đó, cho bài toán tức là cho input và ouput. Khi phát biểu một bài toán, ta cần trình bày rõ Input và Output của bài toán đấy và mối quan hệ giữa chúng.
+            
+            Giải bài toán: từ input, dùng một số hữu hạn các bước thao tác có cơ sở toán học thích hợp để tìm được output theo yêu cầu của bài toán đề ra.
+
+            Ví dụ 1: Xếp hạng các học viên trong lớp
+
+            Input: Bảng điểm của các học sinh
+
+            Output: Bảng xếp loại học lực
+
+            Ví dụ 2: Giải phương trình bậc hai
+
+            \begin{equation*}
+                a x^2 + bx + c = 0 (a \neq 0)
+            \end{equation*}
+
+            Input: Các số thực $a, b, c (a \neq 0)$
+
+            Output: Các số thực $x$ thỏa mãn $ax^2 + bx + c = 0$
+
+            Ở bài toán này, ta có thể đưa ra kết quả bài toán là 2 số thực thoả mã điều kiện hoặc phương trình vô nghiệm
+
+            Ví dụ 3: Tính diện tích hình tròn $\mathcal{C}$
+
+            Input: Bán kính hình tròn $\mathcal{C}$ và công thức tính diện tích hình tròn
+
+            Output: Diện tích hình tròn $\mathcal{C}$
+
+            Ví dụ 4: Tìm đường đi ngắn nhất từ $u$ đến $v$ của đồ thị $G=(V, E)$
+
+            Input: Đồ thị $G$
+
+            Output: Xác định đường đi $d=(u=v_1, v_2, \dots, v_n=n)$ (với $v_i \in V$, $(v_i, v_{i + 1}) \in E$) có độ dài ngắn nhất
             \item Thuật toán (Algorithms)
             \begin{itemize}
                 \item Khái niệm cơ bản:
@@ -206,13 +247,13 @@
                     \item Sơ đồ khối (flowchart). Lưu ý phân biệt Thao tác chọn lựa (decision) và Thao tác xử lý (process). Chẳng hạn : thao tác "nếu $a=b$ thì thực hiện thao tác B2, nếu $a \neq b$ thực hiện B4" là thao tác chọn lựa. Các thao tác còn lại không thuộc loại chọn lựa được xếp vào loại hành động. Chẳng hạn, "Chọn một hộp bất kỳ và để lên dĩa cân còn trống." là một thao tác thuộc loại hành động.
                     \begin{figure}[h!]
                         \centering
-                        \includegraphics[scale=0.6]{flowchart.jpg}
+                        \includegraphics[scale=0.8]{flowchart.jpg}
                         \caption{Ví dụ minh họa sơ đồ khối}
                     \end{figure}
                     \item Mã giả (pseudo-code). Vẫn sử dụng 1 phần ngôn ngữ tự nhiên. Nhưng vì các thuật toán thường có các thao tác lặp nên mã giả hay vay mượn cú pháp của các ngôn ngữ lập trình để thể hiện cho tường minh.
                     \begin{algorithm}
                         \DontPrintSemicolon
-                        \KwIn{$a, b, c$}
+                        \KwIn{$a, b, c (a \neq 0)$}
                         \KwOut{Nghiệm nếu có của phương trình bậc 2}
                         $\Delta \gets \dfrac{b^2 - 4ac}{2a}$\;
                         \If{$\Delta > 0$} {
