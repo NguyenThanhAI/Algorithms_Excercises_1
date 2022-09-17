@@ -1,5 +1,5 @@
 
-import numpy as np
+'''import numpy as np
 
 def print_result(trace, start, end):
     if start == end:
@@ -39,7 +39,30 @@ for i in range(1, n):
 print(L)
 print(T)
 
-#print_result(T, 1, n)
+#print_result(T, 1, n)'''
+import numpy as np
+
+def MatChainMul(arr, n):
+    dp = [[0 for i in range(n)] for j in range(n)]
+    for i in range(1, n+1):
+        dp[i-1][i-1] = 0
+    
+    for L in range(1, n):
+        for i in range(1, n-L+1):
+            j = i+L
+            dp[i - 1][j - 1] = 10**10
+            print(i, j)
+            for k in range(i, j):
+                q = dp[i - 1][k - 1] + dp[k][j - 1] + arr[i-1]*arr[k]*arr[j]
+                if q < dp[i - 1][j - 1]:
+                    dp[i - 1][j - 1] = q
+    print(np.array(dp))
+    return dp[0][n-1]
+
+arr = [4, 10, 3, 12, 20, 7]
+size = len(arr) - 1
+
+print("Minimum number of multiplications are " + str(MatChainMul(arr, size)))
 
 
 '''def matrix_product(p):
