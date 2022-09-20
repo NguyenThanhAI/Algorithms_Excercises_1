@@ -516,7 +516,70 @@
         Thuật toán trên gồm 2 vòng lặp lồng nhau. Độ phức tạp tính toán của thuật toán là $O(nm)$ và độ phức tạp về bộ nhớ của thuật toán là $O(nm)$ (lưu bảng phương án hai chiều $\bold{L}$). 
         Code của thuật toán trên được trình bày ở phụ lục \ref{code-1-ex-2}
 
-        \item \textbf{Ví dụ 2:}
+        \item \textbf{Ví dụ 2:} Cho hai xâu ký tự, xâu thứ nhất có độ dài $n$ và xâu thứ hai có độ dài $m$.
+        Tìm xâu con chung có độ dài dài nhất giữa hai xâu trên.
+
+        \textbf{Đầu vào:}
+        Dòng đầu tiên là xâu thứ nhất
+
+        Dòng thứ hai là xâu thứ hai
+
+        \textbf{Đầu ra:}
+
+        Xâu con chung của hai xâu có độ dài dài nhất
+
+        Gọi xâu đầu tiên là $\bold{X}$, xâu thứ hai là $\bold{Y}$.
+        Ta gọi $\bold{S} \lbrack i, j \rbrack$ là độ dài xâu con chung dài nhất kết thúc $i$ ký tự đầu của xâu thứ nhất và kết thúc tại $j$ ký tự đầu của xâu thứ hai.
+        Ta có nhận xét:
+
+        \begin{itemize}
+            \item Nếu $i = 0 \text{ hoặc } j = 0$ thì $\bold{S} \lbrack i, j \rbrack=0$
+            \item Nếu $\bold{X} \lbrack i \rbrack = \bold{X} \lbrack j \rbrack$ thì $\bold{S} \lbrack i, j \rbrack= \bold{S} \lbrack i - 1, j - 1 \rbrack + 1$.
+            \item Nếu $\bold{X} \lbrack i \rbrack \neq \bold{Y} \lbrack j \rbrack $ thì $\bold{S} \lbrack i, j \rbrack = 0$
+        \end{itemize}
+
+        Từ lập luận trên, ta có công thức tổng quát tính giá trị các phần tử của $\bold{S}$:
+
+        \begin{equation*}
+            \bold{S} \lbrack i, j \rbrack = \begin{cases} 0 \text{ nếu } i = 0 \text{ hoặc } j = 0 \\ 
+            \bold{S} \lbrack i - 1, j - 1 \rbrack + 1 \text{ nếu } \bold{X} \lbrack i \rbrack = \bold{Y} \lbrack j \rbrack \\
+            0  \text{ nếu } \bold{X} \lbrack i \rbrack \neq \bold{Y} \lbrack j \rbrack  \end{cases}
+        \end{equation*}
+
+        Để truy vết xâu cong chung dài nhất, ta đặt một biến để lưu vị trí lớn nhất trong $\bold{S}$ và giá trị lớn nhất tương ứng.
+        Sau khi tính hết các phần tử $\bold{S}$, từ vị trí và độ dài xâu con chung lớn nhất ta sẽ thu được xâu con chung dài nhất.
+
+        Ta có thuật toán tìm xâu con chung dài nhất của hai xâu $\bold{X}$ và xâu $\bold{Y}$:
+
+        \begin{algorithm}
+            \DontPrintSemicolon
+            \KwIn{Xâu $\bold{X}$ có độ dài $n$, xâu $\bold{Y}$ có độ dài $m$}
+            \KwOut{Xâu con chung dài nhất của hai xâu $\bold{X}$ và xâu $\bold{Y}$}
+
+            $max\_len \gets - \infty$\;
+            \For{$i \gets 0$ \textbf{to} $n$} {
+                \For {$j \gets 0$ \textbf{to} $m$} {
+                    \If{$i = 0$ \textbf{or} $j = 0$} {
+                        $\bold{S} \lbrack i, j \rbrack \gets 0$\;
+                        \textbf{continue}\;
+                    }
+                    \If{$\bold{X} \lbrack i \rbrack = \bold{Y} \lbrack j \rbrack $} {
+                        $\bold{S} \lbrack i, j \rbrack \gets \bold{S} \lbrack i - 1, j - 1 \rbrack + 1$\;
+                        \If{$\bold{S} \lbrack i, j \rbrack > max\_len$} {
+                            $max\_len \gets \bold{S} \lbrack i, j \rbrack$\;
+                            $pos\_row \gets i$\;
+                        }
+                        \textbf{continue}\;
+                    }
+                    \If{$\bold{X} \lbrack i \rbrack \neq \bold{Y} \lbrack j \rbrack$} {
+                        $\bold{S} \lbrack i, j \rbrack \gets 0$\;
+                    }
+                }
+            }
+            $longest\_substring \gets \bold{X} \lbrack pos\_row - max\_len + 1: pos\_row \rbrack$\;
+            \Return{$longest\_substring$}\;
+            \caption{Thuật toán tìm xâu con chung dài nhất của hai xâu $\bold{X}$ và xâu $\bold{Y}$}
+        \end{algorithm}
 
         \item \textbf{Ví dụ 3:} Một đoàn xe gồm $N$ xe tải, đang xếp hàng để qua một chiếc cầu.
         Với mỗi xe $i$ ta biết $w\lbrack i \rbrack$ là trọng tải của xe, $t\lbrack i \rbrack $ là thời gian xe qua cầu.
@@ -633,7 +696,7 @@
 
         Ta nhận thấy tại mỗi điểm $(i, j)$ ta sẽ tính tổng sản lượng vàng lớn nhất của lô có kích thước $k \times k$ bằng giá trị lớn nhất của bốn trường hợp:
         \begin{itemize}
-            \item Lô $k \times k$ có sản lượng vàng lớn nhất nằm ở trong khu vực $i-1$ hàng đầu và $j - 1$ cột đầu hay $\bold{L} \lbrack i - 1, j - 1$.
+            \item Lô $k \times k$ có sản lượng vàng lớn nhất nằm ở trong khu vực $i-1$ hàng đầu và $j - 1$ cột đầu hay $\bold{L} \lbrack i - 1, j - 1 \rbrack$.
             \item Lô $k \times k$ có sản lượng vàng lớn nhất nằm ở trong khu vực $i$ hàng đầu và $j-1$ cột đầu hay $\bold{L} \lbrack i, j-1 \rbrack$
             \item Lô $k \times k$ có sản lượng vàng lớn nhất nằm ở trong khu vực $i - 1$ hàng đầu và $j$ cột đầu hay $\bold{L} \lbrack i-1, j \rbrack$
             \item Lô $k \times k$ có sản lượng lớn nhất mà góc dưới bên phải kết thúc tại $i, j$ hay $\bold{G} \lbrack i, j \rbrack - \bold{G} \lbrack i - k, j \rbrack - \bold{G} \lbrack i, j - k \rbrack + \bold{G} \lbrack i - k, j - k \rbrack$
@@ -915,20 +978,26 @@ d            \max\Big( \bold{L}_{i-1, j}, \bold{L}_{i, j-1}, \bold{L}_{i-1, j-1}
 
         \For {$i \gets 1$ \textbf{to} $n$} {
             $\bold{L} \lbrack i, i \rbrack \gets 0$\;
-            $\bold{L} \lbrack i, i + 1\rbrack \gets d_{i - 1} d_i d_{i + 1}$\;
-            \For{$j \gets i + 2$ \textbf{to} $n$} {
-                $min\_val \gets \infty$\;
+        }
+            %$\bold{L} \lbrack i, i + 1\rbrack \gets d_{i - 1} d_i d_{i + 1}$\;
+        \For{$l \gets 1$ \textbf{to} $n - 1$} {
+            \For{$i \gets 1$ \textbf{to} $n - l$} {
+                $j \gets i + l$\;
+                $\bold{L} \lbrack i, j \rbrack \gets \infty$\;
                 \For {$k \gets i$ \textbf{to} $j-1$} {
                     $val \gets \bold{L} \lbrack i, k \rbrack + \bold{L} \lbrack k + 1, j \rbrack + d_{i-1} d_{k} d_{j}$\;
-                    \If {$val < min\_val$} {
-                        $min\_val \gets val$\;
+                    \If {$val < \bold{L} \lbrack i, j \rbrack$} {
+                        $\bold{L} \lbrack i, j \rbrack \gets val$\;
                     }
                 }
-                $\bold{L} \lbrack i, j \rbrack \gets min\_val $\;
             }
         }
         \Return {$\bold{L} \lbrack 1, n \rbrack$}\;
+        \caption{Thuật toán tính số phép tính nhỏ nhất thực hiện nhân chuỗi ma trận}
     \end{algorithm}
+
+    Ta nhận thấy thuật toán có hai vòng lặp riêng rẽ, vòng lặp đầu tiên chỉ gồm 1 vòng lặp đơn có độ phức tạp tính toán $O(n)$,
+    vòng lặp thứ hai gồm 3 vòng lặp lồng nhau có độ phức tạp tính toán $O(n^3)$. Ta cần lưu mảng $\bold{L}$ hai chiều như vậy độ phức tạp về bộ nhớ là $O(n^2)$
     \end{loigiai}
 
     
