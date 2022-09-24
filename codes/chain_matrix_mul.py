@@ -44,6 +44,7 @@ import numpy as np
 
 def MatChainMul(arr, n):
     dp = [[0 for i in range(n)] for j in range(n)]
+    t = np.zeros(shape=(n, n), dtype=np.int)
     for i in range(1, n+1):
         dp[i-1][i-1] = 0
     
@@ -56,7 +57,8 @@ def MatChainMul(arr, n):
                 q = dp[i - 1][k - 1] + dp[k][j - 1] + arr[i-1]*arr[k]*arr[j]
                 if q < dp[i - 1][j - 1]:
                     dp[i - 1][j - 1] = q
-    print(np.array(dp))
+                    t[i - 1][j - 1] = k
+    print(np.array(dp), t)
     return dp[0][n-1]
 
 arr = [4, 10, 3, 12, 20, 7]
@@ -64,8 +66,9 @@ size = len(arr) - 1
 
 print("Minimum number of multiplications are " + str(MatChainMul(arr, size)))
 
+'''import numpy as np
 
-'''def matrix_product(p):
+def matrix_product(p):
     """Return m and s.
  
     m[i][j] is the minimum number of scalar multiplications needed to compute the
@@ -149,7 +152,7 @@ temp = int(input('Enter number of columns in matrix {}: '.format(n)))
 p.append(temp)
  
 m, s = matrix_product(p)
-print(s)
+print(np.array(s))
 print('The number of scalar multiplications needed:', m[1][n])
 print('Optimal parenthesization: ', end='')
 print_parenthesization(s, 1, n)'''
