@@ -425,6 +425,57 @@
         Sau đó nghiệm của những bài toán con được tổng hợp lại theo một phương pháp thích hợp để thu được lời giải của bài toán ban đầu.
         Khác với phương pháp chia để trị, phương pháp quy hoạch động không yêu cầu các bài toán con phải không giao nhau.
 
+        Phép phân rã đệ quy bắt đầu từ bài toán lớn phân rã thành nhiều bài toán con và đi giải từng bài toán con đó.
+        Việc giải từng bài toán con lại đưa tiếp về phép phân rã thành nhiều bài toán nhỏ hơn và lại đi giải bài toán nhỏ hơn đó bất kể nó đã được giải hay chưa.
+
+        Ngược lại, phương pháp quy hoạch động bắt đầu từ việc giải tất cả các bài toán con nhỏ nhất và lưu lại lời giải của từng bài toán con này
+        để từng bước giải quyết những bài toán lớn hơn cho đến khi giải được bài toán lớn nhất.
+
+        Để xem phương pháp quy hoạch động có thể sử dụng để giải một bài toán, ta cần xem xét bài toán có những tính chất sau đây hay không:
+
+
+        \begin{itemize}
+            \item Bài toán lớn phải phân rã được thành nhiều bài toán con, mà sự phối hợp lời giải của các bài
+            toán con đó cho ta lời giải của bài toán lớn. 
+            \item Vì quy hoạch động là đi giải tất cả các bài toán con, nên nếu không đủ không gian vật lý lưu
+            trữ lời giải (bộ nhớ, đĩa…) để phối hợp chúng thì phương pháp quy hoạch động cũng không
+            thể thực hiện được. 
+            \item Quá trình từ bài toán cơ sở tìm ra lời giải bài toán ban đầu phải qua hữu hạn bước.
+        \end{itemize}
+
+        Các bước để giải một bài toán bằng phương pháp quy hoạch động:
+
+        \begin{itemize}
+            \item Giải tất cả các bài toán cơ sở, lưu các lời giải vào bảng phương án.
+            \item Dùng công thức truy hồi phối hợp những lời giải của những bài toán nhỏ đã lưu trong bảng
+            phương án để tìm lời giải của những bài toán lớn hơn và lưu chúng vào bảng phương án. Cho
+            tới khi bài toán ban đầu tìm được lời giải.
+            \item Dựa vào bảng phương án, truy vết tìm ra nghiệm tối ưu.
+        \end{itemize}
+
+        Bước xác định công thức truy hồi giữa các bài toán là bước khó nhất và quan trọng nhất.
+        Đến nay vẫn chưa có một định lý nào cho biết một cách chính xác những bài toán nào có thể giải quyết hiệu quả bằng phương pháp quy hoạch động.
+        Tuy nhiên để biết được bài toán có thể giải bằng
+        quy hoạch động hay không, ta có thể tự đặt câu hỏi: "Một nghiệm tối ưu của bài toán lớn có
+        phải là sự phối hợp các nghiệm tối ưu của các bài toán con hay không?" và ”Liệu có thể
+        nào lưu trữ được nghiệm các bài toán con dưới một hình thức nào đó để phối hợp tìm
+        được nghiệm bài toán lớn hay không?"
+
+        So sánh phương pháp chia để trị với phương pháp quy hoạch động:
+
+        \begin{itemize}
+            \item Phương pháp chia để trị là kết hợp lời giải của các bài toán con để tìm ra lời giải của bài toán ban đầu.
+            \item Phương pháp quy hoạch động là sử dụng kết quả của bài toán con và sau đó cố gắng tối ưu bài toán lớn hơn.
+            Phương pháp quy hoạch động sử dụng phương pháp lưu trữ để ghi nhớ kết quả của các bài toán con đã được giải.
+        \end{itemize}
+
+        So sánh phương pháp tham lam với phương pháp quy hoạch động:
+
+        \begin{itemize}
+            \item Phương pháp tham làm là một phương pháp tìm kiếm, lựa chọn giải pháp tối ưu địa phương ở mỗi bước với hy vọng tìm được giải pháp tối ưu toàn cục.
+            \item Phương pháp quy hoạch động tối ưu hóa các bài toán con gối nhau.
+        \end{itemize}
+
         \textbf{Các bài toán ví dụ:}
 
         \begin{itemize} [label={$-$}]
