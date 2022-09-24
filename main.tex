@@ -567,6 +567,33 @@
         Thuật toán trên gồm 2 vòng lặp lồng nhau. Độ phức tạp tính toán của thuật toán là $O(nm)$ và độ phức tạp về bộ nhớ của thuật toán là $O(nm)$ (lưu bảng phương án hai chiều $\bold{L}$). 
         Code của thuật toán trên được trình bày ở phụ lục \ref{code-1-ex-2}
 
+        Thực nghiệm:
+
+        \begin{itemize}
+            \item Với đầu vào:
+            \begin{verbatim}
+                dkfjaldfas
+                djflkafdas
+            \end{verbatim}
+            Kết quả đầu ra:
+            \begin{verbatim}
+                5
+            \end{verbatim}
+            Thời gian chạy: 0.00011999 (giây)
+            \item Với đầu vào:
+            \begin{verbatim}
+                ueioqurwortuwotywo
+                tiuwonglsjgowtjwoot
+            \end{verbatim}
+            Kết quả đầu ra:
+            \begin{verbatim}
+                15
+            \end{verbatim}
+            Thời gian chạy: 0.00042899 (giây)
+        \end{itemize}
+
+        Ta nhận thấy với kích thước (độ dài xâu) tăng gấp đôi thì thời gian chạy tăng khoảng 4 lần phù hợp với độ phức tạp tính toán trong lý thuyết $O(nm)$.
+
         \item \textbf{Ví dụ 2:} Cho hai xâu ký tự, xâu thứ nhất có độ dài $n$ và xâu thứ hai có độ dài $m$.
         Tìm xâu con chung có độ dài dài nhất giữa hai xâu trên.
 
@@ -635,6 +662,33 @@
         Thuật toán trên có 2 vòng lặp lồng nhau.
         Độ phức tạp tính toán của thuật toán là $O(nm)$ và độ phức tạp về bộ nhớ của thuật toán là $O(nm)$ (lưu bảng phương án hai chiều $\bold{S}$).
         Code của thuật toán trên được trình bày ở phụ lục \ref{code-2-ex-1}.
+
+        Thực nghiệm:
+
+        \begin{itemize}
+            \item Với đầu vào:
+            \begin{verbatim}
+                fdajlkdfjagdjl
+                akfdldfjkajlkd
+            \end{verbatim}
+            Kết quả đầu ra:
+            \begin{verbatim}
+                ajlkd
+            \end{verbatim}
+            Thời gian chạy: 0.000093029 (giây)
+            \item Với đầu vào:
+            \begin{verbatim}
+                fhdjlsfjlafjlafjkdsfhksdfsfdk  
+                fjkdlsflfsdjfjlafjlaruieowrwo
+            \end{verbatim}
+            Kết quả đầu ra:
+            \begin{verbatim}
+                fjlafjla
+            \end{verbatim}
+            Thời gian chạy: 0.00040400 (giây)
+        \end{itemize}
+
+        Ta nhận thấy với kích thước (độ dài xâu) tăng gấp đôi thì thời gian chạy tăng khoảng 4 lần phù hợp với độ phức tạp tính toán trong lý thuyết $O(nm)$.
 
         \item \textbf{Ví dụ 3:} Cho $n$ ma trận $\bold{A}_1, \bold{A}_2, \dots, \bold{A}_n$, ma trận $\bold{A}_i$ có kích thước $d_{i-1} \times d_i$.
         Hãy tính số phép tính nhỏ nhất để thực hiễn phép nhân $\bold{A}_1 \times \bold{A}_2 \times \dots \times \bold{A}_n$
@@ -968,11 +1022,9 @@
     \end{verbatim}
     Ta có kết quả đầu ra:
     \begin{verbatim}
-    \end{verbatim}
-        YES \\
-        5 0.3463 \\
+        YES
+        5 0.3463
         5 1 2 4 3 5
-    \begin{verbatim}
     \end{verbatim}
 
 
