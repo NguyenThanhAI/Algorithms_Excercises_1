@@ -632,85 +632,71 @@
             \caption{Thuật toán tìm xâu con chung dài nhất của hai xâu $\bold{X}$ và xâu $\bold{Y}$}
         \end{algorithm}
 
-        \item \textbf{Ví dụ 3:} Một đoàn xe gồm $N$ xe tải, đang xếp hàng để qua một chiếc cầu.
-        Với mỗi xe $i$ ta biết $w\lbrack i \rbrack$ là trọng tải của xe, $t\lbrack i \rbrack $ là thời gian xe qua cầu.
-        Xe phải qua cầu theo từng tốp, tức là tốp trước sang hẳn thì tốp sau mới được sang,
-        thời gian qua cầu của một tốp sẽ là thời gian của xe qua cầu mất nhiều thời gian nhất trong tốp đó.
-        Cầu có trọng tải là $L$ nên tốp xe qua cầu phải có tổng trọng tải nhở hơn hoặc bằng $L$.
-        Hãy tìm cách đưa các xe qua cầu sao cho tổng thời gian là nhỏ nhất.
-
-        Biết rằng xe qua cầu phải theo thứ tự, tức là xe chỉ số nhỏ hơn qua cầu trước xe có chỉ số lớn hơn.
-
-        \textbf{Đầu vào:} 
-        
-        Dòng đầu ghi 2 số nguyên dương $N, L$ ($N \leq 1000$). 
-        
-        N dòng tiếp theo, dòng thứ $i$ ghi $w \lbrack i \rbrack, t \lbrack i \rbrack$
-        
+        \item \textbf{Ví dụ 3:} Cho $n$ ma trận $\bold{A}_1, \bold{A}_2, \dots, \bold{A}_n$, ma trận $\bold{A}_i$ có kích thước $d_{i-1} \times d_i$.
+        Hãy tính số phép tính nhỏ nhất để thực hiễn phép nhân $\bold{A}_1 \times \bold{A}_2 \times \dots \times \bold{A}_n$
+        \textbf{Đầu vào:}
+    
+        Dòng đầu tiên ghi số nguyên dương $n$ là số ma trận
+    
+        Dầu thứ hai ghi $n+1$ số nguyên là kích thước của chuỗi ma trận
+    
         \textbf{Đầu ra:}
-
-        Dòng đầu tiên ghi thời điểm sớm nhất tìm được
-        
-        Các dòng tiếp theo, dòng thứ $i$ ghi $w \lbrack i \rbrack, t \lbrack i \rbrack $
-
-        Ta sử dụng phương pháp quy hoạch động. Gọi $\bold{C} \lbrack i \rbrack$ là thời gian nhỏ nhất để cho $i$ xe đầu tiên trong đoàn xe qua cầu.
-        Để tính $\bold{C} \lbrack i \rbrack$, ta xét các cách chọn các xe vào tốp mà xe  thứ $i$ ở cuối cùng.
-
-        Ta nhận thấy đoàn xe có 0 xe thì thời gian ngắn nhất để đoàn xe qua cầu là 0.
-        Ta có:
-
+    
+        Một dòng ghi số phép tính nhỏ nhất khi thực hiện nhân chuỗi ma trận trên
+    
+        Ta nhận thấy kết quả của nhân hai ma trận $\bold{A}_i \bold{A}_{i + 1}$ là một ma trận có kích thước $d_{i-1} \times d_{i+1}$ ta cần số phép tính là: $d_{i-1} (2 d_i - 1) d_{i+1}$ (cần tính $d_{i-1} \times d_{i+1}$ phần tử của ma trận kết quả, mỗi phần tử cần $2 d_i - 1$ phép tính với $d_i$ phép tính nhân và $d_i - 1$ phép cộng) $\in O(d_{i-1} d_i d_{i+1})$
+    
+        Để đơn giản ta có thể coi mỗi phép nhân hai ma trận $\bold{A}_i \bold{A}_{i + 1}$ cần $d_{i-1} d_i d_{i+1}$ phép tính.
+    
+        Ta gọi $\bold{L} \lbrack i, j \rbrack$ là số phép tính ít nhất để nhân chuỗi ma trận $\bold{A}_i \times \bold{A}_{i+1} \times \dots \times \bold{A}_j $.
+    
+        Ta có nhận xét:
+    
+        \begin{itemize}
+            \item $\bold{L} \lbrack i, i \rbrack = 0 \thickspace \forall \thickspace i = \overline{1, n}$
+            \item $\bold{L} \lbrack i, i + 1 \rbrack = d_{i-1} d_i d_{i+1} \thickspace \forall \thickspace i = \overline{1, n-1}$
+            \item $\bold{L} \lbrack i, j \rbrack = \min \Big( \bold{L} \lbrack i, k \rbrack + \bold{L} \lbrack k + 1, j \rbrack + d_{i-1} d_k d_{j} \text{ với } k=i, \dots, j-1 \Big), \thickspace \forall \thickspace i = \overline{1, n - 2}, \thickspace j > i + 1$
+        \end{itemize}
+    
+        Từ đây ta có công thức tổng quát của $\bold{L} \lbrack i, j \rbrack$:
+    
         \begin{equation*}
-            \bold{C} \lbrack i \rbrack = \begin{cases} 0, \text{ nếu } i = 0 \\
-            \min \Big( \bold{C} \lbrack k - 1 \rbrack + \max (t \lbrack k \dots i \rbrack) \thickspace \text{ với } \thickspace 1 \leq k \leq i \text{ và } \sum_{j=k}^i w \lbrack j \rbrack \leq L \Big)  \end{cases}
+            \bold{L} \lbrack i, j \rbrack = \begin{cases} 0 \text{ nếu } i = j \\ 
+            d_{i-1} d_i d_{i+1} \text{ nếu } j = i + 1 \\ 
+            \min \Big( \bold{L} \lbrack i, k \rbrack + \bold{L} \lbrack k + 1, j \rbrack + d_{i-1} d_k d_{j} \text{ với } k=i, \dots, j-1 \Big) \text{ nếu } j > i + 1\end{cases}
         \end{equation*}
-
-        Để truy vết các điểm chia (thứ tự của xe đầu tiên của mỗi tốp), tại mỗi xe thứ tự $i$, ta khởi tạo một biến split để theo dõi có tồn tại $k$ để $\sum_{j=k}^i w \lbrack j \rbrack \leq L$ và điều kiện $\bold{C} \lbrack i \rbrack > \bold{C} \lbrack k - 1\rbrack + \max ( t\lbrack k \rbrack , t\lbrack k + 1\rbrack , \dots , t\lbrack i \rbrack)$.
-        Tại mỗi thời điểm 2 điều kiện trên đồng thời xảy ra tại $k$, ta sẽ gán lại một biến $bp \gets k$ (breakpoint - điểm chia) để lưu lại vị trí $k$ tối ưu để $i$ xe đầu tiên của đoàn qua cầu trong thời gian ngắn nhất
-
-
-        Từ phân tích trên ta có mã giả thuật toán:
-
+    
+        Ta có mã giả thuật toán:
+    
         \begin{algorithm}
             \DontPrintSemicolon
-            \KwIn{Số xe trong đoàn $N$, trọng tải tối đa của cầu $L$, $w \lbrack 1 \dots N \rbrack$ là trọng tải của các xe trong đoàn, $t \lbrack 1 \dots N \rbrack$ là thời gian qua cầu của từng xe trong đoàn}
-            \KwOut{Thời gian sớm nhất để đoàn xe qua cầu, các xe đầu tiên của từng tốp}
-
-            $\bold{C} \lbrack 0 \rbrack \gets 0$\;
-            $trace \gets \lbrack \rbrack$\;
-            \For {$i \gets 1$ \textbf{to} $N$}{
-                $\bold{C} \lbrack i \rbrack \gets \infty$\;
-                $split \gets false$\;
-                \For {$k \gets 1$ \textbf{to} $i$}{
-                    \If {$w\lbrack k \rbrack + w\lbrack k + 1\rbrack + \dots + w\lbrack i \rbrack \leq L$} {
-                        \If {$\bold{C} \lbrack i \rbrack > \bold{C} \lbrack k - 1\rbrack + \max ( t\lbrack k \rbrack , t\lbrack k + 1\rbrack , \dots , t\lbrack i \rbrack)$} {
-                            $\bold{C} \lbrack i \rbrack \gets \bold{C} \lbrack k - 1\rbrack + \max ( t\lbrack k \rbrack , t\lbrack k + 1\rbrack , \dots , t\lbrack i \rbrack)$\;
-                            $split \gets true$\;
-                            $bp \gets k$\;
+            \KwIn{Số nguyên $n$, dãy số nguyên gồm $n+1$ số}
+            \KwOut{Số phép tính nhỏ nhất thực hiện nhân chuỗi ma trận}
+    
+            \For {$i \gets 1$ \textbf{to} $n$} {
+                $\bold{L} \lbrack i, i \rbrack \gets 0$\;
+            }
+                %$\bold{L} \lbrack i, i + 1\rbrack \gets d_{i - 1} d_i d_{i + 1}$\;
+            \For{$l \gets 1$ \textbf{to} $n - 1$} {
+                \For{$i \gets 1$ \textbf{to} $n - l$} {
+                    $j \gets i + l$\;
+                    $\bold{L} \lbrack i, j \rbrack \gets \infty$\;
+                    \For {$k \gets i$ \textbf{to} $j-1$} {
+                        $val \gets \bold{L} \lbrack i, k \rbrack + \bold{L} \lbrack k + 1, j \rbrack + d_{i-1} d_{k} d_{j}$\;
+                        \If {$val < \bold{L} \lbrack i, j \rbrack$} {
+                            $\bold{L} \lbrack i, j \rbrack \gets val$\;
                         }
                     }
                 }
-                \If {$split = true$} {
-                    $trace.add(bp)$\;
-                }
             }
-            \Return{$\bold{C} \lbrack N \rbrack, set(trace)$}\;
-            \caption{Thuật toán tìm thời gian ngắn nhất để đoàn xe qua cầu}
+            \Return {$\bold{L} \lbrack 1, n \rbrack$}\;
+            \caption{Thuật toán tính số phép tính nhỏ nhất thực hiện nhân chuỗi ma trận}
         \end{algorithm}
-
-        Đối với chi phí tính toán, thuật toán trên có 2 vòng lặp lồng nhau, thân vòng lặp trong cùng phải thực hiện số phép tính là $O(i-k+1)$.
-        Như vậy tổng số phép tính cần để tính hai vòng lặp là:
-
-        \begin{equation*}
-            1 \times 1 + 2 \times 2 + \dots + N \times N = \dfrac{N (N+1)(2N + 1)}{6} \in O(N^3)
-        \end{equation*}
-
-        Độ phức tạp tính toán là $O(N^3)$.
-
-        Đối với chi phí bộ nhớ, ta cần mảng $\bold{C}$ để lưu $N+1$ giá trị thời gian. Mảng trace để lưu $N$ giá trị.
-        Vậy độ phức tạp bộ nhớ là $O(N)$.
+    
+        Ta nhận thấy thuật toán có hai vòng lặp riêng rẽ, vòng lặp đầu tiên chỉ gồm 1 vòng lặp đơn có độ phức tạp tính toán $O(n)$,
+        vòng lặp thứ hai gồm 3 vòng lặp lồng nhau có độ phức tạp tính toán $O(n^3)$. Ta cần lưu mảng $\bold{L}$ hai chiều như vậy độ phức tạp về bộ nhớ là $O(n^2)$.
 
         Code của thuật toán trên được trình bày ở phụ lục \ref{code-3-ex-1}
-
         
         \item \textbf{Ví dụ 4:} Trên một vùng đất hình vuông các nhà địa chất phát hiện ra có trữ lượng vàng khá lớn.
         Để tiện việc khai thác, người ta chia vùng đất thành các lô nhỏ, tổng cộng có $n \times n$ lô ($n$ hàng, $n$ cột).
@@ -758,7 +744,7 @@
         \begin{equation*}
             \bold{L} \lbrack i, j \rbrack = \begin{cases} 0, \text{ nếu } i < k \text{ hoặc } j < k \\ 
             \bold{G} \lbrack i, j \rbrack \text{ nếu } i = k \text{ và } j = k \\
-d            \max\Big( \bold{L}_{i-1, j}, \bold{L}_{i, j-1}, \bold{L}_{i-1, j-1}, \bold{G}_{i, j} - \bold{G}_{i - k, j} - \bold{G}_{i, j - k} + \bold{G}_{i - k, j - k} \Big ) \text{ nếu } i > k \text{ và } j > k \end{cases}
+            \max\Big( \bold{L}_{i-1, j}, \bold{L}_{i, j-1}, \bold{L}_{i-1, j-1}, \bold{G}_{i, j} - \bold{G}_{i - k, j} - \bold{G}_{i, j - k} + \bold{G}_{i - k, j - k} \Big ) \text{ nếu } i > k \text{ và } j > k \end{cases}
         \end{equation*}
 
         với ký hiệu $\bold{L}_{i, j} = \bold{L} \lbrack i, j \rbrack$
@@ -985,70 +971,85 @@ d            \max\Big( \bold{L}_{i-1, j}, \bold{L}_{i, j-1}, \bold{L}_{i-1, j-1}
     \begin{verbatim}
     \end{verbatim}
 
-    \textbf{Bài toán 2:}
-    Cho $n$ ma trận $\bold{A}_1, \bold{A}_2, \dots, \bold{A}_n$, ma trận $\bold{A}_i$ có kích thước $d_{i-1} \times d_i$.
-    Hãy tính số phép tính nhỏ nhất để thực hiễn phép nhân $\bold{A}_1 \times \bold{A}_2 \times \dots \times \bold{A}_n$
-    \textbf{Đầu vào:}
 
-    Dòng đầu tiên ghi số nguyên dương $n$ là số ma trận
+    \textbf{Bài toán 2:} Một đoàn xe gồm $N$ xe tải, đang xếp hàng để qua một chiếc cầu.
+    Với mỗi xe $i$ ta biết $w\lbrack i \rbrack$ là trọng tải của xe, $t\lbrack i \rbrack $ là thời gian xe qua cầu.
+    Xe phải qua cầu theo từng tốp, tức là tốp trước sang hẳn thì tốp sau mới được sang,
+    thời gian qua cầu của một tốp sẽ là thời gian của xe qua cầu mất nhiều thời gian nhất trong tốp đó.
+    Cầu có trọng tải là $L$ nên tốp xe qua cầu phải có tổng trọng tải nhở hơn hoặc bằng $L$.
+    Hãy tìm cách đưa các xe qua cầu sao cho tổng thời gian là nhỏ nhất.
 
-    Dầu thứ hai ghi $n+1$ số nguyên là kích thước của chuỗi ma trận
+    Biết rằng xe qua cầu phải theo thứ tự, tức là xe chỉ số nhỏ hơn qua cầu trước xe có chỉ số lớn hơn.
 
+    \textbf{Đầu vào:} 
+    
+    Dòng đầu ghi 2 số nguyên dương $N, L$ ($N \leq 1000$). 
+    
+    N dòng tiếp theo, dòng thứ $i$ ghi $w \lbrack i \rbrack, t \lbrack i \rbrack$
+    
     \textbf{Đầu ra:}
 
-    Một dòng ghi số phép tính nhỏ nhất khi thực hiện nhân chuỗi ma trận trên
+    Dòng đầu tiên ghi thời điểm sớm nhất tìm được
+    
+    Các dòng tiếp theo, dòng thứ $i$ ghi $w \lbrack i \rbrack, t \lbrack i \rbrack $
 
-    Ta nhận thấy kết quả của nhân hai ma trận $\bold{A}_i \bold{A}_{i + 1}$ là một ma trận có kích thước $d_{i-1} \times d_{i+1}$ ta cần số phép tính là: $d_{i-1} (2 d_i - 1) d_{i+1}$ (cần tính $d_{i-1} \times d_{i+1}$ phần tử của ma trận kết quả, mỗi phần tử cần $2 d_i - 1$ phép tính với $d_i$ phép tính nhân và $d_i - 1$ phép cộng) $\in O(d_{i-1} d_i d_{i+1})$
+    Ta sử dụng phương pháp quy hoạch động. Gọi $\bold{C} \lbrack i \rbrack$ là thời gian nhỏ nhất để cho $i$ xe đầu tiên trong đoàn xe qua cầu.
+    Để tính $\bold{C} \lbrack i \rbrack$, ta xét các cách chọn các xe vào tốp mà xe  thứ $i$ ở cuối cùng.
 
-    Để đơn giản ta có thể coi mỗi phép nhân hai ma trận $\bold{A}_i \bold{A}_{i + 1}$ cần $d_{i-1} d_i d_{i+1}$ phép tính.
-
-    Ta gọi $\bold{L} \lbrack i, j \rbrack$ là số phép tính ít nhất để nhân chuỗi ma trận $\bold{A}_i \times \bold{A}_{i+1} \times \dots \times \bold{A}_j $.
-
-    Ta có nhận xét:
-
-    \begin{itemize}
-        \item $\bold{L} \lbrack i, i \rbrack = 0 \thickspace \forall \thickspace i = \overline{1, n}$
-        \item $\bold{L} \lbrack i, i + 1 \rbrack = d_{i-1} d_i d_{i+1} \thickspace \forall \thickspace i = \overline{1, n-1}$
-        \item $\bold{L} \lbrack i, j \rbrack = \min \Big( \bold{L} \lbrack i, k \rbrack + \bold{L} \lbrack k + 1, j \rbrack + d_{i-1} d_k d_{j} \text{ với } k=i, \dots, j-1 \Big), \thickspace \forall \thickspace i = \overline{1, n - 2}, \thickspace j > i + 1$
-    \end{itemize}
-
-    Từ đây ta có công thức tổng quát của $\bold{L} \lbrack i, j \rbrack$:
+    Ta nhận thấy đoàn xe có 0 xe thì thời gian ngắn nhất để đoàn xe qua cầu là 0.
+    Ta có:
 
     \begin{equation*}
-        \bold{L} \lbrack i, j \rbrack = \begin{cases} 0 \text{ nếu } i = j \\ 
-        d_{i-1} d_i d_{i+1} \text{ nếu } j = i + 1 \\ 
-        \min \Big( \bold{L} \lbrack i, k \rbrack + \bold{L} \lbrack k + 1, j \rbrack + d_{i-1} d_k d_{j} \text{ với } k=i, \dots, j-1 \Big) \text{ nếu } j > i + 1\end{cases}
+        \bold{C} \lbrack i \rbrack = \begin{cases} 0, \text{ nếu } i = 0 \\
+        \min \Big( \bold{C} \lbrack k - 1 \rbrack + \max (t \lbrack k \dots i \rbrack) \thickspace \text{ với } \thickspace 1 \leq k \leq i \text{ và } \sum_{j=k}^i w \lbrack j \rbrack \leq L \Big)  \end{cases}
     \end{equation*}
 
-    Ta có mã giả thuật toán:
+    Để truy vết các điểm chia (thứ tự của xe đầu tiên của mỗi tốp), tại mỗi xe thứ tự $i$, ta khởi tạo một biến split để theo dõi có tồn tại $k$ để $\sum_{j=k}^i w \lbrack j \rbrack \leq L$ và điều kiện $\bold{C} \lbrack i \rbrack > \bold{C} \lbrack k - 1\rbrack + \max ( t\lbrack k \rbrack , t\lbrack k + 1\rbrack , \dots , t\lbrack i \rbrack)$.
+    Tại mỗi thời điểm 2 điều kiện trên đồng thời xảy ra tại $k$, ta sẽ gán lại một biến $bp \gets k$ (breakpoint - điểm chia) để lưu lại vị trí $k$ tối ưu để $i$ xe đầu tiên của đoàn qua cầu trong thời gian ngắn nhất
+
+
+    Từ phân tích trên ta có mã giả thuật toán:
 
     \begin{algorithm}
         \DontPrintSemicolon
-        \KwIn{Số nguyên $n$, dãy số nguyên gồm $n+1$ số}
-        \KwOut{Số phép tính nhỏ nhất thực hiện nhân chuỗi ma trận}
+        \KwIn{Số xe trong đoàn $N$, trọng tải tối đa của cầu $L$, $w \lbrack 1 \dots N \rbrack$ là trọng tải của các xe trong đoàn, $t \lbrack 1 \dots N \rbrack$ là thời gian qua cầu của từng xe trong đoàn}
+        \KwOut{Thời gian sớm nhất để đoàn xe qua cầu, các xe đầu tiên của từng tốp}
 
-        \For {$i \gets 1$ \textbf{to} $n$} {
-            $\bold{L} \lbrack i, i \rbrack \gets 0$\;
-        }
-            %$\bold{L} \lbrack i, i + 1\rbrack \gets d_{i - 1} d_i d_{i + 1}$\;
-        \For{$l \gets 1$ \textbf{to} $n - 1$} {
-            \For{$i \gets 1$ \textbf{to} $n - l$} {
-                $j \gets i + l$\;
-                $\bold{L} \lbrack i, j \rbrack \gets \infty$\;
-                \For {$k \gets i$ \textbf{to} $j-1$} {
-                    $val \gets \bold{L} \lbrack i, k \rbrack + \bold{L} \lbrack k + 1, j \rbrack + d_{i-1} d_{k} d_{j}$\;
-                    \If {$val < \bold{L} \lbrack i, j \rbrack$} {
-                        $\bold{L} \lbrack i, j \rbrack \gets val$\;
+        $\bold{C} \lbrack 0 \rbrack \gets 0$\;
+        $trace \gets \lbrack \rbrack$\;
+        \For {$i \gets 1$ \textbf{to} $N$}{
+            $\bold{C} \lbrack i \rbrack \gets \infty$\;
+            $split \gets false$\;
+            \For {$k \gets 1$ \textbf{to} $i$}{
+                \If {$w\lbrack k \rbrack + w\lbrack k + 1\rbrack + \dots + w\lbrack i \rbrack \leq L$} {
+                    \If {$\bold{C} \lbrack i \rbrack > \bold{C} \lbrack k - 1\rbrack + \max ( t\lbrack k \rbrack , t\lbrack k + 1\rbrack , \dots , t\lbrack i \rbrack)$} {
+                        $\bold{C} \lbrack i \rbrack \gets \bold{C} \lbrack k - 1\rbrack + \max ( t\lbrack k \rbrack , t\lbrack k + 1\rbrack , \dots , t\lbrack i \rbrack)$\;
+                        $split \gets true$\;
+                        $bp \gets k$\;
                     }
                 }
             }
+            \If {$split = true$} {
+                $trace.add(bp)$\;
+            }
         }
-        \Return {$\bold{L} \lbrack 1, n \rbrack$}\;
-        \caption{Thuật toán tính số phép tính nhỏ nhất thực hiện nhân chuỗi ma trận}
+        \Return{$\bold{C} \lbrack N \rbrack, set(trace)$}\;
+        \caption{Thuật toán tìm thời gian ngắn nhất để đoàn xe qua cầu}
     \end{algorithm}
 
-    Ta nhận thấy thuật toán có hai vòng lặp riêng rẽ, vòng lặp đầu tiên chỉ gồm 1 vòng lặp đơn có độ phức tạp tính toán $O(n)$,
-    vòng lặp thứ hai gồm 3 vòng lặp lồng nhau có độ phức tạp tính toán $O(n^3)$. Ta cần lưu mảng $\bold{L}$ hai chiều như vậy độ phức tạp về bộ nhớ là $O(n^2)$
+    Đối với chi phí tính toán, thuật toán trên có 2 vòng lặp lồng nhau, thân vòng lặp trong cùng phải thực hiện số phép tính là $O(i-k+1)$.
+    Như vậy tổng số phép tính cần để tính hai vòng lặp là:
+
+    \begin{equation*}
+        1 \times 1 + 2 \times 2 + \dots + N \times N = \dfrac{N (N+1)(2N + 1)}{6} \in O(N^3)
+    \end{equation*}
+
+    Độ phức tạp tính toán là $O(N^3)$.
+
+    Đối với chi phí bộ nhớ, ta cần mảng $\bold{C}$ để lưu $N+1$ giá trị thời gian. Mảng trace để lưu $N$ giá trị.
+    Vậy độ phức tạp bộ nhớ là $O(N)$.
+
+    Code của thuật toán trên được trình bày ở phụ lục \ref{code-3-ex-1}
     \end{loigiai}
 
     
@@ -1274,6 +1275,58 @@ if minCycle < 0:
                 print("{} ".format(el), end="")
         else:
             print("NO")
+\end{python}
+
+\subsection{Code bài tập thứ hai của bài tập 3} \label{code-2-ex-3}
+
+
+\begin{python}
+    import numpy as np
+            
+    N, L = str(input()).split(" ")
+    N = int(N)
+    L = int(L)
+                        
+    w = []
+    t = []
+                        
+    for _ in range(N):
+        x, y = str(input()).split(" ")
+        x = int(x)
+        y = int(y)
+        w.append(x)
+        t.append(y)
+                        
+    #print(N, L)
+    #print(w)
+    #print(t)
+                        
+    w = np.array(w)
+    t = np.array(t)
+                        
+    C = [0]
+                        
+    trace = []
+    #bp = 0
+    for i in range(1, N+1):
+        temp_c = np.inf
+        split = False
+        for k in range(1, i+1):
+            if np.sum(w[k-1:i]) <= L:
+                if temp_c > C[k-1] + np.max(t[k-1:i]):
+                    temp_c = C[k-1] + np.max(t[k-1:i])
+                    split = True
+                    bp = k
+        if split:
+            trace.append(bp)
+        C.append(temp_c)
+                        
+    bps = list(set(trace))
+                        
+    print(C[N])
+                        
+    for pt in bps:
+        print(w[pt - 1], t[pt - 1])
 \end{python}
 
 \end{document}
