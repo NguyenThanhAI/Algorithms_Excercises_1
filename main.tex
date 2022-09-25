@@ -1268,6 +1268,84 @@
         \end{verbatim}
     \end{itemize}
 
+    \textbf{Bài toán 4:} Giải bài toán người bán hàng (Travelling Saleman Problem) bằng giải thuật di truyền.
+
+    Bài toán người bán hàng là cho trước một danh sách các thành phố và khoảng cách giữa chúng,
+    tìm một chu trình ngắn nhất thăm mỗi thành phố đúng một lần.
+
+    Tổng quan giải thuật di truyền:
+
+    Giải thuật di truyền là kỹ thuật phỏng theo quá trình thích nghi tiến hóa của các quần thể sinh học dựa trên học thuyết Darwin. 
+    Giải thuật di truyền là phương pháp tìm kiếm tối ưu ngẫu nhiên bằng cách mô phỏng theo sự tiến hóa của con người hay của sinh vật. 
+    Tư tưởng của thuật toán di truyền là mô phỏng các hiện tượng tự nhiên, là kế thừa và đấu tranh sinh tồn.
+    Mục tiêu của giải thuật di truyền không nhằm đưa ra lời giải chính xác tối ưu mà là đưa ra lời giải tương đối tối ưu.
+
+    Giải thuật di truyền thuộc lớp các giải thuật xuất sắc nhưng lại rất khác các giải thuật ngẫu nhiên vì chúng kết hợp các phần tử tìm kiếm trực tiếp và ngẫu nhiên. 
+    Khác biệt quan trọng giữa tìm kiếm của giải thuật di truyền và các phương pháp tìm kiếm khác là giải thuật di truyền duy trì và xử lý một tập các lời giải, gọi là một quần thể (population). 
+    Trong giải thuật di truyền, việc tìm kiếm giả thuyết thích hợp được bắt đầu với một quần thể, hay một tập hợp có chọn lọc ban đầu của các giả thuyết. 
+    Các cá thể của quần thể hiện tại khởi nguồn cho quần thể thế hệ kế tiếp bằng các hoạt động lai ghép và đột biến ngẫu nhiên – được lấy mẫu sau các quá trình tiến hóa sinh học. 
+    Ở mỗi bước, các giả thuyết trong quần thể hiện tại được ước lượng liên hệ với đại lượng thích nghi, với các giả thuyết phù hợp nhất được chọn theo xác suất là các hạt giống cho việc sản sinh thế hệ kế tiếp, gọi là cá thể (individual). 
+    Cá thể nào phát triển hơn, thích ứng hơn với môi trường sẽ tồn tại và ngược lại sẽ bị đào thải. GA có thể dò tìm thế hệ mới có độ thích nghi tốt hơn. Giải thuật di truyền giải quyết các bài toán quy hoạch toán học thông qua các quá trình cơ bản: lai tạo (crossover), đột biến (mutation) và chọn lọc (selection) cho các cá thể trong quần thể. 
+    Dùng giải thuật di truyền đòi hỏi phải xác định được: khởi tạo quần thể ban đầu, hàm đánh giá các lời giải theo mức độ thích nghi – hàm mục tiêu, các toán tử di truyền tạo hàm sinh sản.
+
+    Các bước tổng quát của giải thuật di truyền được mô tả ở thuật toán \ref{alg:GA-Algorithm}:
+
+    \begin{algorithm}[h!]
+        \DontPrintSemicolon
+        \KwIn{Hàm mục tiêu}
+        \KwOut{Lời giải tương đối tối ưu}
+
+        Khởi tạo quần thể\;
+        Tính độ thích nghi của các cá thể\;
+
+        \While{Chưa đạt điều kiện dừng}{
+            Sinh sản\;
+            Lai tạo\;
+            Đột biến\;
+            Tính độ thích nghi của các cá thể\;
+
+        }
+        Lựa chọn cá thể tốt nhất làm lời giải\;
+        \Return{Lời giải}\;
+        \caption{Các bước tổng quát của giải thuật di truyền}
+        \label{alg:GA-Algorithm}
+    \end{algorithm}
+
+    Ở bài toán người bán hàng, ta sử dụng 20 thành phố gồm:
+
+    \begin{verbatim}
+        'Berlin', 'London', 'Moscow', 'Barcelona', 'Rome', 'Paris', 'Vienna', 'Munich', 'Istanbul', 'Kyiv', 'Bucharest', 'Minsk', 'Warsaw', 'Budapest', 'Milan', 'Prague', 'Sofia', 'Birmingham', 'Brussels', 'Amsterdam'
+    \end{verbatim}
+
+    Tọa độ của các thành phố được khởi tạo ngẫu nhiên. Các tọa độ $(x, y)$ mỗi giá trị nhận giá trị ngẫu nhiên từ $0$ đến $100$.
+
+    Quần thể có 100 phần tử được tạo từ các hoán vị vị trí của 20 thành phố.
+    Độ thích nghi của mỗi phần tử được tính bằng tổng khoảng cách Euclide giữa hai liên tiếp theo thứ tự của mỗi phần tử trong quần thể.
+    Quá trình sinh sản được thực hiện bằng cách lấy mẫu ngẫu nhiên theo xác suất tính bằng tỷ số giữa độ phụ hợp của cá thể đó với tổng độ phù hợp của cả quần thể.
+    Tại mỗi bước sinh sản ta tạo ra hai quần thể riêng biệt cùng 100 phần tử để phục vụ cho bước lai tạo.
+    Bước lai tạo sử dụng kết quả của bước sinh sản.
+    Tiếp đến ta sẽ thực hiện đột biến với tỷ lệ là 0.3.
+    Mỗi phần tử trong quần thể ta sẽ chọn ra 2 danh sách các thành phố (số lượng thành phố trong mỗi danh sách này bằng 0.3 tổng số thành phố).
+    Sau đó ta đổi chỗ các vị trí tương ứng các thành phố trong 2 danh sách được chọn trên cho nhau.
+    Ta thực hiện nhóm tuần tự các bước trên trong 10000 vòng lặp.
+    Tại mỗi vòng lặp ta kiểm tra nếu có một phần tử trong quần thể có độ thích nghi tốt nhất (tổng khoảng cách của chu trình nhỏ nhất),
+    ta sẽ cập nhật lại lời giải tốt nhất hiện thời.
+    Kết thúc 10000 vòng lặp ta in ra kết quả tốt nhất.
+
+    Code của giải thuật di truyền cho bài toán người bán hàng được trình bày ở phụ lục \ref{code-4-ex-3}
+
+    Kết quả của chương trình là:
+
+    \begin{verbatim}
+        [4577, 547.7700347644868, 
+        [['Munich', 'Berlin', 'Warsaw', 'Rome', 'Bucharest', 'Barcelona',      
+        'Moscow', 'Sofia', 'Vienna', 'Istanbul', 'Minsk', 'Amsterdam',
+        'Milan', 'Brussels', 'Birmingham', 'Prague', 'Kyiv', 'London',
+        'Budapest', 'Paris']]
+    \end{verbatim}
+
+    Kết quả trên cho thấy lời giải tốt nhất là một phần tử trong quần thể thuộc vòng lặp thứ 4577 và tổng khoảng cách của chu trình là 547.77003.
+
     \end{loigiai}
 
     
@@ -1398,7 +1476,7 @@ print(max_row, max_col)
 
 \section{Code các bài tập của bài tập 3:}
 
-\subsection{Code bài tập thứ nhất} \label{code-1-ex-3}
+\subsection{Code bài toán 1} \label{code-1-ex-3}
 
 \begin{python}
 import numpy as np
@@ -1473,7 +1551,7 @@ if minCycle < 0:
             print("NO")
 \end{python}
 
-\subsection{Code bài tập thứ hai} \label{code-2-ex-3}
+\subsection{Code bài toán 2} \label{code-2-ex-3}
 
 
 \begin{python}
@@ -1525,7 +1603,7 @@ for pt in bps:
     print(w[pt - 1], t[pt - 1])
 \end{python}
 
-\subsection{Code bài tập thứ ba} \label{code-3-ex-3}
+\subsection{Code bài toán 3} \label{code-3-ex-3}
 
 \begin{python}
 import numpy as np
@@ -1570,6 +1648,152 @@ for L in range(1, n):
 print(dp[0][n-1])
 #print(t)
 printParens(t, 1, n)
+\end{python}
+
+\subsection{Code bài toán 4} \label{code-4-ex-3}
+
+\begin{python}
+import numpy as np
+
+np.random.seed(1000)
+    
+    
+def compute_city_distance_coordinates(a,b):
+    return ((a[0]-b[0])**2+(a[1]-b[1])**2)**0.5
+
+def compute_city_distance_names(city_a, city_b, cities_dict):
+    return compute_city_distance_coordinates(cities_dict[city_a], cities_dict[city_b])
+
+def genesis(city_list, n_population):
+
+    population_set = []
+    for i in range(n_population):
+        #Randomly generating a new solution
+        sol_i = city_list[np.random.choice(list(range(n_cities)), n_cities, replace=False)]
+        population_set.append(sol_i)
+    return np.array(population_set)
+
+
+def fitness_eval(city_list, cities_dict):
+    total = 0
+    for i in range(n_cities-1):
+        a = city_list[i]
+        b = city_list[i+1]
+        total += compute_city_distance_names(a,b, cities_dict)
+    return total
+
+
+def get_all_fitnes(population_set, cities_dict):
+    fitnes_list = np.zeros(n_population)
+
+    #Looping over all solutions computing the fitness for each solution
+    for i in  range(n_population):
+        fitnes_list[i] = fitness_eval(population_set[i], cities_dict)
+
+    return fitnes_list
+
+
+
+def progenitor_selection(population_set,fitnes_list):
+    total_fit = fitnes_list.sum()
+    prob_list = fitnes_list/total_fit
+    
+    #Notice there is the chance that a progenitor. mates with oneself
+    progenitor_list_a = np.random.choice(list(range(len(population_set))), len(population_set),p=prob_list, replace=True)
+    progenitor_list_b = np.random.choice(list(range(len(population_set))), len(population_set),p=prob_list, replace=True)
+    
+    progenitor_list_a = population_set[progenitor_list_a]
+    progenitor_list_b = population_set[progenitor_list_b]
+    
+    
+    return np.array([progenitor_list_a,progenitor_list_b])
+
+
+def mate_progenitors(prog_a, prog_b):
+    offspring = prog_a[0:5]
+
+    for city in prog_b:
+
+        if not city in offspring:
+            offspring = np.concatenate((offspring,[city]))
+
+    return offspring
+            
+    
+    
+def mate_population(progenitor_list):
+    new_population_set = []
+    for i in range(progenitor_list.shape[1]):
+        prog_a, prog_b = progenitor_list[0][i], progenitor_list[1][i]
+        offspring = mate_progenitors(prog_a, prog_b)
+        new_population_set.append(offspring)
+        
+    return new_population_set
+
+
+def mutate_offspring(offspring):
+    for q in range(int(n_cities*mutation_rate)):
+        a = np.random.randint(0,n_cities)
+        b = np.random.randint(0,n_cities)
+
+        offspring[a], offspring[b] = offspring[b], offspring[a]
+
+    return offspring
+    
+    
+def mutate_population(new_population_set):
+    mutated_pop = []
+    for offspring in new_population_set:
+        mutated_pop.append(mutate_offspring(offspring))
+    return mutated_pop
+
+
+if __name__ == "__main__":
+
+    n_cities = 20
+
+    n_population = 100
+
+    mutation_rate = 0.3
+
+    coordinates_list = [[x,y] for x,y in zip(np.random.randint(0,100,n_cities),np.random.randint(0,100,n_cities))]
+    names_list = np.array(['Berlin', 'London', 'Moscow', 'Barcelona', 'Rome', 'Paris', 'Vienna', 'Munich', 'Istanbul', 'Kyiv', 'Bucharest', 'Minsk', 'Warsaw', 'Budapest', 'Milan', 'Prague', 'Sofia', 'Birmingham', 'Brussels', 'Amsterdam'])
+    cities_dict = { x:y for x,y in zip(names_list,coordinates_list)}
+
+    population_set = genesis(names_list, n_population)
+
+    print("Population set: {}".format(population_set))
+
+    fitnes_list = get_all_fitnes(population_set,cities_dict)
+    print("fitness list: {}".format(fitnes_list))
+
+    progenitor_list = progenitor_selection(population_set,fitnes_list)
+    print("Progenitor: {}".format(progenitor_list[0][2]))
+
+    new_population_set = mate_population(progenitor_list)
+    print("new population set: {}".format(new_population_set[0]))
+
+    mutated_pop = mutate_population(new_population_set)
+    print("Mutated population: {}".format(mutated_pop[0]))
+
+    best_solution = [-1,np.inf,np.array([])]
+    for i in range(10000):
+        if i % 100 == 0: 
+            print(i, fitnes_list.min(), fitnes_list.mean())
+        fitnes_list = get_all_fitnes(mutated_pop,cities_dict)
+        
+        #Saving the best solution
+        if fitnes_list.min() < best_solution[1]:
+            best_solution[0] = i
+            best_solution[1] = fitnes_list.min()
+            best_solution[2] = np.array(mutated_pop)[fitnes_list.min() == fitnes_list]
+        
+        progenitor_list = progenitor_selection(population_set,fitnes_list)
+        new_population_set = mate_population(progenitor_list)
+        
+        mutated_pop = mutate_population(new_population_set)
+    
+    print("Best solution: {}".format(best_solution))
 \end{python}
 
 \end{document}
