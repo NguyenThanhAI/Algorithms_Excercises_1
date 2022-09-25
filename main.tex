@@ -661,7 +661,7 @@
 
         Thuật toán trên có 2 vòng lặp lồng nhau.
         Độ phức tạp tính toán của thuật toán là $O(nm)$ và độ phức tạp về bộ nhớ của thuật toán là $O(nm)$ (lưu bảng phương án hai chiều $\bold{S}$).
-        Code của thuật toán trên được trình bày ở phụ lục \ref{code-2-ex-1}.
+        Code của thuật toán trên được trình bày ở phụ lục \ref{code-2-ex-2}.
 
         Thực nghiệm:
 
@@ -689,132 +689,8 @@
         \end{itemize}
 
         Ta nhận thấy với kích thước (độ dài xâu) tăng gấp đôi thì thời gian chạy tăng khoảng 4 lần phù hợp với độ phức tạp tính toán trong lý thuyết $O(nm)$.
-
-        \item \textbf{Ví dụ 3:} Cho $n$ ma trận $\bold{A}_1, \bold{A}_2, \dots, \bold{A}_n$, ma trận $\bold{A}_i$ có kích thước $d_{i-1} \times d_i$.
-        Hãy tính số phép tính nhỏ nhất để thực hiễn phép nhân $\bold{A}_1 \times \bold{A}_2 \times \dots \times \bold{A}_n$
-        \textbf{Đầu vào:}
-    
-        Dòng đầu tiên ghi số nguyên dương $n$ là số ma trận
-    
-        Dầu thứ hai ghi $n+1$ số nguyên là kích thước của chuỗi ma trận
-    
-        \textbf{Đầu ra:}
-    
-        Dòng đầu tiên ghi số phép tính nhỏ nhất khi thực hiện nhân chuỗi ma trận trên
-        Dòng thứ hai ghi thứ tự ưu tiên thực hiện các phép nhân ma trận sử dụng các dấu ngoặc
-    
-        Ta nhận thấy kết quả của nhân hai ma trận $\bold{A}_i \bold{A}_{i + 1}$ là một ma trận có kích thước $d_{i-1} \times d_{i+1}$ ta cần số phép tính là: $d_{i-1} (2 d_i - 1) d_{i+1}$ (cần tính $d_{i-1} \times d_{i+1}$ phần tử của ma trận kết quả, mỗi phần tử cần $2 d_i - 1$ phép tính với $d_i$ phép tính nhân và $d_i - 1$ phép cộng) $\in O(d_{i-1} d_i d_{i+1})$
-    
-        Để đơn giản ta có thể coi mỗi phép nhân hai ma trận $\bold{A}_i \bold{A}_{i + 1}$ cần $d_{i-1} d_i d_{i+1}$ phép tính.
-    
-        Ta gọi $\bold{L} \lbrack i, j \rbrack$ là số phép tính ít nhất để nhân chuỗi ma trận $\bold{A}_i \times \bold{A}_{i+1} \times \dots \times \bold{A}_j $.
-    
-        Ta có nhận xét:
-    
-        \begin{itemize}
-            \item $\bold{L} \lbrack i, i \rbrack = 0 \thickspace \forall \thickspace i = \overline{1, n}$
-            \item $\bold{L} \lbrack i, i + 1 \rbrack = d_{i-1} d_i d_{i+1} \thickspace \forall \thickspace i = \overline{1, n-1}$
-            \item $\bold{L} \lbrack i, j \rbrack = \min \Big( \bold{L} \lbrack i, k \rbrack + \bold{L} \lbrack k + 1, j \rbrack + d_{i-1} d_k d_{j} \text{ với } k=i, \dots, j-1 \Big), \thickspace \forall \thickspace i = \overline{1, n - 2}, \thickspace j > i + 1$
-        \end{itemize}
-    
-        Từ đây ta có công thức tổng quát của $\bold{L} \lbrack i, j \rbrack$:
-    
-        \begin{equation*}
-            \bold{L} \lbrack i, j \rbrack = \begin{cases} 0 \text{ nếu } i = j \\ 
-            d_{i-1} d_i d_{i+1} \text{ nếu } j = i + 1 \\ 
-            \min \Big( \bold{L} \lbrack i, k \rbrack + \bold{L} \lbrack k + 1, j \rbrack + d_{i-1} d_k d_{j} \text{ với } k=i, \dots, j-1 \Big) \text{ nếu } j > i + 1\end{cases}
-        \end{equation*}
-
-        Để truy vết, và in ra màn hình thứ tự ưu tiên thực hiện các phép nhân ta sử dụng bảng truy vết $\bold{T}$ và đệ quy.
-        Giá trị $\bold{T} \lbrack i, j \rbrack=k$ cho biết điểm ngắt ma trận $k$ tối ưu nằm giữa hai ma trận $i$ và ma trận $j$ sao cho chuỗi phép nhân ma trận $\bold{A}_i \times \dots \times \bold{A}_j$ cần số phép tính cần thực hiện là nhỏ nhất.
-        Như vậy dấu ngoặc sẽ có dạng $\Big ( \bold{A}_i \times \dots \times \bold{A}_k \Big) \Big( \bold{A}_{k + 1} \times \dots \times \bold{A}_j \Big)$.
-        Để in ra màn hình các dấu ngoặc biểu diễn thứ tự ưu tiên thực hiện các phép nhân ta sử dụng hàm printParens(T, i , j), với $i = j$, ta sẽ in luôn $\bold{A}_i$, nếu $i \neq j$, ta sẽ in ra màn hình dấu mở ngoặc "(", gọi đến hàm printParens hai lần với các tham số đầu vào tương ứng printParens(T, i, T[i, j])
-        và printParens(T, T[i, j] + 1, j). Ta có mã giả của hàm printParens:
-
-        \begin{algorithm}
-            \DontPrintSemicolon
-            \KwIn{Ma trận $\bold{T}$, chỉ số bắt đầu $i$ và chỉ số kết thúc $j$}
-            \KwOut{In ra màn hình thứ tự ưu tiên nhân các ma trận từ $i$ đến $j$}
-
-            \If{$i = j$} {
-                print("$\bold{A}_i$")\;
-            } \Else {
-                print("(")\;
-                printParens($\bold{T}$, $i$, $\bold{T} \lbrack i, j \rbrack$)\;
-                printParens($\bold{T}$, $\bold{T} \lbrack i, j \rbrack + 1$, $j$)\;
-                print(")")\;
-            }
-            \caption{printParens($\bold{T}$, $i$, $j$)}
-        \end{algorithm}
-
-        Ta có mã giả thuật toán:
-    
-        \begin{algorithm}
-            \DontPrintSemicolon
-            \KwIn{Số nguyên $n$, dãy số nguyên gồm $n+1$ số}
-            \KwOut{In ra màn hình số phép tính nhỏ nhất thực hiện nhân chuỗi ma trận và chi tiết thứ tự ưu tiên tính nhân các ma trận sử dụng dấu ngoặc}
-    
-            \For {$i \gets 1$ \textbf{to} $n$} {
-                $\bold{L} \lbrack i, i \rbrack \gets 0$\;
-            }
-                %$\bold{L} \lbrack i, i + 1\rbrack \gets d_{i - 1} d_i d_{i + 1}$\;
-            \For{$l \gets 1$ \textbf{to} $n - 1$} {
-                \For{$i \gets 1$ \textbf{to} $n - l$} {
-                    $j \gets i + l$\;
-                    $\bold{L} \lbrack i, j \rbrack \gets \infty$\;
-                    \For {$k \gets i$ \textbf{to} $j-1$} {
-                        $val \gets \bold{L} \lbrack i, k \rbrack + \bold{L} \lbrack k + 1, j \rbrack + d_{i-1} d_{k} d_{j}$\;
-                        \If {$val < \bold{L} \lbrack i, j \rbrack$} {
-                            $\bold{L} \lbrack i, j \rbrack \gets val$\;
-                            $\bold{T} \lbrack i, j \rbrack \gets k$
-                        }
-                    }
-                }
-            }
-            print($\bold{L} \lbrack 1, n \rbrack$)\;
-            printParens($\bold{T}$, 1, $n$)\;
-            \caption{Thuật toán tính số phép tính nhỏ nhất thực hiện nhân chuỗi ma trận}
-        \end{algorithm}
-    
-        Ta nhận thấy thuật toán có hai vòng lặp riêng rẽ, vòng lặp đầu tiên chỉ gồm 1 vòng lặp đơn có độ phức tạp tính toán $O(n)$,
-        vòng lặp thứ hai gồm 3 vòng lặp lồng nhau có độ phức tạp tính toán $O(n^3)$. Ta cần lưu mảng $\bold{L}$ hai chiều như vậy độ phức tạp về bộ nhớ là $O(n^2)$.
-
-        Code của thuật toán trên được trình bày ở phụ lục \ref{code-3-ex-1}
-
-        Thực nghiệm:
-
-        \begin{itemize}
-            \item Với đầu vào:
-            \begin{verbatim}
-                5
-                4 10 3 12 20 7
-            \end{verbatim}
-            Kết quả đầu ra:
-            \begin{verbatim}
-                1344
-                ((A_1A_2)((A_3A_4)A_5))
-            \end{verbatim}
-            \item Với đầu vào:
-            \begin{verbatim}
-                10
-                5 10 12 7 8 6 8 12 18 20 5
-            \end{verbatim}
-            Kết quả đầu ra:
-            \begin{verbatim}
-                (((((A_1A_2)A_3)A_4)A_5)(A_6(A_7(A_8(A_9A_10)))))
-            \end{verbatim}
-            \item Với đầu vào:
-            \begin{verbatim}
-                10
-                10 15 12 18 25 20 19 18 28 22 20
-            \end{verbatim}
-            Kết quả đầu ra:
-            \begin{verbatim}
-                (((((((((A_1A_2)A_3)A_4)A_5)A_6)A_7)A_8)A_9)A_10)
-            \end{verbatim}
-        \end{itemize}
         
-        \item \textbf{Ví dụ 4:} Trên một vùng đất hình vuông các nhà địa chất phát hiện ra có trữ lượng vàng khá lớn.
+        \item \textbf{Ví dụ 3:} Trên một vùng đất hình vuông các nhà địa chất phát hiện ra có trữ lượng vàng khá lớn.
         Để tiện việc khai thác, người ta chia vùng đất thành các lô nhỏ, tổng cộng có $n \times n$ lô ($n$ hàng, $n$ cột).
         Ta đánh số các hàng từ 1 đến $n$ theo chiều từ trên xuống dưới,
         các cột từ 1 đến $n$ theo chiều từ trái sang phải. Tại lô đất ở hàng $i$ cột $j$,
@@ -914,7 +790,7 @@
 
         Thuật toán trên có độ phức tạp tính toán là $O(n^2)$ và độ phức tạp bộ nhớ cũng là $O(n^2)$ (lưu mảng $\bold{G}$).
 
-        Code của thuật toán trên được trình bày ở phụ lục \ref{code-4-ex-2}
+        Code của thuật toán trên được trình bày ở phụ lục \ref{code-3-ex-2}
 
         Thực nghiệm:
 
@@ -1258,6 +1134,132 @@
         3 2
     \end{verbatim}
 
+    \textbf{Bài toán 3:} Cho $n$ ma trận $\bold{A}_1, \bold{A}_2, \dots, \bold{A}_n$, ma trận $\bold{A}_i$ có kích thước $d_{i-1} \times d_i$.
+    Hãy tính số phép tính nhỏ nhất để thực hiễn phép nhân $\bold{A}_1 \times \bold{A}_2 \times \dots \times \bold{A}_n$
+    \textbf{Đầu vào:}
+
+    Dòng đầu tiên ghi số nguyên dương $n$ là số ma trận
+
+    Dầu thứ hai ghi $n+1$ số nguyên là kích thước của chuỗi ma trận
+
+    \textbf{Đầu ra:}
+
+    Dòng đầu tiên ghi số phép tính nhỏ nhất khi thực hiện nhân chuỗi ma trận trên
+    Dòng thứ hai ghi thứ tự ưu tiên thực hiện các phép nhân ma trận sử dụng các dấu ngoặc
+
+    Ta nhận thấy kết quả của nhân hai ma trận $\bold{A}_i \bold{A}_{i + 1}$ là một ma trận có kích thước $d_{i-1} \times d_{i+1}$ ta cần số phép tính là: $d_{i-1} (2 d_i - 1) d_{i+1}$ (cần tính $d_{i-1} \times d_{i+1}$ phần tử của ma trận kết quả, mỗi phần tử cần $2 d_i - 1$ phép tính với $d_i$ phép tính nhân và $d_i - 1$ phép cộng) $\in O(d_{i-1} d_i d_{i+1})$
+
+    Để đơn giản ta có thể coi mỗi phép nhân hai ma trận $\bold{A}_i \bold{A}_{i + 1}$ cần $d_{i-1} d_i d_{i+1}$ phép tính.
+
+    Ta gọi $\bold{L} \lbrack i, j \rbrack$ là số phép tính ít nhất để nhân chuỗi ma trận $\bold{A}_i \times \bold{A}_{i+1} \times \dots \times \bold{A}_j $.
+
+    Ta có nhận xét:
+
+    \begin{itemize}
+        \item $\bold{L} \lbrack i, i \rbrack = 0 \thickspace \forall \thickspace i = \overline{1, n}$
+        \item $\bold{L} \lbrack i, i + 1 \rbrack = d_{i-1} d_i d_{i+1} \thickspace \forall \thickspace i = \overline{1, n-1}$
+        \item $\bold{L} \lbrack i, j \rbrack = \min \Big( \bold{L} \lbrack i, k \rbrack + \bold{L} \lbrack k + 1, j \rbrack + d_{i-1} d_k d_{j} \text{ với } k=i, \dots, j-1 \Big), \thickspace \forall \thickspace i = \overline{1, n - 2}, \thickspace j > i + 1$
+    \end{itemize}
+
+    Từ đây ta có công thức tổng quát của $\bold{L} \lbrack i, j \rbrack$:
+
+    \begin{equation*}
+        \bold{L} \lbrack i, j \rbrack = \begin{cases} 0 \text{ nếu } i = j \\ 
+        d_{i-1} d_i d_{i+1} \text{ nếu } j = i + 1 \\ 
+        \min \Big( \bold{L} \lbrack i, k \rbrack + \bold{L} \lbrack k + 1, j \rbrack + d_{i-1} d_k d_{j} \text{ với } k=i, \dots, j-1 \Big) \text{ nếu } j > i + 1\end{cases}
+    \end{equation*}
+
+    Để truy vết, và in ra màn hình thứ tự ưu tiên thực hiện các phép nhân ta sử dụng bảng truy vết $\bold{T}$ và đệ quy.
+    Giá trị $\bold{T} \lbrack i, j \rbrack=k$ cho biết điểm ngắt ma trận $k$ tối ưu nằm giữa hai ma trận $i$ và ma trận $j$ sao cho chuỗi phép nhân ma trận $\bold{A}_i \times \dots \times \bold{A}_j$ cần số phép tính cần thực hiện là nhỏ nhất.
+    Như vậy dấu ngoặc sẽ có dạng $\Big ( \bold{A}_i \times \dots \times \bold{A}_k \Big) \Big( \bold{A}_{k + 1} \times \dots \times \bold{A}_j \Big)$.
+    Để in ra màn hình các dấu ngoặc biểu diễn thứ tự ưu tiên thực hiện các phép nhân ta sử dụng hàm printParens(T, i , j), với $i = j$, ta sẽ in luôn $\bold{A}_i$, nếu $i \neq j$, ta sẽ in ra màn hình dấu mở ngoặc "(", gọi đến hàm printParens hai lần với các tham số đầu vào tương ứng printParens(T, i, T[i, j])
+    và printParens(T, T[i, j] + 1, j). Ta có mã giả của hàm printParens:
+
+    \begin{algorithm}
+        \DontPrintSemicolon
+        \KwIn{Ma trận $\bold{T}$, chỉ số bắt đầu $i$ và chỉ số kết thúc $j$}
+        \KwOut{In ra màn hình thứ tự ưu tiên nhân các ma trận từ $i$ đến $j$}
+
+        \If{$i = j$} {
+            print("$\bold{A}_i$")\;
+        } \Else {
+            print("(")\;
+            printParens($\bold{T}$, $i$, $\bold{T} \lbrack i, j \rbrack$)\;
+            printParens($\bold{T}$, $\bold{T} \lbrack i, j \rbrack + 1$, $j$)\;
+            print(")")\;
+        }
+        \caption{printParens($\bold{T}$, $i$, $j$)}
+    \end{algorithm}
+
+    Ta có mã giả thuật toán:
+
+    \begin{algorithm}
+        \DontPrintSemicolon
+        \KwIn{Số nguyên $n$, dãy số nguyên gồm $n+1$ số}
+        \KwOut{In ra màn hình số phép tính nhỏ nhất thực hiện nhân chuỗi ma trận và chi tiết thứ tự ưu tiên tính nhân các ma trận sử dụng dấu ngoặc}
+
+        \For {$i \gets 1$ \textbf{to} $n$} {
+            $\bold{L} \lbrack i, i \rbrack \gets 0$\;
+        }
+            %$\bold{L} \lbrack i, i + 1\rbrack \gets d_{i - 1} d_i d_{i + 1}$\;
+        \For{$l \gets 1$ \textbf{to} $n - 1$} {
+            \For{$i \gets 1$ \textbf{to} $n - l$} {
+                $j \gets i + l$\;
+                $\bold{L} \lbrack i, j \rbrack \gets \infty$\;
+                \For {$k \gets i$ \textbf{to} $j-1$} {
+                    $val \gets \bold{L} \lbrack i, k \rbrack + \bold{L} \lbrack k + 1, j \rbrack + d_{i-1} d_{k} d_{j}$\;
+                    \If {$val < \bold{L} \lbrack i, j \rbrack$} {
+                        $\bold{L} \lbrack i, j \rbrack \gets val$\;
+                        $\bold{T} \lbrack i, j \rbrack \gets k$
+                    }
+                }
+            }
+        }
+        print($\bold{L} \lbrack 1, n \rbrack$)\;
+        printParens($\bold{T}$, 1, $n$)\;
+        \caption{Thuật toán tính số phép tính nhỏ nhất thực hiện nhân chuỗi ma trận}
+    \end{algorithm}
+
+    Ta nhận thấy thuật toán có hai vòng lặp riêng rẽ, vòng lặp đầu tiên chỉ gồm 1 vòng lặp đơn có độ phức tạp tính toán $O(n)$,
+    vòng lặp thứ hai gồm 3 vòng lặp lồng nhau có độ phức tạp tính toán $O(n^3)$. Ta cần lưu mảng $\bold{L}$ hai chiều như vậy độ phức tạp về bộ nhớ là $O(n^2)$.
+
+    Code của thuật toán trên được trình bày ở phụ lục \ref{code-3-ex-3}
+
+    Thực nghiệm:
+
+    \begin{itemize}
+        \item Với đầu vào:
+        \begin{verbatim}
+            5
+            4 10 3 12 20 7
+        \end{verbatim}
+        Kết quả đầu ra:
+        \begin{verbatim}
+            1344
+            ((A_1A_2)((A_3A_4)A_5))
+        \end{verbatim}
+        \item Với đầu vào:
+        \begin{verbatim}
+            10
+            5 10 12 7 8 6 8 12 18 20 5
+        \end{verbatim}
+        Kết quả đầu ra:
+        \begin{verbatim}
+            5290
+            (((((A_1A_2)A_3)A_4)A_5)(A_6(A_7(A_8(A_9A_10)))))
+        \end{verbatim}
+        \item Với đầu vào:
+        \begin{verbatim}
+            10
+            10 15 12 18 25 20 19 18 28 22 20
+        \end{verbatim}
+        Kết quả đầu ra:
+        \begin{verbatim}
+            36280
+            (((((((((A_1A_2)A_3)A_4)A_5)A_6)A_7)A_8)A_9)A_10)
+        \end{verbatim}
+    \end{itemize}
+
     \end{loigiai}
 
     
@@ -1300,7 +1302,7 @@ for i in range(len(orig_string) + 1):
 print(L[len(orig_string), len(target_string)])
                 \end{python}
 
-    \subsection{Code ví dụ 2} \label{code-2-ex-1}
+    \subsection{Code ví dụ 2} \label{code-2-ex-2}
 
     \begin{python}
 
@@ -1329,58 +1331,7 @@ print(a[int(pos[0] - max_len): int(pos[0])])
 
     \end{python}
 
-    \subsection{Code ví dụ 3} \label{code-3-ex-1}
-
-    \begin{python}
-import numpy as np
-        
-N, L = str(input()).split(" ")
-N = int(N)
-L = int(L)
-                    
-w = []
-t = []
-                    
-for _ in range(N):
-    x, y = str(input()).split(" ")
-    x = int(x)
-    y = int(y)
-    w.append(x)
-    t.append(y)
-                    
-#print(N, L)
-#print(w)
-#print(t)
-                    
-w = np.array(w)
-t = np.array(t)
-                    
-C = [0]
-                    
-trace = []
-#bp = 0
-for i in range(1, N+1):
-    temp_c = np.inf
-    split = False
-    for k in range(1, i+1):
-        if np.sum(w[k-1:i]) <= L:
-            if temp_c > C[k-1] + np.max(t[k-1:i]):
-                temp_c = C[k-1] + np.max(t[k-1:i])
-                split = True
-                bp = k
-    if split:
-        trace.append(bp)
-    C.append(temp_c)
-                    
-bps = list(set(trace))
-                    
-print(C[N])
-                    
-for pt in bps:
-    print(w[pt - 1], t[pt - 1])
-        \end{python}
-
-    \subsection{Code ví dụ 4} \label{code-4-ex-2}
+    \subsection{Code ví dụ 3} \label{code-3-ex-2}
 
     \begin{python}
 import numpy as np
@@ -1518,52 +1469,99 @@ if minCycle < 0:
 
 
 \begin{python}
-    import numpy as np
+import numpy as np
             
-    N, L = str(input()).split(" ")
-    N = int(N)
-    L = int(L)
+N, L = str(input()).split(" ")
+N = int(N)
+L = int(L)
                         
-    w = []
-    t = []
+w = []
+t = []
                         
-    for _ in range(N):
-        x, y = str(input()).split(" ")
-        x = int(x)
-        y = int(y)
-        w.append(x)
-        t.append(y)
+for _ in range(N):
+    x, y = str(input()).split(" ")
+    x = int(x)
+    y = int(y)
+    w.append(x)
+    t.append(y)
                         
-    #print(N, L)
-    #print(w)
-    #print(t)
+#print(N, L)
+#print(w)
+#print(t)
                         
-    w = np.array(w)
-    t = np.array(t)
+w = np.array(w)
+t = np.array(t)
                         
-    C = [0]
+C = [0]
                         
-    trace = []
-    #bp = 0
-    for i in range(1, N+1):
-        temp_c = np.inf
-        split = False
-        for k in range(1, i+1):
-            if np.sum(w[k-1:i]) <= L:
-                if temp_c > C[k-1] + np.max(t[k-1:i]):
-                    temp_c = C[k-1] + np.max(t[k-1:i])
-                    split = True
-                    bp = k
-        if split:
-            trace.append(bp)
-        C.append(temp_c)
+trace = []
+#bp = 0
+for i in range(1, N+1):
+    temp_c = np.inf
+    split = False
+    for k in range(1, i+1):
+        if np.sum(w[k-1:i]) <= L:
+            if temp_c > C[k-1] + np.max(t[k-1:i]):
+                temp_c = C[k-1] + np.max(t[k-1:i])
+                split = True
+                bp = k
+    if split:
+        trace.append(bp)
+    C.append(temp_c)
                         
-    bps = list(set(trace))
+bps = list(set(trace))
                         
-    print(C[N])
+print(C[N])
                         
-    for pt in bps:
-        print(w[pt - 1], t[pt - 1])
+for pt in bps:
+    print(w[pt - 1], t[pt - 1])
+\end{python}
+
+\subsection{Code bài tập thứ ba của bài tập 3} \label{code-3-ex-3}
+
+\begin{python}
+import numpy as np
+
+n = int(input())
+    
+arr = str(input()).split(" ")
+arr = list(map(int, arr))
+assert len(arr) == n + 1
+    
+def printParens(t, i, j):
+    if i == j:
+        print("A_{}".format(i), end="")
+    
+    else:
+        print("(", end="")
+        printParens(t, i, t[i, j])
+        printParens(t, t[i , j] + 1, j)
+        print(")", end="")
+    
+    
+dp = [[0 for i in range(n)] for j in range(n)]
+t = np.zeros(shape=(n+1, n+1), dtype=np.int)
+for i in range(1, n+1):
+    dp[i-1][i-1] = 0
+        
+for L in range(1, n):
+    for i in range(1, n-L+1):
+        j = i+L
+        dp[i - 1][j - 1] = np.inf
+        #print(i, j)
+        for k in range(i, j):
+            q = dp[i - 1][k - 1] + dp[k][j - 1] + arr[i-1]*arr[k]*arr[j]
+            if q < dp[i - 1][j - 1]:
+                dp[i - 1][j - 1] = q
+                t[i][j] = k
+#print(np.array(dp), t)
+    
+#arr = [4, 10, 3, 12, 20, 7]
+    
+    
+print(dp[0][n-1])
+#print(t)
+printParens(t, 1, n)
 \end{python}
 
 \end{document}
