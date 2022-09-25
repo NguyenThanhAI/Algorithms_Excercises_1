@@ -251,7 +251,7 @@
                         \caption{Ví dụ minh họa sơ đồ khối}
                     \end{figure}
                     \item Mã giả (pseudo-code). Vẫn sử dụng 1 phần ngôn ngữ tự nhiên. Nhưng vì các thuật toán thường có các thao tác lặp nên mã giả hay vay mượn cú pháp của các ngôn ngữ lập trình để thể hiện cho tường minh.
-                    \begin{algorithm}
+                    \begin{algorithm}[h!]
                         \DontPrintSemicolon
                         \KwIn{$a, b, c (a \neq 0)$}
                         \KwOut{Nghiệm nếu có của phương trình bậc 2}
@@ -629,7 +629,7 @@
 
         Ta có thuật toán tìm xâu con chung dài nhất của hai xâu $\bold{X}$ và xâu $\bold{Y}$:
 
-        \begin{algorithm}
+        \begin{algorithm}[h!]
             \DontPrintSemicolon
             \KwIn{Xâu $\bold{X}$ có độ dài $n$, xâu $\bold{Y}$ có độ dài $m$}
             \KwOut{Xâu con chung dài nhất của hai xâu $\bold{X}$ và xâu $\bold{Y}$}
@@ -925,7 +925,7 @@
         ý nghĩa rằng nếu ta tìm được một đồng trung gian $k$ tối ưu trong quá trình đổi tiền từ đồng thứ $i$ sang đồng thứ $j$ thì từ $i$ ta sẽ thực hiện một phép đổi tiền trước mắt sao cho từ đồng thứ $i$ sang đồng thứ $k$ (quá trình đổi này có thể lại có nhiều đồng trung gian) trước sau đó thực hiện quá trình đổi từ đồng thứ $k$ sang đồng thứ $j$.
         Từ các phân tích trên, ta đề xuất ra thuật toán tìm cách đổi tiền sinh ra lợi nhuận tốt nhất (nếu có cách đổi tiền sinh ra lợi nhuận):
 
-        \begin{algorithm}
+        \begin{algorithm}[h!]
             \DontPrintSemicolon
             \KwIn{Số nguyên $n (n \leq 100)$, mảng hai chiều $\bold{R}$ có kích thước $n \times n$}
             \KwOut{"YES" hoặc "NO". Nếu là "YES" trả về đồng $u$ và lợi nhuận $s$, trình tự đổi tiền tương ứng}
@@ -936,9 +936,9 @@
                     $\bold{T} \lbrack i, j \rbrack \gets j$\;
                 }
             }
-            \For{$i \gets 1$ \textbf{to} $n$} {
-                \For {$j \gets 1$ \textbf{to} $n$} {
-                    \For {$k \gets 1$ \textbf{to} $n$} {
+            \For{$k \gets 1$ \textbf{to} $n$} {
+                \For {$i \gets 1$ \textbf{to} $n$} {
+                    \For {$j \gets 1$ \textbf{to} $n$} {
                         \If{$\bold{D} \lbrack i, j \rbrack > \bold{D} \lbrack i, k \rbrack + \bold{D} \lbrack k, j \rbrack$} {
                             $\bold{D} \lbrack i, j \rbrack \gets \bold{D} \lbrack i, k \rbrack + \bold{D} \lbrack k, j \rbrack$\;
                             $\bold{T} \lbrack i, j \rbrack \gets \bold{T} \lbrack i, k \rbrack$
@@ -1039,7 +1039,7 @@
 
     Từ phân tích trên ta có mã giả thuật toán:
 
-    \begin{algorithm}
+    \begin{algorithm}[h!]
         \DontPrintSemicolon
         \KwIn{Số xe trong đoàn $N$, trọng tải tối đa của cầu $L$, $w \lbrack 1 \dots N \rbrack$ là trọng tải của các xe trong đoàn, $t \lbrack 1 \dots N \rbrack$ là thời gian qua cầu của từng xe trong đoàn}
         \KwOut{Thời gian sớm nhất để đoàn xe qua cầu, các xe đầu tiên của từng tốp}
@@ -1175,7 +1175,7 @@
     Để in ra màn hình các dấu ngoặc biểu diễn thứ tự ưu tiên thực hiện các phép nhân ta sử dụng hàm printParens(T, i , j), với $i = j$, ta sẽ in luôn $\bold{A}_i$, nếu $i \neq j$, ta sẽ in ra màn hình dấu mở ngoặc "(", gọi đến hàm printParens hai lần với các tham số đầu vào tương ứng printParens(T, i, T[i, j])
     và printParens(T, T[i, j] + 1, j). Ta có mã giả của hàm printParens:
 
-    \begin{algorithm}
+    \begin{algorithm}[h!]
         \DontPrintSemicolon
         \KwIn{Ma trận $\bold{T}$, chỉ số bắt đầu $i$ và chỉ số kết thúc $j$}
         \KwOut{In ra màn hình thứ tự ưu tiên nhân các ma trận từ $i$ đến $j$}
@@ -1193,7 +1193,7 @@
 
     Ta có mã giả thuật toán:
 
-    \begin{algorithm}
+    \begin{algorithm}[h!]
         \DontPrintSemicolon
         \KwIn{Số nguyên $n$, dãy số nguyên gồm $n+1$ số}
         \KwOut{In ra màn hình số phép tính nhỏ nhất thực hiện nhân chuỗi ma trận và chi tiết thứ tự ưu tiên tính nhân các ma trận sử dụng dấu ngoặc}
