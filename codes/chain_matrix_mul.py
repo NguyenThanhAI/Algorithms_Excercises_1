@@ -42,9 +42,20 @@ print(T)
 #print_result(T, 1, n)'''
 import numpy as np
 
+def print_parens(t, i, j):
+    if i == j:
+        print("A_{}".format(i), end="")
+
+    else:
+        print("(", end="")
+        print_parens(t, i, t[i, j])
+        print_parens(t, t[i , j] + 1, j)
+        print(")", end="")
+
+
 def MatChainMul(arr, n):
     dp = [[0 for i in range(n)] for j in range(n)]
-    t = np.zeros(shape=(n, n), dtype=np.int)
+    t = np.zeros(shape=(n+1, n+1), dtype=np.int)
     for i in range(1, n+1):
         dp[i-1][i-1] = 0
     
@@ -57,14 +68,108 @@ def MatChainMul(arr, n):
                 q = dp[i - 1][k - 1] + dp[k][j - 1] + arr[i-1]*arr[k]*arr[j]
                 if q < dp[i - 1][j - 1]:
                     dp[i - 1][j - 1] = q
-                    t[i - 1][j - 1] = k
+                    t[i][j] = k
     print(np.array(dp), t)
-    return dp[0][n-1]
+    return dp[0][n-1], t
 
-arr = [4, 10, 3, 12, 20, 7]
+#arr = [4, 10, 3, 12, 20, 7]
+arr = [4, 10, 20, 3, 12, 20, 7]
 size = len(arr) - 1
 
-print("Minimum number of multiplications are " + str(MatChainMul(arr, size)))
+min_cal, t = MatChainMul(arr, size)
+
+print("Minimum number of multiplications are " + str(min_cal))
+print(t)
+print_parens(t, 1, size)
+
+
+'''def matrix_chain_order(p):
+    """
+    Matrix-Chain-Order given a list of integers corresponding to the dimensions
+    of each pair of matrices forming a chain.
+    :param list p: A list of integers.
+    
+    >>> M, S = matrix_chain_order([2, 20, 4, 6])
+    >>> print(M)
+    {(1, 1): 0, (2, 2): 0, (3, 3): 0, (1, 2): 160, (2, 3): 480, (1, 3): 208}
+    >>> print(S)
+    {(1, 2): 1, (2, 3): 2, (1, 3): 2}
+    """
+    s = {}
+    m = {}
+    n = len(p)
+    
+    for i in range(1, n):
+        m[tuple([i, i])] = 0
+    
+    for l in range(2, n):
+        for i in range(1, n - l + 1):
+            j = i + l - 1
+            m[tuple([i, j])] = float('inf')
+            for k in range(i, j):
+                q = m[tuple([i, k])] + m[tuple([k + 1, j])] + (p[i-1] * p[k] * p[j])
+                if q < m[tuple([i, j])]:
+                    m[tuple([i, j])] = q
+                    s[tuple([i, j])] = k
+    return m, s
+
+
+def print_optimal_parens(s, i, j):
+    """
+    Print the optimal parentheses according to the S-matrix computed by the
+    matrix_chain_order function.
+    :param dict s: A dictionary of tuples corresponding to the minimum k
+                   values from each step of ``matrix_chain_order``.
+    :param int i: Starting index.
+    :param int j: End index.
+    Example (continued from previous function):
+    >>> M, S = matrix_chain_order([2, 20, 4, 6])
+    >>> print_optimal_parens(S, 1, 3)
+    ((A_1A_2)A_3)
+    General form:
+    
+    >>> chain = [2, 20, 4, 6]
+    >>> M, S = matrix_chain_order(chain)
+    >>> print_optimal_parens(S, 1, len(S) - 1)
+    ((A_1A_2)A_3)
+    """
+
+    if i == j:
+        print("A_{}".format(i), end='')
+    else:
+        print('(', end='')
+        print_optimal_parens(s, i, s[tuple([i, j])])
+        print_optimal_parens(s, s[tuple([i, j])] + 1, j)
+        print(')', end='')
+
+        
+if __name__ == '__main__':
+
+    import argparse
+
+    parser = argparse.ArgumentParser()
+    parser.add_argument('-c',
+                        '--chain',
+                        default='4,10,3,12,20,7',
+                        help="Specify comma-separated integers for input. [Default: 30,35,15,5,10,20,25]")
+    parser.add_argument('-v',
+                        '--verbose',
+                        action='store_false',
+                        help='Show the values of the S matrix.')
+
+    args = parser.parse_args()
+    chain = [int(i) for i in args.chain.split(',')]
+    m, s = matrix_chain_order(chain)
+
+    if args.verbose:
+        for i,j in m:
+            print('(i,j) = ({0},{1}): {2}'.format(i, j, m[tuple([i,j])]))
+
+    print(s)
+    
+    print_optimal_parens(s, 1, len(chain) - 1)
+    print()
+'''
 
 '''import numpy as np
 
