@@ -1285,7 +1285,7 @@
     Trong giải thuật di truyền, việc tìm kiếm giả thuyết thích hợp được bắt đầu với một quần thể, hay một tập hợp có chọn lọc ban đầu của các giả thuyết. 
     Các cá thể của quần thể hiện tại khởi nguồn cho quần thể thế hệ kế tiếp bằng các hoạt động lai ghép và đột biến ngẫu nhiên – được lấy mẫu sau các quá trình tiến hóa sinh học. 
     Ở mỗi bước, các giả thuyết trong quần thể hiện tại được ước lượng liên hệ với đại lượng thích nghi, với các giả thuyết phù hợp nhất được chọn theo xác suất là các hạt giống cho việc sản sinh thế hệ kế tiếp, gọi là cá thể (individual). 
-    Cá thể nào phát triển hơn, thích ứng hơn với môi trường sẽ tồn tại và ngược lại sẽ bị đào thải. GA có thể dò tìm thế hệ mới có độ thích nghi tốt hơn. Giải thuật di truyền giải quyết các bài toán quy hoạch toán học thông qua các quá trình cơ bản: lai tạo (crossover), đột biến (mutation) và chọn lọc (selection) cho các cá thể trong quần thể. 
+    Cá thể nào phát triển hơn, thích ứng hơn với môi trường sẽ tồn tại và ngược lại sẽ bị đào thải. Giải thuật di truyền có thể dò tìm thế hệ mới có độ thích nghi tốt hơn. Giải thuật di truyền giải quyết các bài toán quy hoạch toán học thông qua các quá trình cơ bản: lai tạo (crossover), đột biến (mutation) và chọn lọc (selection) cho các cá thể trong quần thể. 
     Dùng giải thuật di truyền đòi hỏi phải xác định được: khởi tạo quần thể ban đầu, hàm đánh giá các lời giải theo mức độ thích nghi – hàm mục tiêu, các toán tử di truyền tạo hàm sinh sản.
 
     Các bước tổng quát của giải thuật di truyền được mô tả ở thuật toán \ref{alg:GA-Algorithm}:
@@ -1314,7 +1314,10 @@
     Ở bài toán người bán hàng, ta sử dụng 20 thành phố gồm:
 
     \begin{verbatim}
-        'Berlin', 'London', 'Moscow', 'Barcelona', 'Rome', 'Paris', 'Vienna', 'Munich', 'Istanbul', 'Kyiv', 'Bucharest', 'Minsk', 'Warsaw', 'Budapest', 'Milan', 'Prague', 'Sofia', 'Birmingham', 'Brussels', 'Amsterdam'
+        'Berlin', 'London', 'Moscow', 'Barcelona', 'Rome', 
+        'Paris', 'Vienna', 'Munich', 'Istanbul', 'Kyiv', 
+        'Bucharest', 'Minsk', 'Warsaw', 'Budapest', 'Milan', 
+        'Prague', 'Sofia', 'Birmingham', 'Brussels', 'Amsterdam'
     \end{verbatim}
 
     Tọa độ của các thành phố được khởi tạo ngẫu nhiên. Các tọa độ $(x, y)$ mỗi giá trị nhận giá trị ngẫu nhiên từ $0$ đến $100$.
@@ -1338,10 +1341,10 @@
 
     \begin{verbatim}
         [4577, 547.7700347644868, 
-        [['Munich', 'Berlin', 'Warsaw', 'Rome', 'Bucharest', 'Barcelona',      
-        'Moscow', 'Sofia', 'Vienna', 'Istanbul', 'Minsk', 'Amsterdam',
-        'Milan', 'Brussels', 'Birmingham', 'Prague', 'Kyiv', 'London',
-        'Budapest', 'Paris']]
+        [['Munich', 'Berlin', 'Warsaw', 'Rome', 'Bucharest', 
+        'Barcelona', 'Moscow', 'Sofia', 'Vienna', 'Istanbul', 
+        'Minsk', 'Amsterdam', 'Milan', 'Brussels', 'Birmingham', 
+        'Prague', 'Kyiv', 'London', 'Budapest', 'Paris']]
     \end{verbatim}
 
     Kết quả trên cho thấy lời giải tốt nhất là một phần tử trong quần thể thuộc vòng lặp thứ 4577 và tổng khoảng cách của chu trình là 547.77003.
@@ -1757,7 +1760,10 @@ if __name__ == "__main__":
     mutation_rate = 0.3
 
     coordinates_list = [[x,y] for x,y in zip(np.random.randint(0,100,n_cities),np.random.randint(0,100,n_cities))]
-    names_list = np.array(['Berlin', 'London', 'Moscow', 'Barcelona', 'Rome', 'Paris', 'Vienna', 'Munich', 'Istanbul', 'Kyiv', 'Bucharest', 'Minsk', 'Warsaw', 'Budapest', 'Milan', 'Prague', 'Sofia', 'Birmingham', 'Brussels', 'Amsterdam'])
+    names_list = np.array(['Berlin', 'London', 'Moscow', 'Barcelona', 'Rome', 
+                           'Paris', 'Vienna', 'Munich', 'Istanbul', 'Kyiv', 
+                           'Bucharest', 'Minsk', 'Warsaw', 'Budapest', 'Milan', 
+                           'Prague', 'Sofia', 'Birmingham', 'Brussels', 'Amsterdam'])
     cities_dict = { x:y for x,y in zip(names_list,coordinates_list)}
 
     population_set = genesis(names_list, n_population)
