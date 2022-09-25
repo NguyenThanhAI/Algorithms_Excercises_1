@@ -858,6 +858,45 @@
 
         Code của thuật toán trên được trình bày ở phụ lục \ref{code-4-ex-2}
 
+        Thực nghiệm:
+
+        \begin{itemize}
+            \item Với đầu vào:
+            \begin{verbatim}
+                5 3        
+                5 7 9 3 2
+                8 7 0 2 9
+                3 8 0 2 2
+                4 3 10 2 1
+                4 7 9 8 1
+            \end{verbatim}
+            Kết quả đầu ra:
+            \begin{verbatim}
+                49
+                3 2
+            \end{verbatim}
+            Thời gian chạy: 0.000050005 (giây)
+            \item Với đầu vào:
+            \begin{verbatim}
+                10 3
+                3 2 28 29 2 2 4 2 5 3
+                4 5 3 5 3 5 3 5 3 5
+                4 5 6 6 3 5 4 7 3 7
+                4 6 3 7 3 6 7 3 2 5
+                4 3 6 3 6 3 8 3 5 2
+                5 7 4 4 6 7 4 7 3 2
+                5 6 7 3 6 7 4 3 4 6
+                3 5 3 6 3 6 3 6 3 7
+                3 6 7 4 3 2 6 2 5 7
+                3 6 2 6 7 4 6 7 3 2
+            \end{verbatim}
+            Kết quả đầu ra:
+            \begin{verbatim}
+                89
+                1 2
+            \end{verbatim}
+            Thời gian chạy: 0.00017999 (giây)
+        \end{itemize}
 
     \end{itemize}
 
@@ -1105,7 +1144,62 @@
     Đối với chi phí bộ nhớ, ta cần mảng $\bold{C}$ để lưu $N+1$ giá trị thời gian. Mảng trace để lưu $N$ giá trị.
     Vậy độ phức tạp bộ nhớ là $O(N)$.
 
-    Code của thuật toán trên được trình bày ở phụ lục \ref{code-3-ex-1}
+    Code của thuật toán trên được trình bày ở phụ lục \ref{code-2-ex-3}
+
+    Với đầu vào:
+
+    \begin{verbatim}
+        10 12
+        2 1    
+        4 2
+        4 4
+        2 1
+        3 2
+        3 4
+        4 2
+        4 1
+        3 4
+        2 4
+    \end{verbatim}
+
+    Kết quả đầu ra:
+
+    \begin{verbatim}
+        12
+        2 1
+        4 4
+        2 1
+        4 2
+        4 1
+    \end{verbatim}
+
+    Với đầu vào:
+
+    \begin{verbatim}
+        10 20
+        3 4
+        2 2
+        5 1
+        2 3 
+        4 1
+        3 2
+        4 7
+        2 3
+        4 2
+        4 1
+    \end{verbatim}
+
+    Kết quả đầu ra:
+
+    \begin{verbatim}
+        11
+        3 4
+        2 2
+        5 1
+        2 3
+        3 2
+    \end{verbatim}
+
     \end{loigiai}
 
     
