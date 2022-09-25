@@ -529,7 +529,7 @@
             \min \Big ( \bold{L} \lbrack i-1, j \rbrack, \bold{L} \lbrack i, j-1 \rbrack, \bold{L} \lbrack i-1, j-1 \rbrack + 1 \Big), \text{ nếu } \bold{X}\lbrack i \rbrack \neq \bold{Y} \lbrack j \rbrack \end{cases}
         \end{equation*}
 
-        Sơ đồ mã giả thuật toán bài toán này là:
+        Sơ đồ mã giả thuật toán bài toán này ở thuật toán \ref{alg:string-change}.
 
         \begin{algorithm}[h!]
             \DontPrintSemicolon
@@ -562,6 +562,7 @@
             }
             \Return {$\bold{L} \lbrack n, m \rbrack$}\;
             \caption{Thuật toán tìm số cách nhỏ nhất để biến đổi xâu gốc $\bold{X}$ thành xâu đích $\bold{Y}$}
+            \label{alg:string-change}
         \end{algorithm}
 
         Thuật toán trên gồm 2 vòng lặp lồng nhau. Độ phức tạp tính toán của thuật toán là $O(nm)$ và độ phức tạp về bộ nhớ của thuật toán là $O(nm)$ (lưu bảng phương án hai chiều $\bold{L}$). 
@@ -627,7 +628,7 @@
         Để truy vết xâu cong chung dài nhất, ta đặt một biến để lưu vị trí lớn nhất trong $\bold{S}$ và giá trị lớn nhất tương ứng.
         Sau khi tính hết các phần tử $\bold{S}$, từ vị trí và độ dài xâu con chung lớn nhất ta sẽ thu được xâu con chung dài nhất.
 
-        Ta có thuật toán tìm xâu con chung dài nhất của hai xâu $\bold{X}$ và xâu $\bold{Y}$:
+        Ta có thuật toán tìm xâu con chung dài nhất của hai xâu $\bold{X}$ và xâu $\bold{Y}$ ở thuật toán \ref{alg:longest-substring}.
 
         \begin{algorithm}[h!]
             \DontPrintSemicolon
@@ -657,6 +658,7 @@
             $longest\_substring \gets \bold{X} \lbrack pos\_row - max\_len + 1: pos\_row \rbrack$\;
             \Return{$longest\_substring$}\;
             \caption{Thuật toán tìm xâu con chung dài nhất của hai xâu $\bold{X}$ và xâu $\bold{Y}$}
+            \label{alg:longest-substring}
         \end{algorithm}
 
         Thuật toán trên có 2 vòng lặp lồng nhau.
@@ -748,7 +750,7 @@
         Nếu giá trị này lớn hơn giá trị lớn nhất hiện thời ta gán giá trị lớn nhất cho giá trị này.
         Để truy vết khi cập giá trị lớn nhất ta lưu lại 2 giá trị $(i - k + 1, j - k + 1)$ là vị trí góc trên cùng bên trái của lô $k \times k$ được coi là có sản lượng vàng lớn nhất.
 
-        Từ lập luận trên, ta có mã giả của thuật toán:
+        Từ lập luận trên, ta có mã giả của thuật toán ở thuật toán \ref{alg:gold-amount}.
 
         \begin{algorithm}[h!]
             \DontPrintSemicolon
@@ -786,6 +788,7 @@
             }
             \Return{$max, max \textunderscore row, max \textunderscore col$}\;
             \caption{Thuật toán tính sản lượng vàng lớn nhất có thể khai thác được}
+            \label{alg:gold-amount}
         \end{algorithm}
 
         Thuật toán trên có độ phức tạp tính toán là $O(n^2)$ và độ phức tạp bộ nhớ cũng là $O(n^2)$ (lưu mảng $\bold{G}$).
@@ -925,7 +928,7 @@
         Ban đầu ta đặt $\bold{T} \lbrack i, j \rbrack \gets j$.
         Nếu $\bold{D} \lbrack i, j \rbrack > \bold{D} \lbrack i, k \rbrack + \bold{D} \lbrack k, j \rbrack $ ta sẽ gán $\bold{T} \lbrack i, j \rbrack \gets \bold{T} \lbrack i, k \rbrack$, 
         ý nghĩa rằng nếu ta tìm được một đồng trung gian $k$ tối ưu trong quá trình đổi tiền từ đồng thứ $i$ sang đồng thứ $j$ thì từ $i$ ta sẽ thực hiện một phép đổi tiền trước mắt sao cho từ đồng thứ $i$ sang đồng thứ $k$ (quá trình đổi này có thể lại có nhiều đồng trung gian) trước sau đó thực hiện quá trình đổi từ đồng thứ $k$ sang đồng thứ $j$.
-        Từ các phân tích trên, ta đề xuất ra thuật toán tìm cách đổi tiền sinh ra lợi nhuận tốt nhất (nếu có cách đổi tiền sinh ra lợi nhuận):
+        Từ các phân tích trên, ta đề xuất ra thuật toán tìm cách đổi tiền sinh ra lợi nhuận tốt nhất (nếu có cách đổi tiền sinh ra lợi nhuận) ở thuật toán \ref{alg:currency-exchange}.
 
         \begin{algorithm}[h!]
             \DontPrintSemicolon
@@ -1039,7 +1042,7 @@
     Tại mỗi thời điểm 2 điều kiện trên đồng thời xảy ra tại $k$, ta sẽ gán lại một biến $bp \gets k$ (breakpoint - điểm chia) để lưu lại vị trí $k$ tối ưu để $i$ xe đầu tiên của đoàn qua cầu trong thời gian ngắn nhất
 
 
-    Từ phân tích trên ta có mã giả thuật toán:
+    Từ phân tích trên ta có mã giả thuật toán ở thuật toán \ref{alg:cross-bridge}.
 
     \begin{algorithm}[h!]
         \DontPrintSemicolon
@@ -1066,6 +1069,7 @@
         }
         \Return{$\bold{C} \lbrack N \rbrack, set(trace)$}\;
         \caption{Thuật toán tìm thời gian ngắn nhất để đoàn xe qua cầu}
+        \label{alg:cross-bridge}
     \end{algorithm}
 
     Đối với chi phí tính toán, thuật toán trên có 2 vòng lặp lồng nhau, thân vòng lặp trong cùng phải thực hiện số phép tính là $O(i-k+1)$.
@@ -1175,7 +1179,7 @@
     Giá trị $\bold{T} \lbrack i, j \rbrack=k$ cho biết điểm ngắt ma trận $k$ tối ưu nằm giữa hai ma trận $i$ và ma trận $j$ sao cho chuỗi phép nhân ma trận $\bold{A}_i \times \dots \times \bold{A}_j$ cần số phép tính cần thực hiện là nhỏ nhất.
     Như vậy dấu ngoặc sẽ có dạng $\Big ( \bold{A}_i \times \dots \times \bold{A}_k \Big) \Big( \bold{A}_{k + 1} \times \dots \times \bold{A}_j \Big)$.
     Để in ra màn hình các dấu ngoặc biểu diễn thứ tự ưu tiên thực hiện các phép nhân ta sử dụng hàm printParens(T, i , j), với $i = j$, ta sẽ in luôn $\bold{A}_i$, nếu $i \neq j$, ta sẽ in ra màn hình dấu mở ngoặc "(", gọi đến hàm printParens hai lần với các tham số đầu vào tương ứng printParens(T, i, T[i, j])
-    và printParens(T, T[i, j] + 1, j). Ta có mã giả của hàm printParens:
+    và printParens(T, T[i, j] + 1, j). Ta có mã giả của hàm printParens ở thuật toán \ref{alg:printParens}.
 
     \begin{algorithm}[h!]
         \DontPrintSemicolon
@@ -1191,9 +1195,10 @@
             print(")")\;
         }
         \caption{printParens($\bold{T}$, $i$, $j$)}
+        \label{alg:printParens}
     \end{algorithm}
 
-    Ta có mã giả thuật toán:
+    Ta có mã giả thuật toán ở thuật toán \ref{alg:matrix-chain-multiplication}.
 
     \begin{algorithm}[h!]
         \DontPrintSemicolon
@@ -1220,6 +1225,7 @@
         print($\bold{L} \lbrack 1, n \rbrack$)\;
         printParens($\bold{T}$, 1, $n$)\;
         \caption{Thuật toán tính số phép tính nhỏ nhất thực hiện nhân chuỗi ma trận}
+        \label{alg:matrix-chain-multiplication}
     \end{algorithm}
 
     Ta nhận thấy thuật toán có hai vòng lặp riêng rẽ, vòng lặp đầu tiên chỉ gồm 1 vòng lặp đơn có độ phức tạp tính toán $O(n)$,
